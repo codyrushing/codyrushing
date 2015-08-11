@@ -1,0 +1,26 @@
+{
+  "name": "codyrushing",
+  "version": "1.0.0",
+  "description": "codyrushing.com site",
+  "main": "app.js",
+  "dependencies": {
+    "co-views": "^1.0.0",
+    "koa": "^0.21.0",
+    "koa-hbs": "^0.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node --harmony app.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codyrushing/codyrushing.git"
+  },
+  "author": "codyrushing",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codyrushing/codyrushing/issues"
+  },
+  "homepage": "https://github.com/codyrushing/codyrushing#readme"
+}
