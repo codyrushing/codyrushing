@@ -1,0 +1,22 @@
+{
+  "name": "codyrushing",
+  "version": "0.0.0",
+  "homepage": "https://github.com/codyrushing/codyrushing",
+  "authors": [
+    "Cody Rushing <codyrushing@gmail.com>"
+  ],
+  "main": "app.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "~1.2.1",
+    "jquery": "~2.1.4",
+    "handlebars": "~3.0.3"
+  }
+}
