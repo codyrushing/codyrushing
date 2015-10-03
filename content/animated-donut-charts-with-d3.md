@@ -1,6 +1,11 @@
-<!-- 5/11/14 -->
+---
+title: Animated donut charts with D3
+date: 11/05/14
+tags: [javascript, d3, data visualization]
+intro: D3 donut charts have been done before, but I wasn't able to find one that had everything I needed.  So I went ahead and made a simple utility class for creating and animating donut charts.
+---
 
-<p>D3 donut charts have been done before, but I wasn't able to find one that had everything I needed.  So I went ahead and made a simple utility object for creating and animating donut charts.<!--more-->  <a href="https://github.com/codyrushing/donut-chart" target="_blank">Check it out on the githubs</a>.</p>
+D3 donut charts have been done before, but I wasn't able to find one that had everything I needed.  So I went ahead and made a simple utility class for creating and animating donut charts.  <a href="https://github.com/codyrushing/donut-chart" target="_blank">Check it out on the githubs</a>.
 
 <iframe src="/public/demos/donut-chart/spurs.html" height="320" width="320"></iframe>
 

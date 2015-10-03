@@ -1,5 +1,11 @@
-<!-- 3/16/15 -->
-<p>Handlebars has great support for building custom helpers, but there isn't an obvious way to get them working for both client and server-side rendering.<!--more-->  To me, the holy grail of single page web apps is to have every URL completely shareable, and not reliant upon client side rendering on initial page load.  Subsequent navigation by the user can all be done via AJAX and client-side rendering, but every URL needs to be able to be rendered on the server without the help of the client.  This makes SEO much simpler, is a better experience for the user, and overall I think it's just more inline with how the web was built to work.</p>
+---
+title: Using Handlebars helpers on both client and server
+date: 16/03/15
+tags: [handlebars, javascript, isomorphic, node, grunt, express]
+intro: Handlebars has great support for building custom helpers, but there isn't an obvious way to get them working for both client and server-side rendering.
+---
+
+<p>Handlebars has great support for building custom helpers, but there isn't an obvious way to get them working for both client and server-side rendering.  To me, the holy grail of single page web apps is to have every URL completely shareable, and not reliant upon client side rendering on initial page load.  Subsequent navigation by the user can all be done via AJAX and client-side rendering, but every URL needs to be able to be rendered on the server without the help of the client.  This makes SEO much simpler, is a better experience for the user, and overall I think it's just more inline with how the web was built to work.</p>
 
 <p>To go with this strategy, though, you will need to support potentially two different request paradigms (traditional page load and single-page app async calls).  As such, you'll need to be able to use your templates on both the client and the server.  Handlebars is supported by many server stacks, so we should be able to use our templates wherever we need them, right?</p>
 

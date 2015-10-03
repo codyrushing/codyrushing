@@ -1,5 +1,11 @@
-<!-- 2/11/15 -->
-<p>Working in web dev, especially front-end, means that you're constantly watching the horizon for new tech.  The landscape is always in flux, but in the last year I feel like some true winners have emerged that most of us can get behind.</p><!--more-->
+---
+title: Emerging leaders in web tech Gulp, Browserify, Susy and others
+date: 11/02/15
+tags: [tools, gulp, browserify, susy, browsersync, ismorphic]
+intro: Working in web dev, especially front-end, means that you're constantly watching the horizon for new tech.  The landscape is always in flux, but in the last year I feel like some true winners have emerged that most of us can get behind.
+---
+
+<p>Working in web dev, especially front-end, means that you're constantly watching the horizon for new tech.  The landscape is always in flux, but in the last year I feel like some true winners have emerged that most of us can get behind.</p>
 <p>I'm not try to say that the "losers" here are horrible and should never be used again.  I'm sure there are some use cases for which they might actually make more sense.  For almost every scenario, though, I think there's an obvious better choice.</p>
 
 <h2>For DIY build tools and workflow automation : Gulp > Grunt</h2>

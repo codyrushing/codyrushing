@@ -1,4 +1,10 @@
-<!-- 1/14/14 -->
+---
+title: Setting up a Raspberry Pi as a home web server from scratch
+date: 14/01/14
+tags: [tutorials, raspberry pi, networking, raspbian, linux, hardware, apache]
+intro: My Raspberry Pi has mostly been collecting dust since I got it. Setting it up as a LAMP home web server definitely isn't anything groundbreaking, but it at least helped me start to get familiar with the thing.
+---
+
 <p>My Raspberry Pi has mostly been collecting dust since I got it. Setting it up as a LAMP home web server definitely isn't anything groundbreaking, but it at least helped me start to get familiar with the thing.<!--more--> Plus, if you're already paying for any sort of web hosting, running it as a web server will cause the Pi to pay for itself in a few months.</p>
 
 <p>There are tons of tutorials out there on turning Pis into web servers, but nothing that went through the entire process from start to finish, and that were made for people like me who don't know a lot about Linux, networking, and servers in general. I had to cobble together resources from a dozen or so places, <a href="http://www.dingleberrypi.com/">Dingleberry Pi</a> being one of the best.</p>

@@ -8,6 +8,7 @@ var gulp = require("gulp"),
     filter = require("gulp-filter"),
     sourcemaps = require("gulp-sourcemaps"),
     autoprefixer = require("gulp-autoprefixer"),
+    nodemon = require("gulp-nodemon"),
     sass = require("gulp-sass");
 
 var srcBase = __dirname + "/public/src",
@@ -72,8 +73,19 @@ gulp.task("css", function(){
         .pipe(cssMainChannel);
 });
 
+gulp.task("server", function(){
+    return nodemon({
+        script: "app.js",
+        ext: "js",
+        ignore: ["public/*"],
+        execMap: {
+            js: "node --harmony"
+        }
+    });
+});
+
 gulp.task("watch", function(){
     gulp.watch(paths.src.scss + "/**/*.scss", ["css"]);
 });
 
-gulp.task("default", ["bower", "css", "watch"]);
+gulp.task("default", ["bower", "css", "server", "watch"]);

@@ -1,4 +1,10 @@
-<!-- 6/2/14 -->
+---
+title: Debugging Node.js improved workflows with Grunt
+date: 02/06/14
+tags: [node, debugging, tools, grunt, node-inspector]
+intro: As I've been diving back into Node.js, it became apparent pretty quickly that I needed better debugging tools.  Here are some that I like so far and have integrated into my workflow with the help of Grunt.
+---
+
 <p>As I've been diving back into Node.js, it became apparent pretty quickly that I needed better debugging tools.  Here are some that I like so far and have integrated into my workflow with the help of Grunt.</p><!--more-->
 
 <h2>Quick overview on debugging in Node</h2>

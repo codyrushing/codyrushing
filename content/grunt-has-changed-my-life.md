@@ -1,4 +1,9 @@
-<!-- 2/17/14 -->
+---
+title: Grunt has changed my life
+date: 17/02/14
+tags: [tools, grunt, jshint, sass, handlebars, assemble]
+intro: I've only been using <a href="http://gruntjs.com/">Grunt</a> for a little bit, but it has quickly become one of those "<em>how did I ever live without this</em>" kind of tools.
+---
 
 <p>I've only been using <a href="http://gruntjs.com/">Grunt</a> for a little bit, but it has quickly become one of those "<em>how did I ever live without this</em>" kind of tools.<!--more-->  I guess I always thought that it didn't provide anything that I couldn't do on my own; minification, concatenation, jshint can all be done with pre-existing tools.  What's nice about Grunt is that you can manage them all in one place with a single easily-customizable build process.  Not only that, but it's easy to share with other team members so y'all are all running the exact same build.</p>
 
