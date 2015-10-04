@@ -1,14 +1,14 @@
-var koa = require("koa");
-var app = koa();
-var Post = require("./models/post");
-var constants = require("./constants");
-var router;
+var koa = require("koa"),
+    Post = require("./models/post"),
+    constants = require("./constants");
 
-var path = require("path");
 var fs = require("fs");
 
+var app = koa(),
+    router;
+
 require("./settings")(app);
-router = require("./routes")(app);
+router = require("./controller/routes")(app);
 
 // x-response-time
 app.use(function *(next){
@@ -31,6 +31,12 @@ app
     .use(router.routes())
     .use(router.allowedMethods());
 
-//Post.getAllPosts();
+Post.getAll(function(err, posts){
+    if(!err){
+        Post.sortByDate(posts).forEach(function(post, i){
+            console.log(post.getTags());
+        });
+    }
+});
 
 app.listen(3000);
