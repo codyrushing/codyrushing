@@ -1,6 +1,7 @@
 var koa = require("koa"),
     Post = require("./models/post"),
-    constants = require("./constants");
+    constants = require("./constants"),
+    finalRequestHandler = require("./controller/final-request-handler");
 
 var fs = require("fs");
 
@@ -29,14 +30,7 @@ app.use(function *(next){
 // response
 app
     .use(router.routes())
+    .use(finalRequestHandler)
     .use(router.allowedMethods());
-
-Post.getAll(function(err, posts){
-    if(!err){
-        Post.sortByDate(posts).forEach(function(post, i){
-            console.log(post.getTags());
-        });
-    }
-});
 
 app.listen(3000);

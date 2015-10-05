@@ -33,91 +33,135 @@ Post.prototype = {
         }
     },
     getBodyHtml: function(){
-        return marked(this._body);
+        if(!this.isEmpty()){
+            return this._body;
+        }
+    },
+    getId: function(){
+        return this._id;
+    },
+    getTitle: function(){
+        if(!this.isEmpty()){
+            return this._data.title;
+        }
+    },
+    getIntro: function(){
+        if(!this.isEmpty()){
+            return this._data.intro;
+        }
+    },
+    getDateString: function(){
+        if(!this.isEmpty()){
+            return moment(this._data.date).format("LL");
+        }
     },
     isEmpty: function(){
         return _.isEmpty(this._data) && _.isEmpty(this._body);
     },
-    getRenderingModel: function(){
-
+    toJSON: function(){
+        return {
+            title: this.getTitle(),
+            intro: this.getIntro(),
+            id: this.getId(),
+            date: this.getDateString(),
+            tags: this.getTags()
+        };
+    },
+    toFullJSON: function(){
+        return {
+            title: this.getTitle(),
+            intro: this.getIntro(),
+            id: this.getId(),
+            date: this.getDateString(),
+            tags: this.getTags(),
+            body: this.getBodyHtml()
+        };
     }
 };
 
 // static methods
-Post.getById = function(postId, done){
-    var postFilePath = constants.CONTENT_PATH + postId + ".md";
+Post.getById = function(postId){
+    return new Promise(function(resolve, reject){
+        var postFilePath = constants.CONTENT_PATH + postId + ".md";
+        // if markdown file exists
+        fs.access(postFilePath, fs.R_OK, function(err){
+            var post;
+            if(err) reject(err);
 
-    // if markdown file exists
-    fs.access(postFilePath, fs.R_OK, function(err){
-        var post;
-        if(err) done(err, null);
+            post = new Post(postId);
 
-        post = new Post(postId);
+            // parse front matter and raw markdown
+            fs.createReadStream(postFilePath)
+                .pipe(
+                    fastmatter.stream(function(attributes, body){
+                        post._data = _.assign(post._data, attributes);
+                        if(post._data.date){
+                            post._data.date = moment(post._data.date, "DD/MM/YY").toDate();
+                        }
+                        this.pipe(concatStream(function(body){
+                            post._body = marked(body.toString());
+                        }));
+                        this.on("end", function(){
+                            resolve(post);
+                        });
 
-        // parse front matter and raw markdown
-        fs.createReadStream(postFilePath)
-            .pipe(
-                fastmatter.stream(function(attributes, body){
-                    post._data = _.assign(post._data, attributes);
-                    this.pipe(concatStream(function(body){
-                        post._body = body.toString();
-                    }));
-                    this.on("end", function(){
-                        done(null, post);
-                    });
-
-                })
-            )
+                    })
+                )
+        });
     });
 
 };
 
 Post.getAllForSearchQuery = function(query, done){
-    Post.getAll(function(err, posts){
-        if(err){
-            done(err);
-        } else if(posts) {
+    return new Promise(function(resolve, reject){
+        Post.getAll().then(function(posts){
             done(null, _.filter(posts, function(post){
                 // query;
                 // return post._data.tags && _.includes(post._data.tags, tag);
             }));
-        }
+        }, reject);
     });
 };
 
-Post.getAllForTag = function(tag, done){
-    Post.getAll(function(err, posts){
-        if(err){
-            done(err);
-        } else if(posts) {
-            done(null, _.filter(posts, function(post){
+Post.getAllForTag = function(tag){
+    return new Promise(function(resolve, reject){
+        Post.getAll().then(function(posts){
+            resolve(_.filter(posts, function(post){
                 return post._data.tags && _.includes(post._data.tags, tag);
             }));
-        }
+        }, reject);
     });
 };
 
-Post.getAll = function(done){
-    var self = this;
+Post.getAll = function(){
+    var self = this,
         posts = [];
-    fs.readdir(constants.CONTENT_PATH, function(err, files){
-        if(err) done(err, null);
-        files.forEach(function(val, i){
-            self.getById(path.parse(val).name, function(err, post){
-                if(!err){
-                    posts.push(post);
-                }
-                if(i === files.length-1){
-                    done(null, posts);
-                }
+
+    return new Promise(function(resolve, reject){
+        fs.readdir(constants.CONTENT_PATH, function(err, files){
+            var promises = [];
+            if(err) reject(err);
+            files.forEach(function(val, i){
+                var singularPromise = self.getById(path.parse(val).name)
+                    .then(function(post){
+                        posts.push(post);
+                    });
+
+                promises.push(singularPromise);
+
             });
+            Promise.all(promises)
+                .then(function(){
+                    resolve(posts)
+                }, reject);
         });
+
     });
 };
 
 Post.sortByDate = function(posts){
     return _.sortBy(posts, function(post){
-        return moment(post._data.date, "DD/MM/YY").toDate();
+        return post._data.date;
     }).reverse();
 }
 
