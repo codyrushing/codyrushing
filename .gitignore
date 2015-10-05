@@ -27,5 +27,6 @@ build/Release
 node_modules
 bower_components
 public/dist
+si
 
 .DS_STORE

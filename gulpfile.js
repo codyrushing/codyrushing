@@ -76,7 +76,7 @@ gulp.task("css", function(){
 gulp.task("server", function(){
     return nodemon({
         script: "app.js",
-        ext: "js",
+        ext: "js hbs",
         ignore: ["public/*"],
         execMap: {
             js: "node --harmony"

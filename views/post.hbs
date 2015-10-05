@@ -1,1 +1,25 @@
-<h1>this is a post page</h1>
+<section id="main" class="single">
+    {{#with post}}
+        <article id="{{id}}" class="post">
+        	<div class="info">
+        		<p class="date">{{date}}</p>
+        		<p class="tags">
+                    {{#each tags}}
+                        <a href="/tag/{{this}}">{{this}}</a><sub>,</sub>
+                    {{/each}}
+                </p>
+        	</div>
+        	<h1 class="title">{{title}}</h1>
+        	<div class="content">
+        		{{{content}}}
+        	</div>
+        </article>
+    {{/with}}
+    <div id="comments"></div>
+
+    <nav class="page-navigation fixed clr" role="navigation">
+            <a href="#" class="prev" role="back">PREV ARTICLE TITLE</a>
+            <a href="#" class="next">NEXT ARTICLE TITLE</a>
+    </nav>
+
+</section>

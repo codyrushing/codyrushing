@@ -23,9 +23,11 @@
     "koa": "^0.21.0",
     "koa-hbs": "^0.7.0",
     "koa-router": "^5.2.2",
+    "koa-static": "^1.4.9",
     "lazypipe": "^1.0.1",
     "lodash": "^3.10.1",
-    "marked": "^0.3.5"
+    "marked": "^0.3.5",
+    "search-index": "^0.6.13"
   },
   "devDependencies": {},
   "scripts": {

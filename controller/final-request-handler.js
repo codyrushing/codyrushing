@@ -10,7 +10,7 @@ module.exports = function *(next){
     } else {
         // traditional page load
         console.log(this.state.pageData);
-        if(this.state.pageData.isSingle){
+        if(this.state.pageData && this.state.pageData.isSingle){
             yield this.render("post", this.state.pageData);
         } else {
             yield this.render("list", this.state.pageData);

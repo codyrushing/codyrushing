@@ -1,1 +1,16 @@
-<h1>this is a list page</h1>
+<section id="main" class="list">
+    {{#each posts}}
+        <article id="{{id}}">
+            <p class="date">{{date}}</p>
+            <h2 class="title"><a href="/{{id}}">{{title}}</a></h2>
+            <div class="excerpt">{{{intro}}}</div>
+            <p class="tags">
+                {{#each tags}}
+                    <a href="/tag/{{this}}">{{this}}</a>&nbsp;|&nbsp;
+                {{/each}}
+            </p>
+        </article>
+    {{else}}
+        none found
+    {{/each}}
+</section>

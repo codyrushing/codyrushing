@@ -74,7 +74,7 @@ Post.prototype = {
             id: this.getId(),
             date: this.getDateString(),
             tags: this.getTags(),
-            body: this.getBodyHtml()
+            content: this.getBodyHtml()
         };
     }
 };
@@ -98,6 +98,9 @@ Post.getById = function(postId){
                         if(post._data.date){
                             post._data.date = moment(post._data.date, "DD/MM/YY").toDate();
                         }
+                        if(post._data.intro){
+                            post._data.intro = marked(post._data.intro);
+                        }
                         this.pipe(concatStream(function(body){
                             post._body = marked(body.toString());
                         }));
@@ -110,27 +113,6 @@ Post.getById = function(postId){
         });
     });
 
-};
-
-Post.getAllForSearchQuery = function(query, done){
-    return new Promise(function(resolve, reject){
-        Post.getAll().then(function(posts){
-            done(null, _.filter(posts, function(post){
-                // query;
-                // return post._data.tags && _.includes(post._data.tags, tag);
-            }));
-        }, reject);
-    });
-};
-
-Post.getAllForTag = function(tag){
-    return new Promise(function(resolve, reject){
-        Post.getAll().then(function(posts){
-            resolve(_.filter(posts, function(post){
-                return post._data.tags && _.includes(post._data.tags, tag);
-            }));
-        }, reject);
-    });
 };
 
 Post.getAll = function(){
@@ -156,6 +138,28 @@ Post.getAll = function(){
                 }, reject);
         });
 
+    });
+};
+
+
+Post.getAllForSearchQuery = function(query, si){
+    return new Promise(function(resolve, reject){
+        si.search({
+            "query": {"*": [query]}
+        }, function(err, results){
+            if(err) reject(err);
+            resolve(results);
+        })
+    });
+};
+
+Post.getAllForTag = function(tag){
+    return new Promise(function(resolve, reject){
+        Post.getAll().then(function(posts){
+            resolve(_.filter(posts, function(post){
+                return post._data.tags && _.includes(post._data.tags, tag);
+            }));
+        }, reject);
     });
 };
 
