@@ -27,10 +27,23 @@ app.use(function *(next){
     console.log('%s %s - %s', this.method, this.url, ms);
 });
 
+// static
+app.use(require("koa-static")("public", {
+    maxage: 1000 * 60 * 60
+}));
+
 // response
 app
     .use(router.routes())
     .use(finalRequestHandler)
     .use(router.allowedMethods());
+
+require("./apod")();
+
+// static
+app.use(require("koa-static")("public", {
+    maxage: 1000 * 60 * 60
+}));
+
 
 app.listen(3000);

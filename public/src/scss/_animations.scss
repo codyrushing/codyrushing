@@ -1,0 +1,67 @@
+@-webkit-keyframes flip-elastic {
+	0% { @include transform(rotate(0)); }
+	80% { @include transform(rotate(390deg)); }
+	100% { @include transform(rotate(360deg)); }
+}
+@-moz-keyframes flip-elastic {
+	0% { @include transform(rotate(0)); }
+	80% { @include transform(rotate(390deg)); }
+	100% { @include transform(rotate(360deg)); }
+}
+@keyframes flip-elastic {
+	0% { @include transform(rotate(0)); }
+	80% { @include transform(rotate(390deg)); }
+	100% { @include transform(rotate(360deg)); }
+}
+
+@-webkit-keyframes rollIn {
+	0% { opacity: 0; @include transform(translateX(50%)); }
+	100% { opacity: 1; @include transform(translateX(0px)); }
+}
+@-moz-keyframes rollIn {
+	0% { opacity: 0; @include transform(translateX(50%)); }
+	100% { opacity: 1; @include transform(translateX(0px)); }
+}
+@keyframes rollIn {
+	0% { opacity: 0; @include transform(translateX(50%)); }
+	100% { opacity: 1; @include transform(translateX(0px)); }
+}
+
+@-webkit-keyframes rollOut {
+    0% { opacity: 1; @include transform(translateX(0)); }
+    100% { opacity: 0; @include transform(translateX(-50%)); }
+}
+@-moz-keyframes rollOut {
+    0% { opacity: 1; @include transform(translateX(0)); }
+    100% { opacity: 0; @include transform(translateX(-50%)); }
+}
+@keyframes rollOut {
+    0% { opacity: 1; @include transform(translateX(0)); }
+    100% { opacity: 0; @include transform(translateX(-50%)); }
+}
+
+@-webkit-keyframes rollInReverse {
+	0% { opacity: 0; @include transform(translateX(-50%)); }
+	100% { opacity: 1; @include transform(translateX(0px)); }
+}
+@-moz-keyframes rollInReverse {
+	0% { opacity: 0; @include transform(translateX(-50%)); }
+	100% { opacity: 1; @include transform(translateX(0px)); }
+}
+@keyframes rollInReverse {
+	0% { opacity: 0; @include transform(translateX(-50%)); }
+	100% { opacity: 1; @include transform(translateX(0px)); }
+}
+
+@-webkit-keyframes rollOutReverse {
+    0% { opacity: 1; @include transform(translateX(0px)); }
+    100% { opacity: 0; @include transform(translateX(50%)); }
+}
+@-moz-keyframes rollOutReverse {
+    0% { opacity: 1; @include transform(translateX(0px)); }
+    100% { opacity: 0; @include transform(translateX(50%)); }
+}
+@keyframes rollOutReverse {
+    0% { opacity: 1; @include transform(translateX(0px)); }
+    100% { opacity: 0; @include transform(translateX(50%)); }
+}

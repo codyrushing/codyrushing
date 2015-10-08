@@ -4,3 +4,14 @@ body {
     display: block;
     opacity: 0.3;
 }
+
+@import "main";
+
+@import "animations";
+@import "loader";
+// layouts
+@import "default";
+@import "tablet";
+@import "desktop";
+@import "giant";
+@import "prism";

@@ -5,12 +5,24 @@
             <h2 class="title"><a href="/{{id}}">{{title}}</a></h2>
             <div class="excerpt">{{{intro}}}</div>
             <p class="tags">
-                {{#each tags}}
-                    <a href="/tag/{{this}}">{{this}}</a>&nbsp;|&nbsp;
-                {{/each}}
+                {{#eachDelimited tags "&nbsp;|&nbsp;"}}
+                    <a href="/tag/{{this}}">{{this}}</a>
+                {{/eachDelimited}}
             </p>
         </article>
     {{else}}
         none found
     {{/each}}
+
+    {{#ifCond olderLink "||" newerLink}}
+        <nav class="page-navigation clr" role="navigation">
+            {{#if newerLink}}
+                <a class="prev" role="back" href="{{newerLink}}">&laquo; Newer</a>
+            {{/if}}
+            {{#if olderLink}}
+                <a class="next" href="{{olderLink}}">Older &raquo;</a>
+            {{/if}}
+        </nav>
+    {{/ifCond}}
+
 </section>

@@ -1,0 +1,90 @@
+@import "compass/css3";
+@import "compass/reset";
+@import "compass/utilities/sprites";
+@import "icons/*.png";
+
+$text-main: #444;
+$text-light: #aaa;
+
+$selection-color: #e34071;
+
+$link-color: #2589db;
+
+$transparent-white: rgba(255,255,255,.5);
+
+@mixin spritify($name){
+	@include icons-sprite($name);
+	width: icons-sprite-width($name);
+	height: icons-sprite-height($name);
+	display: block;
+}
+
+@mixin set-padding($x-padding, $y-padding){
+	padding: $y-padding $x-padding;
+}
+
+@mixin set-width($x-padding){
+	width: 100% - (2*$x-padding);
+}
+
+@mixin animation($properties){
+	-moz-animation: $properties;
+	-webkit-animation: $properties;
+	-o-animation: $properties;
+	-ms-animation: $properties;
+	-khtml-animation: $properties;
+	animation: $properties;
+}
+
+html { height: 100%; }
+
+body {
+	background: url("/public/images/min/bg.jpg") 20px 10px repeat;
+	font-family: 'Merriweather', serif;
+	color: $text-main;
+	font-size: 1em; line-height: 1.2;
+	min-height: 100%;
+	position: relative;
+	&.animating {
+		overflow: hidden;
+	}
+}
+
+strong { font-weight: 700; }
+em { font-style: italic; }
+
+ul { list-style-type: disc; }
+ol { list-style-type: decimal; }
+
+a, a:visited {
+	color: $link-color;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+::selection {
+	background: $selection-color; /* Safari */
+	color: #000;
+}
+::-moz-selection {
+	background: $selection-color; /* Firefox */
+}
+
+a::selection { color: #fff; }
+
+
+.emph { color: $selection-color; }
+.emph::selection { color: #fff; }
+
+sub { font-size: 0.6em; }
+
+@mixin clearfix(){
+	&:after {
+		content: ""; display: block; clear: both; visibility: hidden; line-height: 0; height: 0;
+	}
+}
+
+.clr { @include clearfix(); }
