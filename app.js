@@ -38,10 +38,8 @@ app
     .use(finalRequestHandler)
     .use(router.allowedMethods());
 
-require("./apod")();
-
 // static
-app.use(require("koa-static")("public", {
+app.use(require("koa-static")(constants.STATIC_PATH, {
     maxage: 1000 * 60 * 60
 }));
 

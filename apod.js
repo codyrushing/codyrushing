@@ -1,15 +1,22 @@
 var jsdom = require("jsdom"),
     lwip = require("lwip"),
     moment = require("moment"),
+    _ = require("lodash"),
     request = require("request");
 
 var path = require("path"),
     fs = require("fs"),
     http = require("http");
 
+var constants = require("./constants");
+
 var APOD_PATH = __dirname + "/public/img/apod";
 
-module.exports = function(){
+module.exports = function *(next){
+    var ctx = this;
+
+    console.log(this);
+
     var scrapeDOM = new Promise(function(resolve, reject){
         try {
             jsdom.env("http://apod.nasa.gov/apod/astropix.html", ["http://code.jquery.com/jquery.js"], function(err, window){
@@ -17,7 +24,7 @@ module.exports = function(){
                 var img = window.$("center:first img[src^='image/']").eq(0),
                     titleBlock = window.$("center").eq(1),
                     r = {
-                        date: moment().format("DD/MM/YY"),
+                        date: moment().format("DDMMYY"),
                         title: "",
                         imageSrc: ""
                     },
@@ -60,10 +67,11 @@ module.exports = function(){
 
     });
 
-    return new Promise(function(resolve, reject){
+    yield new Promise(function(resolve, reject){
         scrapeDOM.then(function(imageData){
             var ext = path.extname(imageData.imageSrc),
-                fullLocalPath = APOD_PATH + "/full" + ext;
+                fullLocalPath = APOD_PATH + "/full" + ext,
+                thumbLocalPath = APOD_PATH + "/thumbnail" + ext;
 
                 request(imageData.imageSrc)
                     .pipe(fs.createWriteStream(fullLocalPath))
@@ -71,7 +79,12 @@ module.exports = function(){
                         lwip.open(fullLocalPath, function(imgOpenErr, image){
                             if(imgOpenErr) reject(imgOpenErr);
                             image.cover(300, 300, function(imgResizeErr, resizeImage){
-                                resizeImage.writeFile(APOD_PATH + "/thumbnail" + ext, function(imgSaveError, savedThumbnailImage){
+                                resizeImage.writeFile(thumbLocalPath, function(imgSaveError, savedThumbnailImage){
+                                    ctx.state.pageData = ctx.state.pageData || {};
+                                    ctx.state.pageData.apod = _.assign(imageData, {
+                                        url: "http://apod.nasa.gov",
+                                        thumbPath: "/" + path.relative(constants.STATIC_PATH, thumbLocalPath)
+                                    });
                                     resolve();
                                 });
 
@@ -81,5 +94,7 @@ module.exports = function(){
 
         });
     });
+
+    yield next;
 
 };

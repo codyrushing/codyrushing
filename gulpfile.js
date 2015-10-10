@@ -79,7 +79,7 @@ gulp.task("server", function(){
         ext: "js hbs",
         ignore: ["public/*"],
         execMap: {
-            js: "node --debug-brk --harmony"
+            js: "node --harmony"
         }
     });
 });

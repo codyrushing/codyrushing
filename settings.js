@@ -19,5 +19,13 @@ module.exports = function(app){
         defaultLayout: "main"
     }));
 
+    // compress html
+    if(app.env === "production"){
+        app.use(require("koa-compress")());
+        app.use(require("koa-html-minifier")({
+            collapseWhitespace: true
+        }));
+    }
+
     return app;
 };

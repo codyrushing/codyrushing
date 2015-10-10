@@ -28,5 +28,6 @@ node_modules
 bower_components
 public/dist
 si
+public/img/apod
 
 .DS_STORE

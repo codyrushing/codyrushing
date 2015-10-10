@@ -6,7 +6,11 @@
     	<meta name="viewport" content="width=device-width">
         <title>{{pageTitle}}</title>
         <link href='http://fonts.googleapis.com/css?family=Merriweather:700,400' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" type="text/css" href="/dist/css/main.css">
+        {{#ifCond NODE_ENV "==" "production"}}
+            <link rel="stylesheet" type="text/css" href="/dist/css/main.min.css">
+        {{else}}
+            <link rel="stylesheet" type="text/css" href="/dist/css/main.css">
+        {{/ifCond}}
         <link rel="shortcut icon" href="/public/images/favicon.ico" />
         <link rel="author" href="https://plus.google.com/115206000376824805502/" />
     </head>
