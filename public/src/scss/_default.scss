@@ -8,15 +8,15 @@ body {
 }
 
 #main, header, footer {
-	@include set-padding($main-padding, 1em);
+	padding: 1em $main-padding;
 }
 
 #main {
 	padding-bottom: 4em;
 	line-height: 1.5;
 
-	h1 { 
-		font-size: 2em; 
+	h1 {
+		font-size: 2em;
 		line-height: 1;
 		&.message {
 			text-align: center;
@@ -42,7 +42,7 @@ body {
 	-webkit-animation-duration: 200ms;
 	-moz-animation-duration: 200ms;
 	animation-duration: 200ms;
-	
+
 	-webkit-animation-fill-mode:forwards;
 	-moz-animation-fill-mode:forwards;
 	-webkit-animation-fill-mode:forwards;
@@ -92,12 +92,12 @@ figure {
 
 .single {
 	#main {
-		@include set-padding($main-padding, 4.5%);
+		padding: 4.5% $main-padding;
 		& > .post {
 			.info {
 				& > .date { color: $text-light; }
 				line-height: 1;
-				text-align: right; 
+				text-align: right;
 				& > .tags {
 					display: none;
 					& > a {
@@ -106,7 +106,7 @@ figure {
 						margin-left: .5em;
 						&:first-child { margin: 0; }
 					}
-				} 
+				}
 			}
 			h2 {
 				font-size: 1.5em;
@@ -146,9 +146,9 @@ header {
 		 }
 	}
 	.desc { display: none; }
-	.search-form { 
-		float: right; 
-		max-width: 35%; 
+	.search-form {
+		float: right;
+		max-width: 35%;
 	}
 	.search-field {
 		float: right;
@@ -166,7 +166,6 @@ footer {
 	border-top: 1px solid $light-border;
 	position: absolute;
 	bottom: 0;
-	@include set-width($main-padding);
 }
 
 .list {
@@ -211,7 +210,7 @@ footer {
 	width: 20px;
 	margin-left: 3px;
 	vertical-align: middle;
-	background-size: 100% 100%;	
+	background-size: 100% 100%;
 	& > img {
 		display: inline-block; width: 100%;
 	}
@@ -244,7 +243,7 @@ footer {
 	.page-navigation {
 		margin-bottom: 2em;
 		a { width: 40%; position: relative; }
-		.next { 
+		.next {
 			float: right; text-align: right;
 			&:after {
 				content: "\27E9"; position: absolute;
@@ -255,8 +254,8 @@ footer {
 			}
 
 		}
-		.prev { 
-			float: left; text-align: left; 
+		.prev {
+			float: left; text-align: left;
 			&:before {
 				content: "\27E8"; position: absolute;
 				right: 105%;

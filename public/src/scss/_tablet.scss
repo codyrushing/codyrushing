@@ -6,7 +6,7 @@ $main-padding: 4%;
 	}
 
 	#main, header {
-		@include set-padding($main-padding, 1em);
+		padding: 1em $main-padding;
 	}
 
 	#main {
@@ -28,18 +28,18 @@ $main-padding: 4%;
 	}
 
 	header {
-		.desc { 
-			display: inline-block; 
-			color: $text-light; 
-			line-height: 1; 
-			padding-left: .3em; 
-			margin-left: .3em; 
-			border-style: solid; 
+		.desc {
+			display: inline-block;
+			color: $text-light;
+			line-height: 1;
+			padding-left: .3em;
+			margin-left: .3em;
+			border-style: solid;
 			border-width: 0 0 0 1px;
-			position: relative; 
+			position: relative;
 			top: 3px;
 		}
-		.search-form { 
+		.search-form {
 			float: right;
 			max-width: none;
 		}

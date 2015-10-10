@@ -1,8 +1,3 @@
-@import "compass/css3";
-@import "compass/reset";
-@import "compass/utilities/sprites";
-@import "icons/*.png";
-
 $text-main: #444;
 $text-light: #aaa;
 
@@ -23,10 +18,6 @@ $transparent-white: rgba(255,255,255,.5);
 	padding: $y-padding $x-padding;
 }
 
-@mixin set-width($x-padding){
-	width: 100% - (2*$x-padding);
-}
-
 @mixin animation($properties){
 	-moz-animation: $properties;
 	-webkit-animation: $properties;
@@ -39,7 +30,7 @@ $transparent-white: rgba(255,255,255,.5);
 html { height: 100%; }
 
 body {
-	background: url("/public/images/min/bg.jpg") 20px 10px repeat;
+	background: url("/img/bg.jpg") 20px 10px repeat;
 	font-family: 'Merriweather', serif;
 	color: $text-main;
 	font-size: 1em; line-height: 1.2;
@@ -48,6 +39,10 @@ body {
 	&.animating {
 		overflow: hidden;
 	}
+}
+
+* {
+	box-sizing: border-box;
 }
 
 strong { font-weight: 700; }
@@ -74,7 +69,6 @@ a:hover {
 }
 
 a::selection { color: #fff; }
-
 
 .emph { color: $selection-color; }
 .emph::selection { color: #fff; }

@@ -1,12 +1,8 @@
 @import "normalize.css/normalize";
 
-body {
-    display: block;
-    opacity: 0.3;
-}
+@import "global";
 
-@import "main";
-
+/*
 @import "animations";
 @import "loader";
 // layouts
@@ -15,3 +11,4 @@ body {
 @import "desktop";
 @import "giant";
 @import "prism";
+*/

@@ -82,6 +82,10 @@ Post.prototype = {
 // static methods
 Post.getById = function(postId){
     return new Promise(function(resolve, reject){
+        if(Post.cache.hasOwnProperty(postId)){
+            resolve(Post.cache[postId]);
+        }
+
         var postFilePath = constants.CONTENT_PATH + postId + ".md";
         // if markdown file exists
         fs.access(postFilePath, fs.R_OK, function(err){
@@ -105,6 +109,7 @@ Post.getById = function(postId){
                             post._body = marked(body.toString());
                         }));
                         this.on("end", function(){
+                            Post.cache[postId] = post;
                             resolve(post);
                         });
 
@@ -168,5 +173,7 @@ Post.sortByDate = function(posts){
         return post._data.date;
     }).reverse();
 }
+
+Post.cache = {};
 
 module.exports = Post;
