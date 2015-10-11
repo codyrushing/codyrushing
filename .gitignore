@@ -29,5 +29,6 @@ bower_components
 public/dist
 si
 public/img/apod
+views/partials/symbols.hbs
 
 .DS_STORE

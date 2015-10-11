@@ -4,11 +4,19 @@ var Post = require("../models/post"),
 module.exports = function *(next){
     var ctx = this;
     yield new Promise(function(resolve, reject){
-        Post.getById(ctx.params.postId).then(function(post){
+        Promise.all([Post.getById(ctx.params.postId), Post.getAll()]).then(function(promiseReturnValues){
+            var post = promiseReturnValues[0];
+            var allPostsSorted = Post.sortByDate(promiseReturnValues[1]);
+
+            var newerPost = Post.getNewerPost(post, allPostsSorted);
+            var olderPost = Post.getOlderPost(post, allPostsSorted);
+
             ctx.state.pageData = {
                 pageTitle: getPageTitle({postTitle: post.getTitle()}),
                 post: post.toFullJSON(),
-                isSingle: true
+                isSingle: true,
+                newerPost: newerPost ? newerPost.toPreviewJSON() : null,
+                olderPost: olderPost ? olderPost.toPreviewJSON() : null
             };
             resolve();
         }, reject);

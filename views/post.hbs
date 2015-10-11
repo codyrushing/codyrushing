@@ -17,9 +17,15 @@
     {{/with}}
     <div id="comments"></div>
 
-    <nav class="page-navigation fixed clr" role="navigation">
-        <a href="#" class="prev" role="back">PREV ARTICLE TITLE</a>
-        <a href="#" class="next">NEXT ARTICLE TITLE</a>
-    </nav>
+    {{#ifCond newerPost "||" olderPost}}
+        <nav class="page-navigation fixed clr" role="navigation">
+            {{#if newerPost}}
+                <a href="/{{newerPost.id}}" class="prev" role="back">{{newerPost.title}}</a>
+            {{/if}}
+            {{#if olderPost}}
+                <a href="/{{olderPost.id}}" class="next">{{olderPost.title}}</a>
+            {{/if}}
+        </nav>
+    {{/ifCond}}
 
 </section>

@@ -35,39 +35,25 @@ body {
 
 	iframe { display: block; margin: 0 auto; }
 
-	-webkit-animation-timing-function: ease-in-out;
-	-moz-animation-timing-function: ease-in-out;
 	animation-timing-function: ease-in-out;
 
-	-webkit-animation-duration: 200ms;
-	-moz-animation-duration: 200ms;
 	animation-duration: 200ms;
 
-	-webkit-animation-fill-mode:forwards;
-	-moz-animation-fill-mode:forwards;
-	-webkit-animation-fill-mode:forwards;
+	animation-fill-mode: forwards;
 	&.out {
-		-webkit-animation-name: rollOut;
-		-moz-animation-name: rollOut;
 		animation-name: rollOut;
-		@include transform-origin(right, top);
+		transform-origin: right top
 		&.reverse {
-			-webkit-animation-name: rollOutReverse;
-			-moz-animation-name: rollOutReverse;
 			animation-name: rollOutReverse;
-			@include transform-origin(left, top);
+			transform-origin: left top;
 		}
 	}
 	&.in {
-		-webkit-animation-name: rollIn;
-		-moz-animation-name: rollIn;
 		animation-name: rollIn;
-		@include transform-origin(left, top);
+		transform-origin: left top;
 		&.reverse {
-			-webkit-animation-name: rollInReverse;
-			-moz-animation-name: rollInReverse;
 			animation-name: rollInReverse;
-			@include transform-origin(right, top);
+			transform-origin: right, top;
 		}
 	}
 
@@ -215,14 +201,8 @@ footer {
 		display: inline-block; width: 100%;
 	}
 	&:hover {
-		-webkit-animation-name: flip-elastic;
-		-moz-animation-name: flip-elastic;
 		animation-name: flip-elastic;
-		-webkit-animation-duration: .5s;
-		-moz-animation-duration: .5s;
 		animation-duration: .5s;
-		-webkit-animation-timing-function: ease-in-out;
-		-moz-animation-timing-function: ease-in-out;
 		animation-timing-function: ease-in-out;
 		cursor: pointer;
 	}
@@ -288,7 +268,7 @@ footer {
 			position: absolute;
 			top: 0; left: 0;
 			opacity: 0;
-			@include transition(opacity .2s ease-in-out);
+			transition: opacity .2s ease-in-out;
 		}
 
 		&:hover:after {

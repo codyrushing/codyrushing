@@ -12,16 +12,17 @@ module.exports = function *(next){
     } else {
         // traditional page load
 
-        // only traditional page load needs page data
+        // only traditional page load needs APOD data
         yield require("../apod").apply(this, arguments);
 
-        // site wide globals
+        // site-wide globals
         this.state.pageData = _.assign(this.state.pageData, {
             SITE_NAME: constants.SITE_NAME,
             SITE_DESCRIPTION: constants.SITE_DESCRIPTION,
             NODE_ENV: this.app.env
         });
 
+        // render list or single post view
         if(this.state.pageData && this.state.pageData.isSingle){
             yield this.render("post", this.state.pageData);
         } else {

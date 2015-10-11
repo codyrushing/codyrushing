@@ -67,6 +67,12 @@ Post.prototype = {
             tags: this.getTags()
         };
     },
+    toPreviewJSON: function(){
+        return {
+            title: this.getTitle(),
+            id: this.getId()
+        };
+    },
     toFullJSON: function(){
         return {
             title: this.getTitle(),
@@ -118,6 +124,16 @@ Post.getById = function(postId){
         });
     });
 
+};
+
+Post.getOlderPost = function(post, allPostsSorted){
+    var currentPostIndex = _.indexOf(allPostsSorted, post);
+    return currentPostIndex < allPostsSorted.length - 1 ? allPostsSorted[currentPostIndex+1] : null;
+};
+
+Post.getNewerPost = function(post, allPostsSorted){
+    var currentPostIndex = _.indexOf(allPostsSorted, post);
+    return currentPostIndex > 0 ? allPostsSorted[currentPostIndex-1] : null;
 };
 
 Post.getAll = function(){

@@ -1,7 +1,20 @@
 <footer id="colophon" class="site-footer" role="contentinfo">
     <ul class="social">
-        <li><a href="https://github.com/codyrushing" class="github" title="View my Github" target="_blank">View my Github</a></li>
-        <li><a href="https://plus.google.com/u/0/115206000376824805502/posts" class="gplus" title="See my Google+ things" target="_blank">See my Google+ things</a></li>
+        <li><a href="https://github.com/codyrushing" class="github" title="View my Github" target="_blank">
+            <svg role="img" class="github">
+              <use xlink:href="#github"></use>
+            </svg>
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/crushing" class="linkedin" title="LinkedIn" target="_blank">
+            <svg role="img" class="linkedin">
+              <use xlink:href="#linkedin"></use>
+            </svg>
+        </a></li>
+        <li>
+            <svg role="img" class="digital-ocean">
+              <use xlink:href="#digital-ocean"></use>
+            </svg>
+        </li>
     </ul>
     {{#if apod}}
         <a href="{{apod.url}}" target="_blank" id="apod" style="background-image: url({{apod.thumbPath}}?{{apod.date}})"><span>{{apod.title}}</span></a>
@@ -9,7 +22,6 @@
 </footer>
 
 {{!-- scripts go here --}}
-
 {{#ifCond NODE_ENV "==" "production"}}
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

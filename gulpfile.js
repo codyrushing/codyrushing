@@ -1,25 +1,37 @@
 var gulp = require("gulp"),
+    _ = require("lodash"),
     fs = require("fs"),
+    spritesmith = require("gulp.spritesmith"),
+    runSequence = require("run-sequence"),
     bower = require("gulp-bower"),
     base64 = require("gulp-base64"),
     lazypipe = require("lazypipe"),
     minifyCss = require("gulp-minify-css"),
     rename = require("gulp-rename"),
     filter = require("gulp-filter"),
+    gulpSvgSymbols = require("gulp-svg-symbols"),
     sourcemaps = require("gulp-sourcemaps"),
     autoprefixer = require("gulp-autoprefixer"),
     nodemon = require("gulp-nodemon"),
     sass = require("gulp-sass");
+
+var path = require("path");
+
+var debug = false;
 
 var srcBase = __dirname + "/public/src",
     distBase = __dirname + "/public/dist";
 
 var paths = {
     src: {
-        scss: srcBase + "/scss"
+        scss: srcBase + "/scss",
+        img: srcBase + "/img",
+        vector: srcBase + "/img/vector",
+        views: __dirname + "/views"
     },
     dist: {
-        css: distBase + "/css"
+        css: distBase + "/css",
+        img: distBase + "/img"
     },
     lib: __dirname + "/public/bower_components"
 };
@@ -73,13 +85,26 @@ gulp.task("css", function(){
         .pipe(cssMainChannel);
 });
 
+gulp.task("sprites", function(){
+    return gulp.src(paths.src.vector + "/*.svg")
+        .pipe(gulpSvgSymbols({
+            templates: [paths.src.vector + "/symbols.hbs"]
+        }))
+        .pipe(gulp.dest(paths.src.views + "/partials"));
+});
+
 gulp.task("server", function(){
+    var nodeCommand = debug ? "node --debug-brk --harmony" : "node --harmony";
+    if(debug){
+		require("child_process").spawn("node-inspector");
+		require("child_process").spawn("open", ["http://localhost:8080/debug?port=5858"]);
+    }
     return nodemon({
         script: "app.js",
         ext: "js hbs",
         ignore: ["public/*"],
         execMap: {
-            js: "node --harmony"
+            js: nodeCommand
         }
     });
 });
@@ -89,3 +114,8 @@ gulp.task("watch", function(){
 });
 
 gulp.task("default", ["bower", "css", "server", "watch"]);
+
+gulp.task("debug", function(){
+    debug = true;
+    return runSequence("default");
+});

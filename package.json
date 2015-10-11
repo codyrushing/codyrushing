@@ -14,12 +14,15 @@
     "gulp-bower": "0.0.10",
     "gulp-filter": "^3.0.0",
     "gulp-handlebars": "^4.0.0",
+    "gulp-imagemin": "^2.3.0",
     "gulp-jshint": "^1.11.2",
     "gulp-minify-css": "^1.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.0.4",
     "gulp-sourcemaps": "^1.5.2",
+    "gulp-svg-symbols": "^1.0.0",
     "gulp-uglify": "^1.2.0",
+    "gulp.spritesmith": "^4.1.1",
     "jsdom": "^3.1.2",
     "koa": "^0.21.0",
     "koa-compress": "^1.0.8",
@@ -32,7 +35,9 @@
     "lwip": "0.0.8",
     "marked": "^0.3.5",
     "request": "^2.64.0",
-    "search-index": "^0.6.13"
+    "run-sequence": "^1.1.4",
+    "search-index": "^0.6.13",
+    "yargs": "^3.27.0"
   },
   "devDependencies": {},
   "scripts": {

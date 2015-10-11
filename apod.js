@@ -10,7 +10,7 @@ var path = require("path"),
 
 var constants = require("./constants");
 
-var APOD_PATH = __dirname + "/public/img/apod";
+var APOD_PATH = __dirname + "/public/src/img/apod";
 
 module.exports = function *(next){
     var ctx = this;
@@ -90,6 +90,7 @@ module.exports = function *(next){
                     // this is only set to true if we scrape the DOM again prematurely
                     // so we continue to use the cache
                     if(useCache){
+                        ctx.app.apodData.timestamp = new Date().getTime();
                         resolve();
                     }
 

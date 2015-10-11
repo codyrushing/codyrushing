@@ -25,47 +25,47 @@ $loading-icon-size: 10px;
       border-radius: 50%;
       position: absolute;
       @include loader1($loading-icon-size, $link-color);
-      @include animation(rotate2 3s infinite linear);
+      animation: rotate2 3s infinite linear;
       &:nth-child(2) {
         @include loader2($loading-icon-size, $link-color);
-        @include animation(rotate 2.25s infinite linear);
+        animation: rotate 2.25s infinite linear;
       }
       &:nth-child(3){
         @include loader3($loading-icon-size, $link-color);
-        @include animation(rotate2 1.75s infinite linear);
+        animation: rotate2 1.75s infinite linear;
       }
   }
 }
 
 @-webkit-keyframes rotate {
   100% {
-    @include transform(rotate(360deg));
+    transform: rotate(360deg);
   }
 }
 @-webkit-keyframes rotate2 {
   100% {
-    @include transform(rotate(-360deg));
+    transform: rotate(-360deg);
   }
 }
 
 @-moz-keyframes rotate {
   100% {
-    @include transform(rotate(360deg));
+    transform: rotate(360deg);
   }
 }
 @-moz-keyframes rotate2 {
   100% {
-    @include transform(rotate(-360deg));
+    transform: rotate(-360deg);
   }
 }
 
 @keyframes rotate {
   100% {
-    @include transform(rotate(360deg));
+    transform: rotate(360deg);
   }
 }
 @keyframes rotate2 {
   100% {
-    @include transform(rotate(-360deg));
+    transform: rotate(-360deg);
   }
 }
