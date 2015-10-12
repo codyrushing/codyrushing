@@ -4,7 +4,7 @@ $main-padding: 4.5%;
 $apod-size: 150px;
 
 @media all and (min-width: 56em) {
-	
+
 	body {
 		padding-right: $sidebar-width;
 	}
@@ -15,13 +15,13 @@ $apod-size: 150px;
 	}
 
 	#main, header {
-		@include set-padding($main-padding, 1em);
+		padding: 1em $main-padding;
 	}
 
 	header, footer {
 		position: fixed; z-index: 1;
 		right: 0;
-		width: $sidebar-width - (2 * $sidebar_padding);
+		width: $sidebar-width;
 		padding: 1em $sidebar-padding;
 		background: rgba(255,255,255,.5);
 		border-left: 1px solid #eee;
@@ -30,14 +30,19 @@ $apod-size: 150px;
 
 	.single {
 		#main {
+			padding: 4.5% $main-padding;
 			.post > .info {
 				float: right;
-				margin: 1em 0 1em 1em; 
+				margin: 0 0 1em 1em;
 				max-width: 25%;
-				padding: 1em 0 1em 1em; 
-				& > .date { font-size: 1.2em; }
+				padding: 0 0 1em 1em;
+				& > .date {
+					font-size: 1.2em;
+				}
+				p {
+					margin: 0;
+				}
 			}
-			@include set-padding($main-padding, 4.5%);
 			h2 {
 				font-size: 1.4em;
 				margin-top: 1.5em;
@@ -47,16 +52,16 @@ $apod-size: 150px;
 				display: block;
 				margin: 0;
 				border: 0;
-				.next, .prev { 
-					width: $sidebar-width - 4; 
-					float: none; 
-					text-align: center; 
-					padding: 0 2em;
+				.next, .prev {
+					width: $sidebar-width;
+					float: none;
+					text-align: center;
+					padding: 0 1em;
 					left: 100%;
 					margin-left: $sidebar-width * -1;
 					position: fixed;
 				}
-				.next { 
+				.next {
 					top: $main-padding;
 					&:after {
 						left: 0; right: 0;
@@ -68,11 +73,11 @@ $apod-size: 150px;
 						width: 100%;
 					}
 				}
-				.prev { 
+				.prev {
 					bottom: $main-padding;
 					&:before {
 						left: 0; right: 0;
-						bottom: 0; 
+						bottom: 0;
 						top: auto !important;
 						margin-bottom: -1.4em;
 						content: "\25BC";
@@ -93,18 +98,19 @@ $apod-size: 150px;
 		.header-content {
 			position: absolute;
 			bottom: 0;
-			padding: 1em 0;
+			padding: 0;
 			left: $sidebar-padding;
 			right: $sidebar-padding;
 		}
 		.site-title {
 			float: none;
-			 & > a {
-			 	font-size: 1.7em;
-			 }
+			line-height: 1;
+			font-size: 1.8em;
+			margin: 0;
 		}
 		.desc {
 			padding: .2em 0 0;
+			margin: 0;
 			border: none;
 			font-size: 1em; line-height: 1;
 		}
@@ -130,6 +136,7 @@ $apod-size: 150px;
 		top: 50%;
 		bottom: 0;
 		margin-top: $apod-size/-2;
+		max-height: initial;
 	}
 
 	#apod {
@@ -142,8 +149,8 @@ $apod-size: 150px;
 		overflow: hidden;
 		box-shadow: 0 0 10px rgba(0,0,0,0);
 		color: $text-main;
-		@include transform( scale(0.98));
-		@include transition (all 0.1s linear);
+		transform: scale(0.98);
+		transition: all 0.1s linear;
 		span {
 			border-radius: $apod-size/2;
 			display: table-cell;
@@ -152,20 +159,37 @@ $apod-size: 150px;
 			font-size: 0.9em;
 			padding: 0 1em;
 			background: rgba(255,255,255,0.5);
-			@include transition (opacity 0.1s linear);
+			transition: opacity 0.1s linear;
 		}
 		&:hover {
 			text-decoration: none;
 			box-shadow: 0 0 10px rgba(0,0,0,0.67);
-			@include transform( scale(1));
+			transform: scale(1);
 			span {
 				opacity: 1;
 			}
 		}
 	}
 
-	.social a {
-		top: -1.75em;
+	.social {
+		padding: 0;
+		margin: 0;
+		a {
+			top: $apod-size/2;
+			position: absolute;
+			width: 30px;
+			height: 30px;
+			svg {
+				height: 100%;
+				width: 100%;
+			}
+		}
+		.github {
+			left: 0.75em;
+		}
+		.linkedin {
+			right: 0.75em;
+		}
 	}
 
 	#rpi { width: 32px; }
@@ -191,12 +215,12 @@ $apod-size: 150px;
 
 @media all and (max-height: 28em) {
 
-	#apod { 
+	#apod {
 		display: none;
 	}
 
 	footer {
-		margin-top: 0;	
+		margin-top: 0;
 	}
 
 	header {

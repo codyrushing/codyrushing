@@ -10,7 +10,10 @@ var path = require("path"),
 var constants = require("../constants");
 
 marked.setOptions({
-    smartypants: true
+    smartypants: true,
+    highlight: function (code) {
+        return require("highlight.js").highlightAuto(code).value;
+    }
 });
 
 // CONSTRUCTOR

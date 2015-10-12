@@ -18,6 +18,7 @@ body {
 	h1 {
 		font-size: 2em;
 		line-height: 1;
+		margin: 0;
 		&.message {
 			text-align: center;
 		}
@@ -81,16 +82,27 @@ figure {
 		padding: 4.5% $main-padding;
 		& > .post {
 			.info {
-				& > .date { color: $text-light; }
+				& > *:first-child {
+					margin-top: 0;
+				}
+				& > .date {
+					color: $text-light;
+					margin-bottom: 0.5em;
+				}
 				line-height: 1;
 				text-align: right;
+				padding-bottom: 0.5em;
 				& > .tags {
 					display: none;
+					font-size: 0;
 					& > a {
-						font-size: .8em;
-						padding: .5em 0;
+						font-size: 14px;
+						padding: .3em 0;
 						margin-left: .5em;
 						&:first-child { margin: 0; }
+					}
+					& > sub {
+						font-size: 10px;
 					}
 				}
 			}
@@ -126,12 +138,18 @@ header {
 	border-bottom: 1px solid $light-border;
 	.site-title {
 		float: left;
+		font-size: 1.4em;
+		margin: 0;
+		padding: 0;
 		 & > a {
 		 	padding: .2em;
-		 	font-size: 1.3em;
 		 }
 	}
-	.desc { display: none; }
+	.desc {
+		display: none;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 	.search-form {
 		float: right;
 		max-width: 35%;
@@ -146,8 +164,18 @@ footer {
 	padding-top: 0.5em; padding-bottom: 0.5em;
 	text-align: center;
 	color: $text-light;
+	max-height: 3em;
+	width: 100%;
+	overflow: hidden;
 	& > p {
 		font-size: .7em;
+		color: #000;
+		svg {
+			width: 110px;
+			height: 16px;
+			display: inline-block;
+			vertical-align: text-bottom;
+		}
 	}
 	border-top: 1px solid $light-border;
 	position: absolute;
@@ -260,37 +288,24 @@ footer {
 		list-style: none;
 	}
 	a {
-		text-indent: -999em;
-		position: absolute;
+		position: relative;
+		display: block;
 		top: 0.5em;
-		&:after {
-			content: "";
-			position: absolute;
-			top: 0; left: 0;
-			opacity: 0;
-			transition: opacity .2s ease-in-out;
-		}
-
-		&:hover:after {
+		opacity: 0.8;
+		transition: all .2s ease-in-out;
+		&:hover {
 			opacity: 1;
+			transform: scale(1.1);
 		}
 	}
 }
 
 .github {
-	@include spritify(github);
 	left: 1em;
-	&:after {
-		@include spritify(github_active);
-	}
 }
 
-.gplus {
-	@include spritify(google_plus);
+.linkedin {
 	right: 1em;
-	&:after {
-		@include spritify(google_plus_active);
-	}
 }
 
 .divider:before {

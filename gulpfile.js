@@ -80,6 +80,11 @@ gulp.task("bower", ["bower-install"], function(){
     return copyFileStream(paths.lib + "/normalize.css/normalize.css", paths.lib + "/normalize.css/_normalize.scss");
 });
 
+gulp.task("generateSCSS", function(){
+    return fs.createReadStream(paths.lib + "/highlightjs/styles/default.css")
+        .pipe(fs.createWriteStream(paths.src.scss + "/generated/_highlight.scss"));
+});
+
 gulp.task("css", function(){
     return gulp.src(paths.src.scss + "/*.scss")
         .pipe(cssMainChannel);

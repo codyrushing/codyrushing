@@ -23,6 +23,7 @@
     "gulp-svg-symbols": "^1.0.0",
     "gulp-uglify": "^1.2.0",
     "gulp.spritesmith": "^4.1.1",
+    "highlight.js": "^8.8.0",
     "jsdom": "^3.1.2",
     "koa": "^0.21.0",
     "koa-compress": "^1.0.8",

@@ -7,30 +7,10 @@ $link-color: #2589db;
 
 $transparent-white: rgba(255,255,255,.5);
 
-@mixin spritify($name){
-	@include icons-sprite($name);
-	width: icons-sprite-width($name);
-	height: icons-sprite-height($name);
-	display: block;
-}
-
-@mixin set-padding($x-padding, $y-padding){
-	padding: $y-padding $x-padding;
-}
-
-@mixin animation($properties){
-	-moz-animation: $properties;
-	-webkit-animation: $properties;
-	-o-animation: $properties;
-	-ms-animation: $properties;
-	-khtml-animation: $properties;
-	animation: $properties;
-}
-
 html { height: 100%; }
 
 body {
-	background: url("/img/bg.jpg") 20px 10px repeat;
+	background: url("/src/img/bg.jpg") 20px 10px repeat;
 	font-family: 'Merriweather', serif;
 	color: $text-main;
 	font-size: 1em; line-height: 1.2;

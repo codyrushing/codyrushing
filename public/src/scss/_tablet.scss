@@ -19,6 +19,7 @@ $main-padding: 4%;
 				& > .date { color: $text-main; }
 				& > .tags {
 					display: block;
+					font-size: 0;
 				}
 			}
 		}

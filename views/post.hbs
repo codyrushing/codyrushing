@@ -20,10 +20,10 @@
     {{#ifCond newerPost "||" olderPost}}
         <nav class="page-navigation fixed clr" role="navigation">
             {{#if newerPost}}
-                <a href="/{{newerPost.id}}" class="prev" role="back">{{newerPost.title}}</a>
+                <a href="/{{newerPost.id}}" class="next" role="back">{{newerPost.title}}</a>
             {{/if}}
             {{#if olderPost}}
-                <a href="/{{olderPost.id}}" class="next">{{olderPost.title}}</a>
+                <a href="/{{olderPost.id}}" class="prev">{{olderPost.title}}</a>
             {{/if}}
         </nav>
     {{/ifCond}}

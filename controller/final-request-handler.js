@@ -9,7 +9,7 @@ module.exports = function *(next){
     if(requestedWithHeader && requestedWithHeader.toLowerCase() === "xmlhttprequest"){
         // ajax
         this.response.body = JSON.stringify(this.state.pageData);
-    } else {
+    } else if (this.state.pageData) {
         // traditional page load
 
         // only traditional page load needs APOD data
@@ -19,7 +19,8 @@ module.exports = function *(next){
         this.state.pageData = _.assign(this.state.pageData, {
             SITE_NAME: constants.SITE_NAME,
             SITE_DESCRIPTION: constants.SITE_DESCRIPTION,
-            NODE_ENV: this.app.env
+            NODE_ENV: this.app.env,
+            apod: this.app.apodData
         });
 
         // render list or single post view

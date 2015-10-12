@@ -1,24 +1,25 @@
 <footer id="colophon" class="site-footer" role="contentinfo">
     <ul class="social">
         <li><a href="https://github.com/codyrushing" class="github" title="View my Github" target="_blank">
-            <svg role="img" class="github">
+            <svg role="img" class="github-icon">
               <use xlink:href="#github"></use>
             </svg>
         </a></li>
         <li><a href="https://www.linkedin.com/in/crushing" class="linkedin" title="LinkedIn" target="_blank">
-            <svg role="img" class="linkedin">
+            <svg role="img" class="linkedin-icon">
               <use xlink:href="#linkedin"></use>
             </svg>
         </a></li>
-        <li>
-            <svg role="img" class="digital-ocean">
-              <use xlink:href="#digital-ocean"></use>
-            </svg>
-        </li>
     </ul>
     {{#if apod}}
         <a href="{{apod.url}}" target="_blank" id="apod" style="background-image: url({{apod.thumbPath}}?{{apod.date}})"><span>{{apod.title}}</span></a>
     {{/if}}
+    <p>
+        Hosted by
+        <svg role="img" class="digital-ocean">
+          <use xlink:href="#digital-ocean"></use>
+        </svg>
+    </p>
 </footer>
 
 {{!-- scripts go here --}}
