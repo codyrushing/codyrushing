@@ -7,12 +7,12 @@ body {
 	font-size: .85em;
 }
 
-#main, header, footer {
+header, footer {
 	padding: 1em $main-padding;
 }
 
 #main {
-	padding-bottom: 4em;
+	padding: $main-padding;
 	line-height: 1.5;
 
 	h1 {
@@ -167,6 +167,9 @@ footer {
 	max-height: 3em;
 	width: 100%;
 	overflow: hidden;
+	position: absolute;
+	bottom: 0;
+	border-top: 1px solid $light-border;
 	& > p {
 		font-size: .7em;
 		color: #000;
@@ -177,28 +180,34 @@ footer {
 			vertical-align: text-bottom;
 		}
 	}
-	border-top: 1px solid $light-border;
-	position: absolute;
-	bottom: 0;
 }
 
 .list {
-
 	article {
-		margin: 2em 0 0;
-		padding: 2em 0 0;
+		margin: 0 0;
+		padding: 2em 0;
 		border-top: 1px dotted #ccc;
 		&:first-of-type {
-			margin: 0;
+			margin-top: 0;
+			padding-top: 0;
 			border: none;
+		}
+		& > *:first-child {
+			margin-top: 0;
+		}
+		& > *:last-child {
+			margin-bottom: 0;
 		}
 		.date { color: $text-light; }
 		.title {
 			font-size: 1.7em;
 			line-height: 1;
+			margin: 0 0 0.5em;
 		}
 		.excerpt {
-			padding: .5em 0 1em;
+			p {
+				margin-top: 0;
+			}
 		}
 		.tags {
 			font-size: .8em;
@@ -219,26 +228,9 @@ footer {
 
 }
 
-#rpi {
-	display: inline-block;
-	width: 20px;
-	margin-left: 3px;
-	vertical-align: middle;
-	background-size: 100% 100%;
-	& > img {
-		display: inline-block; width: 100%;
-	}
-	&:hover {
-		animation-name: flip-elastic;
-		animation-duration: .5s;
-		animation-timing-function: ease-in-out;
-		cursor: pointer;
-	}
-}
-
 .page-navigation {
 	border-top: 1px dotted #ccc;
-	margin-top: 1em; padding-top: 1em;
+	padding-top: 1em;
 	text-align: center;
 	.prev { margin-left: 0.5em; }
 	.next { margin-right: 0.5em; }
@@ -284,18 +276,25 @@ footer {
 }
 
 .social {
+	margin: 0;
+	padding: 0;
 	li {
 		list-style: none;
+		float: left;
 	}
 	a {
 		position: relative;
 		display: block;
-		top: 0.5em;
+		top: auto;
+		left: auto;
+		right: auto;
 		opacity: 0.8;
 		transition: all .2s ease-in-out;
-		&:hover {
-			opacity: 1;
-			transform: scale(1.1);
+		width: 30px;
+		height: 30px;
+		svg {
+			height: 100%;
+			width: 100%;
 		}
 	}
 }

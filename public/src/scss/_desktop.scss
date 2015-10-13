@@ -10,11 +10,13 @@ $apod-size: 150px;
 	}
 
 	#main {
-		position: relative; z-index: 2;
+		position: relative;
+		z-index: 2;
+		padding: $main-padding;
 		h1 { font-size: 3em; }
 	}
 
-	#main, header {
+	header {
 		padding: 1em $main-padding;
 	}
 
@@ -129,6 +131,10 @@ $apod-size: 150px;
 				font-size: 2.2em;
 			}
 		}
+		& > *:last-child {
+			padding-bottom: 0;
+			margin-bottom: 0;
+		}
 	}
 
 	footer {
@@ -177,12 +183,6 @@ $apod-size: 150px;
 		a {
 			top: $apod-size/2;
 			position: absolute;
-			width: 30px;
-			height: 30px;
-			svg {
-				height: 100%;
-				width: 100%;
-			}
 		}
 		.github {
 			left: 0.75em;
