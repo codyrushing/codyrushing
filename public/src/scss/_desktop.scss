@@ -53,6 +53,7 @@ $apod-size: 150px;
 			.page-navigation {
 				display: block;
 				margin: 0;
+				padding: 0;
 				border: 0;
 				.next, .prev {
 					width: $sidebar-width;
@@ -111,7 +112,7 @@ $apod-size: 150px;
 			margin: 0;
 		}
 		.desc {
-			padding: .2em 0 0;
+			padding: .3em 0;
 			margin: 0;
 			border: none;
 			font-size: 1em; line-height: 1;
@@ -143,6 +144,10 @@ $apod-size: 150px;
 		bottom: 0;
 		margin-top: $apod-size/-2;
 		max-height: initial;
+		p {
+			text-align: center;
+			margin: 1em 0;
+		}
 	}
 
 	#apod {

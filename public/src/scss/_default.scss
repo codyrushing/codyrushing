@@ -1,6 +1,7 @@
 // default (mobile) layout
 
 $main-padding: 4.5%;
+$main-bottom-padding: 5em;
 $light-border: #e5e5e5;
 
 body {
@@ -12,7 +13,7 @@ header, footer {
 }
 
 #main {
-	padding: $main-padding;
+	padding: $main-padding $main-padding $main-bottom-padding;
 	line-height: 1.5;
 
 	h1 {
@@ -27,6 +28,7 @@ header, footer {
 		ul, ol {
 			margin: 1em 0 0;
 			list-style-position: inside;
+			padding-left: 0;
 			& > li {
 				margin: .75em 0 0 1.2em;
 				list-style-position: outside;
@@ -79,7 +81,7 @@ figure {
 
 .single {
 	#main {
-		padding: 4.5% $main-padding;
+		padding: 4.5% $main-padding $main-bottom-padding;
 		& > .post {
 			.info {
 				& > *:first-child {
@@ -90,7 +92,6 @@ figure {
 					margin-bottom: 0.5em;
 				}
 				line-height: 1;
-				text-align: right;
 				padding-bottom: 0.5em;
 				& > .tags {
 					display: none;
@@ -98,11 +99,11 @@ figure {
 					& > a {
 						font-size: 14px;
 						padding: .3em 0;
-						margin-left: .5em;
 						&:first-child { margin: 0; }
 					}
 					& > sub {
 						font-size: 10px;
+						bottom: auto;
 					}
 				}
 			}
@@ -116,12 +117,15 @@ figure {
 				margin: 1em 0 0;
 			}
 			.content {
-				padding: 1em 0 2em;
+				padding: 1em 0 0;
 				& > :first-child {
 					margin-top: 0;
 				}
 				p {
 					margin: 1em 0 0;
+				}
+				& > :last-child {
+					margin-bottom: 0;
 				}
 			}
 		}
@@ -161,18 +165,22 @@ header {
 }
 
 footer {
-	padding-top: 0.5em; padding-bottom: 0.5em;
+	padding-top: 1em;
+	padding-bottom: 1em;
 	text-align: center;
 	color: $text-light;
-	max-height: 3em;
 	width: 100%;
 	overflow: hidden;
 	position: absolute;
 	bottom: 0;
 	border-top: 1px solid $light-border;
-	& > p {
+	p {
 		font-size: .7em;
 		color: #000;
+		text-align: right;
+		margin: .5em 0;
+		padding: 0;
+
 		svg {
 			width: 110px;
 			height: 16px;
@@ -201,7 +209,7 @@ footer {
 		.date { color: $text-light; }
 		.title {
 			font-size: 1.7em;
-			line-height: 1;
+			line-height: 1.2;
 			margin: 0 0 0.5em;
 		}
 		.excerpt {
@@ -231,9 +239,10 @@ footer {
 .page-navigation {
 	border-top: 1px dotted #ccc;
 	padding-top: 1em;
+	margin-top: 1em;
 	text-align: center;
-	.prev { margin-left: 0.5em; }
-	.next { margin-right: 0.5em; }
+	.prev { margin-right: 0.5em; }
+	.next { margin-left: 0.5em; }
 }
 
 .single {
@@ -241,7 +250,6 @@ footer {
 		display: none !important;
 	}
 	.page-navigation {
-		margin-bottom: 2em;
 		a { width: 40%; position: relative; }
 		.next {
 			float: right; text-align: right;
@@ -269,6 +277,7 @@ footer {
 
 .list {
 	.page-navigation {
+		margin-top: 0;
 		.next:after, .prev:after {
 			display: none;
 		}
@@ -281,6 +290,7 @@ footer {
 	li {
 		list-style: none;
 		float: left;
+		margin-right: 1em;
 	}
 	a {
 		position: relative;
@@ -292,19 +302,14 @@ footer {
 		transition: all .2s ease-in-out;
 		width: 30px;
 		height: 30px;
+		&:hover {
+			opacity: 1;
+		}
 		svg {
 			height: 100%;
 			width: 100%;
 		}
 	}
-}
-
-.github {
-	left: 1em;
-}
-
-.linkedin {
-	right: 1em;
 }
 
 .divider:before {
