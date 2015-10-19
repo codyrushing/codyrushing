@@ -14,7 +14,7 @@ module.exports = function *(next){
             ctx.state.pageData = {
                 pageTitle: getPageTitle({postTitle: post.getTitle()}),
                 post: post.toFullJSON(),
-                isSingle: true,
+                template: "single",
                 newerPost: newerPost ? newerPost.toPreviewJSON() : null,
                 olderPost: olderPost ? olderPost.toPreviewJSON() : null
             };

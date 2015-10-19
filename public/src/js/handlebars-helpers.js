@@ -31,9 +31,6 @@
 				}
 			}
 			return r.join("");
-		},
-		bodyClass: function(context){
-			return context.isSingle ? "single" : "list";
 		}
 	},
 	register = function(){

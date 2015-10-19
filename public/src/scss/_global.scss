@@ -11,6 +11,7 @@ html { height: 100%; }
 
 body {
 	background: url("/src/img/bg.jpg") 20px 10px repeat;
+	background-size: 45px 81px;
 	font-family: 'Merriweather', serif;
 	color: $text-main;
 	font-size: 1em; line-height: 1.2;
@@ -54,6 +55,26 @@ a::selection { color: #fff; }
 .emph::selection { color: #fff; }
 
 sub { font-size: 0.6em; }
+
+/* generic code highlighting */
+pre {
+    background: #fff;
+    padding: 1em;
+    border: 1px solid #dfdfdf;
+    border-radius: 0.5em;
+}
+
+code {
+    background: #fff;
+    display: inline-block;
+    padding: 0 2px;
+}
+
+pre code {
+    background: none;
+    display: inline;
+    padding: 0;
+}
 
 @mixin clearfix(){
 	&:after {

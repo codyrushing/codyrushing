@@ -16,42 +16,39 @@ Custom helpers are one of the best features of Handlebars.  They are written in 
 Check out the helpers file below.
 
 ```javascript
-(function() {
-    var register = function(Handlebars) {
+var register = function(Handlebars) {
 
-        /************* BEGIN HELPERS *************/
-        var helpers = {
-            // put all of your helpers inside this object
-            foo: function(){
-                return "FOO";
-            },
-            bar: function(){
-                return "BAR";
-            }
-        };
-        /************* END HELPERS *************/
-
-        if (Handlebars && typeof Handlebars.registerHelper === "function") {
-            // register helpers
-            for (var prop in helpers) {
-                Handlebars.registerHelper(prop, helpers[prop]);
-            }
-        } else {
-            // just return helpers object if we can't register helpers here
-            return helpers;
+    var helpers = {
+        // put all of your helpers inside this object
+        foo: function(){
+            return "FOO";
+        },
+        bar: function(){
+            return "BAR";
         }
     };
 
-    // client
-    if (typeof window !== "undefined") {
-        register(Handlebars);
+    if (Handlebars && typeof Handlebars.registerHelper === "function") {
+        // register helpers
+        for (var prop in helpers) {
+            Handlebars.registerHelper(prop, helpers[prop]);
+        }
+    } else {
+        // just return helpers object if we can't register helpers here
+        return helpers;
     }
-    // server
-    else {
-        module.exports.register = register;
-        module.exports.helpers = register(null);
-    }
-})();
+
+};
+
+// client
+if (typeof window !== "undefined") {
+    register(Handlebars);
+}
+// server
+else {
+    module.exports.register = register;
+    module.exports.helpers = register(null);
+}
 ```
 
 So we have a <code class="language-javascript">register</code> function which is designed to have Handlebars passed into it.  It houses all of our helpers, and if it has access to Handlebars it will register them using Handlebars' <code class="language-javascript">registerHelper</code> method.  Then at the end of the file we determine whether or not we are in a client or server environment by checking for the existence of the <code class="language-javascript">window</code> object.  I'm not crazy about this approach, but it seems to work for now.  If we're in a browser, we go ahead and call our register method to register our helpers.  If we're in a server environment, we export the register function (as well as the standalone helpers object, just in case we need it) to be used elsewhere in our Node.js app.
@@ -122,7 +119,7 @@ I'm calling helpers like this __advanced helpers__ since they require access to 
 __A quick note on client-side partial lookups:__ if you are using Grunt to precompile your templates and partials for use on the client (which you should be since it's faster), you should know that it dumps them all into a single namespace that you set.  For example, I compile mine to `Handlebars.templates`, but you could compile yours to `app.templates` or whatever else.  As such, `Handlebars.partials` which is the default namespace that Handlebars uses to lookup partials, will be empty because no partials were loaded using the `loadPartial` method.  This is only necessary on the client because it's the client-side precompiled templates that get all loaded into a single namespace.  To fix this, we'll need to point `Handlebars.partials` to our precompiled template namespace.  Let's do that in the client block of our helpers file.
 
 ```javascript
-// client
+/* client */
 if (typeof window !== "undefined") {
     // since all partials and templates precompiled into the same bucket, do this to allow partial lookups to work
     Handlebars.partials = Handlebars.templates;

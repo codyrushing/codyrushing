@@ -30,5 +30,6 @@ public/dist
 si
 public/img/apod
 views/partials/symbols.hbs
+public/src/scss/generated
 
 .DS_STORE

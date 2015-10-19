@@ -1,4 +1,6 @@
-@import "normalize.css/normalize";
+// lib
+@import "generated/normalize";
+@import "generated/highlightjs-default";
 
 @import "global";
 
@@ -10,4 +12,3 @@
 @import "tablet";
 @import "desktop";
 @import "giant";
-@import "prism";

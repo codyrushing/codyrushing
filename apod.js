@@ -12,11 +12,11 @@ var constants = require("./constants");
 
 var APOD_PATH = __dirname + "/public/src/img/apod";
 
-module.exports = function *(next){
-    var ctx = this;
+module.exports = function(){
+    var app = this;
 
     var isExpired = function(){
-        return _.isEmpty(ctx.app.apodData) || new Date().getTime() - ctx.app.apodData.timestamp > 1000 * 60 * 60;
+        return _.isEmpty(app.apodData) || new Date().getTime() - app.apodData.timestamp > 1000 * 60 * 60;
     };
 
     var scrapeDOM = new Promise(function(resolve, reject){
@@ -37,7 +37,7 @@ module.exports = function *(next){
                 r.title = titleBlock.find("b:first-child").text();
                 // whoops, we rescraped the page prematurely
                 // go ahead and resolve with useCache set to true
-                if(!_.isEmpty(ctx.app.apodData) && r.title === ctx.app.apodData.title){
+                if(!_.isEmpty(app.apodData) && r.title === app.apodData.title){
                     resolve(null, true);
                 }
             }
@@ -75,7 +75,7 @@ module.exports = function *(next){
 
     });
 
-    yield new Promise(function(resolve, reject){
+    return new Promise(function(resolve, reject){
 
         if(!isExpired()){
             // use cached data
@@ -90,7 +90,7 @@ module.exports = function *(next){
                     // this is only set to true if we scrape the DOM again prematurely
                     // so we continue to use the cache
                     if(useCache){
-                        ctx.app.apodData.timestamp = new Date().getTime();
+                        app.apodData.timestamp = new Date().getTime();
                         resolve();
                     }
 
@@ -104,7 +104,7 @@ module.exports = function *(next){
                                 image.cover(300, 300, function(imgResizeErr, resizeImage){
                                     resizeImage.writeFile(thumbLocalPath, function(imgSaveError, savedThumbnailImage){
                                         // thumb
-                                        ctx.app.apodData = _.assign(imageData, {
+                                        app.apodData = _.assign(imageData, {
                                             url: "http://apod.nasa.gov",
                                             thumbPath: "/" + path.relative(constants.STATIC_PATH, thumbLocalPath),
                                             timestamp: new Date().getTime()
@@ -119,7 +119,5 @@ module.exports = function *(next){
         }
 
     });
-
-    yield next;
 
 };

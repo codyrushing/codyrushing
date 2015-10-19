@@ -76,8 +76,17 @@ gulp.task("bower-install", function(){
     return bower();
 });
 
+gulp.task("copyNormalizeCSS", function(){
+    return copyFileStream(paths.lib + "/normalize.css/normalize.css", paths.src.scss + "/generated/_normalize.scss");
+});
+
+gulp.task("copyHighlightCSS", function(){
+    return copyFileStream(__dirname + "/node_modules/highlight.js/styles/default.css", paths.lib + "/generated/_highlightjs-default.scss");
+});
+
 gulp.task("bower", ["bower-install"], function(){
-    return copyFileStream(paths.lib + "/normalize.css/normalize.css", paths.lib + "/normalize.css/_normalize.scss");
+    fs.mkdirSync(paths.src.scss + "/generated");
+    return runSequence(["copyNormalizeCSS", "copyHighlightCSS"]);
 });
 
 gulp.task("generateSCSS", function(){

@@ -19,6 +19,10 @@ module.exports = function(app){
         defaultLayout: "main"
     }));
 
+    app.on("error", function(err, ctx){
+        console.log(err);
+    });
+
     // compress html
     if(app.env === "production"){
         app.use(require("koa-compress")());

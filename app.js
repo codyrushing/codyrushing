@@ -8,8 +8,18 @@ var fs = require("fs");
 var app = koa(),
     router;
 
+var apodFetch = function(){
+    require("./apod").call(app).then(function(apodData){
+        console.log("found apod data");
+    });
+};
+
 require("./settings")(app);
 router = require("./controller/routes")(app);
+
+
+apodFetch();
+setInterval(apodFetch, 1000 * 60 * 60);
 
 // x-response-time
 app.use(function *(next){

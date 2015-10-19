@@ -1,19 +1,16 @@
 var _ = require("lodash"),
+    isAjax = require("./utils/is-ajax"),
     constants = require("../constants");
 
 module.exports = function *(next){
-    var requestedWithHeader = this.request && this.request.header && this.request.header.hasOwnProperty("x-requested-with")
-        ? this.request.header['x-requested-with']
-        : null;
-
-    if(requestedWithHeader && requestedWithHeader.toLowerCase() === "xmlhttprequest"){
+    if(isAjax()){
         // ajax
-        this.response.body = JSON.stringify(this.state.pageData);
+        this.response.body = this.state.pageData;
     } else if (this.state.pageData) {
         // traditional page load
 
         // only traditional page load needs APOD data
-        yield require("../apod").apply(this, arguments);
+        // yield require("../apod").apply(this, arguments);
 
         // site-wide globals
         this.state.pageData = _.assign(this.state.pageData, {
@@ -24,11 +21,10 @@ module.exports = function *(next){
         });
 
         // render list or single post view
-        if(this.state.pageData && this.state.pageData.isSingle){
-            yield this.render("post", this.state.pageData);
-        } else {
-            yield this.render("list", this.state.pageData);
+        if(this.state.pageData.template){
+            yield this.render(this.state.pageData.template, this.state.pageData);
         }
+        yield next;
     }
 
 };

@@ -46,6 +46,7 @@ module.exports = function(posts, page, path){
         posts: _.map(posts.slice(startingIndex, endingIndex), function(post){
             return post ? post.toJSON() : post;
         }),
+        template: "list",
         newerLink: getNewerLink(pageNumber, relevantPathPieces, posts.length),
         olderLink: getOlderLink(pageNumber, relevantPathPieces, posts.length)
     };

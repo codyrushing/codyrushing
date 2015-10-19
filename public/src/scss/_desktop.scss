@@ -44,6 +44,19 @@ $apod-size: 150px;
 				p {
 					margin: 0;
 				}
+				& > .tags {
+					& > a, & > a:first-child {
+						margin-right: 0.7em;
+					}
+					& > sub {
+						position: absolute;
+						top: auto;
+						bottom: auto;
+						left: auto;
+						margin-top: 1.2em;
+						margin-left: -0.9em;
+					}
+				}
 			}
 			h2 {
 				font-size: 1.4em;

@@ -99,7 +99,10 @@ Post.getById = function(postId){
         // if markdown file exists
         fs.access(postFilePath, fs.R_OK, function(err){
             var post;
-            if(err) reject(err);
+            if(err){
+                reject(err);
+                return;
+            }
 
             post = new Post(postId);
 
@@ -107,10 +110,12 @@ Post.getById = function(postId){
             fs.createReadStream(postFilePath)
                 .pipe(
                     fastmatter.stream(function(attributes, body){
+                        // save yaml front matter data to _data key
                         post._data = _.assign(post._data, attributes);
                         if(post._data.date){
                             post._data.date = moment(post._data.date, "DD/MM/YY").toDate();
                         }
+                        // the intro can be markdown, so parse it as markdown
                         if(post._data.intro){
                             post._data.intro = marked(post._data.intro);
                         }
