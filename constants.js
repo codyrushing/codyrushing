@@ -3,5 +3,6 @@ module.exports = {
     STATIC_PATH: __dirname + "/public/",
     POSTS_PER_PAGE: 3,
     SITE_NAME: "Cody Rushing",
-    SITE_DESCRIPTION: "Maker of things and internet"
+    SITE_DESCRIPTION: "Maker of things and internet",
+    HBS_PATH: __dirname + "/node_modules/koa-hbs/node_modules/handlebars"
 };

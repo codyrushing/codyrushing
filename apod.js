@@ -23,53 +23,63 @@ module.exports = function(){
         var dateString = moment().format("DDMMYY");
 
         jsdom.env("http://apod.nasa.gov/apod/astropix.html", ["http://code.jquery.com/jquery.js"], function(err, window){
-            if(err) reject(err);
-            var img = window.$("center:first img[src^='image/']").eq(0),
-                titleBlock = window.$("center").eq(1),
-                r = {
-                    date: dateString,
-                    title: "",
-                    imageSrc: ""
-                },
-                videoIframe, videoSrc, videoId;
+            if(err){
+                reject(err);
+            } else if(window){
 
-            if(titleBlock){
-                r.title = titleBlock.find("b:first-child").text();
-                // whoops, we rescraped the page prematurely
-                // go ahead and resolve with useCache set to true
-                if(!_.isEmpty(app.apodData) && r.title === app.apodData.title){
-                    resolve(null, true);
-                }
-            }
+                var img = window.$("center:first img[src^='image/']").eq(0),
+                    titleBlock = window.$("center").eq(1),
+                    r = {
+                        date: dateString,
+                        title: "",
+                        imageSrc: ""
+                    },
+                    videoIframe, videoSrc, videoId;
 
-            if(img.length){
-                // we found a matching image
-                r.imageSrc = img.attr("src");
-                r.imageSrc = r.imageSrc.indexOf("http") === 0 ? r.imageSrc : "http://apod.nasa.gov/apod/" + r.imageSrc;
-                resolve(r);
-            } else {
-                // try to find an iframe if there's no image
-                videoIframe = window.$("center:first iframe[src]").eq(0);
-                if(videoIframe.length){
-                    videoSrc = videoIframe.attr("src");
-                    videoId = path.basename(videoSrc);
-                    if(videoSrc.indexOf("youtube.com") > -1){
-                        // youtube
-                        r.imageSrc = "https://img.youtube.com/vi/" + videoId + "/mqdefault.jpg"
-                        resolve(r);
-                    } else if(videoSrc.indexOf("vimeo.com") > -1){
-                        // vimeo
-                        request("http://vimeo.com/api/v2/video/" + videoId + ".json", function(error, response, body){
-                            var videoInfo = JSON.parse(body)[0];
-                            r.title = videoInfo.title;
-                            r.imageSrc = videoInfo.thumbnail_medium;
-                            resolve(r);
-                        });
+                if(titleBlock){
+                    r.title = titleBlock.find("b:first-child").text();
+                    // whoops, we rescraped the page prematurely
+                    // go ahead and resolve with useCache set to true
+                    if(!_.isEmpty(app.apodData) && r.title === app.apodData.title){
+                        resolve(null, true);
                     }
-                } else {
-                    // no image or video... sad
-                    reject();
                 }
+
+                if(img.length){
+                    // we found a matching image
+                    r.imageSrc = img.attr("src");
+                    r.imageSrc = r.imageSrc.indexOf("http") === 0 ? r.imageSrc : "http://apod.nasa.gov/apod/" + r.imageSrc;
+                    resolve(r);
+                } else {
+                    // try to find an iframe if there's no image
+                    videoIframe = window.$("center:first iframe[src]").eq(0);
+                    if(videoIframe.length){
+                        videoSrc = videoIframe.attr("src");
+                        videoId = path.basename(videoSrc);
+                        videoId = videoId.substring(0, videoId.indexOf("?"));
+                        console.log(videoId);
+                        if(videoSrc.indexOf("youtube.com") > -1){
+                            // youtube
+                            r.imageSrc = "https://img.youtube.com/vi/" + videoId + "/mqdefault.jpg"
+                            resolve(r);
+                        } else if(videoSrc.indexOf("vimeo.com") > -1){
+                            // vimeo
+                            request("http://vimeo.com/api/v2/video/" + videoId + ".json", function(error, response, body){
+                                var videoInfo = body;
+                                if(typeof videoInfo === "string"){
+                                    videoInfo = JSON.parse(videoInfo)[0];
+                                }
+                                r.title = videoInfo.title;
+                                r.imageSrc = videoInfo.thumbnail_large;
+                                resolve(r);
+                            });
+                        }
+                    } else {
+                        // no image or video... sad
+                        reject();
+                    }
+                }
+
             }
         });
 

@@ -1,3 +1,5 @@
+@import "fonts";
+
 $text-main: #444;
 $text-light: #aaa;
 
@@ -12,7 +14,7 @@ html { height: 100%; }
 body {
 	background: url("/src/img/bg.jpg") 20px 10px repeat;
 	background-size: 45px 81px;
-	font-family: 'Merriweather', serif;
+	font-family: 'Merriweather', Georgia, serif;
 	color: $text-main;
 	font-size: 1em; line-height: 1.2;
 	min-height: 100%;

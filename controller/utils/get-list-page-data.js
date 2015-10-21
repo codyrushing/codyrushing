@@ -9,7 +9,7 @@ module.exports = function(posts, page, path){
 
     // take the base url
     // if the penultimate path pieces is "page", then we omit the last two path pieces to get only the relevant path pieces
-    var relevantPathPieces = (pathPieces.length > 2 && pathPieces[pathPieces.length-2]) ? pathPieces.slice(0, pathPieces.length-2) : pathPieces;
+    var relevantPathPieces = (pathPieces.length >= 2 && pathPieces[pathPieces.length-2] === "page") ? pathPieces.slice(0, pathPieces.length-2) : pathPieces;
 
     var getOlderLink = function(currentPageNumber, basePathPieces, total){
         var r = [],
@@ -39,6 +39,7 @@ module.exports = function(posts, page, path){
             r = basePathPieces;
             hasLink = true;
         }
+
         return r.length || hasLink ? "/" + r.join("/") : null;
     };
 
