@@ -10,13 +10,14 @@
         {{else}}
             <link rel="stylesheet" type="text/css" href="/dist/css/main.css">
         {{/ifCond}}
-        <link rel="shortcut icon" href="/public/images/favicon.ico" />
+        <link rel="shortcut icon" href="/src/img/favicon.ico" />
         <link rel="author" href="https://plus.google.com/115206000376824805502/" />
     </head>
     <body class="{{template}}">
         {{> header}}
         {{{ body }}}
         {{> footer}}
+        {{> loading}}
         {{> symbols}}
     </body>
 </html>

@@ -11,9 +11,10 @@ header, footer {
 	padding: 1em $main-padding;
 }
 
-#main {
+main {
 	padding: $main-padding $main-padding $main-bottom-padding;
 	line-height: 1.5;
+	transform-origin: top center;
 
 	h1 {
 		font-size: 2em;
@@ -44,18 +45,14 @@ header, footer {
 	animation-fill-mode: forwards;
 	&.out {
 		animation-name: rollOut;
-		transform-origin: right top
 		&.reverse {
 			animation-name: rollOutReverse;
-			transform-origin: left top;
 		}
 	}
 	&.in {
 		animation-name: rollIn;
-		transform-origin: left top;
 		&.reverse {
 			animation-name: rollInReverse;
-			transform-origin: right, top;
 		}
 	}
 
@@ -79,7 +76,7 @@ figure {
 }
 
 .single {
-	#main {
+	main {
 		padding: 4.5% $main-padding $main-bottom-padding;
 		& > .post {
 			.info {
@@ -323,6 +320,18 @@ footer {
 
 #loading {
 	position: fixed;
+	display: none;
   	top: 100px;
 	left: 50%;
+}
+
+.animating > #loading {
+	display: block;
+	z-index: 2;
+}
+
+code[data-src] {
+	&:before {
+		content: "Loading...";
+	}
 }

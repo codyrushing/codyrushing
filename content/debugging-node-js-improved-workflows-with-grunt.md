@@ -32,45 +32,45 @@ Setting up nodemon in Grunt is simple with [grunt-nodemon](https://github.com/Ch
 
 ```javascript
 nodemon: {
-            dev: {
-                script: "<%=pkg.main %>",
-                options: {
-                    ignore: ["node_modules/**", ".git/", ".sass-cache/", "public/", "Gruntfile.js"]
-                }
-            },
-            inspect: {
-                script: "<%=pkg.main %>",
-                options: {
-                    nodeArgs: ["<%= nodemon.args %>"],
-                    ignore: ["node_modules/**", ".git/", ".sass-cache/", "public/", "Gruntfile.js"]
-                }
-            }
+    dev: {
+        script: "<%=pkg.main %>",
+        options: {
+            ignore: ["node_modules/**", ".git/", ".sass-cache/", "public/", "Gruntfile.js"]
         }
+    },
+    inspect: {
+        script: "<%=pkg.main %>",
+        options: {
+            nodeArgs: ["<%= nodemon.args %>"],
+            ignore: ["node_modules/**", ".git/", ".sass-cache/", "public/", "Gruntfile.js"]
+        }
+    }
+}
 ```
 
 We will set the `nodemon.args` using `grunt.config.set` inside of our task.  Here are the tasks that I'm creating:
 
 ```javascript
-    grunt.registerTask("default", ["concat", "uglify", "imagemin", "compass:compile", "cssmin", "handlebars", "shell:app"]);
-    grunt.registerTask("fork", ["concat", "uglify", "imagemin", "compass:compile", "cssmin", "handlebars", "shell:appFork"]);
-    grunt.registerTask("debug", function(inspect, breakOnFirstLine){
-        var nodemonTask = "dev";
-        if(inspect === "inspect"){
+grunt.registerTask("default", ["concat", "uglify", "imagemin", "compass:compile", "cssmin", "handlebars", "shell:app"]);
+grunt.registerTask("fork", ["concat", "uglify", "imagemin", "compass:compile", "cssmin", "handlebars", "shell:appFork"]);
+grunt.registerTask("debug", function(inspect, breakOnFirstLine){
+    var nodemonTask = "dev";
+    if(inspect === "inspect"){
 
-            // switch to inspect nodemon task
-            nodemonTask = "inspect";
-            // set nodemon args based on breakOnFirstLine grunt argument
-            grunt.config.set("nodemon.args", breakOnFirstLine === "break" ? "--debug-brk" : "--debug");
+        // switch to inspect nodemon task
+        nodemonTask = "inspect";
+        // set nodemon args based on breakOnFirstLine grunt argument
+        grunt.config.set("nodemon.args", breakOnFirstLine === "break" ? "--debug-brk" : "--debug");
 
-            // spawn node-inspector as a child process
-            grunt.util.spawn({
-                cmd: "node-inspector"
-            });
+        // spawn node-inspector as a child process
+        grunt.util.spawn({
+            cmd: "node-inspector"
+        });
 
-            console.log("Node inspector running at http://localhost:8080/debug?port=5858");
-        }
-        grunt.task.run(["concat", "uglify", "imagemin", "compass:compile", "cssmin", "handlebars", "concurrent:"+nodemonTask]);
-    });
+        console.log("Node inspector running at http://localhost:8080/debug?port=5858");
+    }
+    grunt.task.run(["concat", "uglify", "imagemin", "compass:compile", "cssmin", "handlebars", "concurrent:"+nodemonTask]);
+});
 ```
 
 This allows me to run the following grunt tasks:
@@ -83,6 +83,6 @@ This allows me to run the following grunt tasks:
 
 I've added all of this to my boilerplate Gruntfile &ndash; have a look:
 
-```
-<script type="text/javascript" src="http://gist-it.appspot.com/github/codyrushing/express-mvc-boilerplate/blob/master/Gruntfile.js"></script>
-```
+<pre>
+<code class="lang-javascript" data-src="https://raw.githubusercontent.com/codyrushing/express-mvc-boilerplate/master/Gruntfile.js"></code>
+</pre>

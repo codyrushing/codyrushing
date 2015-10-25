@@ -3,7 +3,7 @@ var hbs = require("koa-hbs");
 module.exports = function(app){
 
     // register helpers from client side helpers file, so we're all using the same helpers
-    require("./public/src/js/handlebars-helpers")(hbs);
+    require("./public/src/app/handlebars-helpers")(hbs);
 
     app.use(hbs.middleware({
         viewPath: __dirname + "/views",

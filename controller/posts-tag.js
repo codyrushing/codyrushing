@@ -1,4 +1,5 @@
 var getListPageData = require("./utils/get-list-page-data"),
+    getPageTitle = require("./utils/get-page-title"),
     _ = require("lodash"),
     Post = require("../models/post");
 
@@ -11,7 +12,8 @@ module.exports = function *(next){
                 posts = Post.sortByDate(posts);
                 ctx.state.pageData = _.assign({
                     tag: ctx.params.tag,
-                    isTagPage: true
+                    isTagPage: true,
+                    pageTitle: getPageTitle({tag: ctx.params.tag})
                 }, getListPageData(posts, page, ctx.request.path));
                 resolve();
             }, reject);

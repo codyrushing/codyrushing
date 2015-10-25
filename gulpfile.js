@@ -2,6 +2,8 @@ var gulp = require("gulp"),
     _ = require("lodash"),
     fs = require("fs"),
     source = require("vinyl-source-stream"),
+    browserify = require("browserify"),
+    buffer = require("vinyl-buffer"),
     spritesmith = require("gulp.spritesmith"),
     runSequence = require("run-sequence"),
     plumber = require("gulp-plumber"),
@@ -21,10 +23,9 @@ var gulp = require("gulp"),
     nodemon = require("gulp-nodemon"),
     sass = require("gulp-sass");
 
-var constants = require("./constants")
-    hbs = handlebars({
+var hbs = handlebars({
         // use handlebars instance that is bundled with koa-hbs
-        handlebars: require(constants.HBS_PATH)
+        handlebars: require("handlebars")
     });
 
 var path = require("path");
@@ -40,13 +41,14 @@ var paths = {
         fonts: srcBase + "/fonts",
         img: srcBase + "/img",
         vector: srcBase + "/img/vector",
-        js: srcBase + "/js",
-        views: __dirname + "/views"
+        app: srcBase + "/app",
+        views: srcBase + "/views"
     },
     dist: {
         css: distBase + "/css",
         img: distBase + "/img",
-        fonts: distBase + "/fonts"
+        fonts: distBase + "/fonts",
+        js: distBase + "/js"
     },
     lib: __dirname + "/public/bower_components"
 };
@@ -180,12 +182,13 @@ gulp.task("templates", function(){
 gulp.task("hbs-templates", function(){
     return gulp.src([paths.src.views + "/*.hbs"])
         .pipe(hbs)
+        // .pipe(wrap('Handlebars.template(<%= contents %>)'))
         .pipe(defineModule("node", {
-            require: {
-                Handlebars: constants.HBS_PATH
-            }
+                require: {
+                    Handlebars: "handlebars/dist/handlebars.runtime.min"
+                }
         }))
-        .pipe(gulp.dest(paths.src.js + "/templates/"));
+        .pipe(gulp.dest(paths.src.app + "/templates/"));
 });
 
 gulp.task("hbs-partials", function(){
@@ -202,22 +205,41 @@ gulp.task("hbs-partials", function(){
         )
         .pipe(concat("all.js"))
         .pipe(wrap("function(){<%= contents %>}"))
-        .pipe(gulp.dest(paths.src.js + "/templates/partials/"))
+        .pipe(gulp.dest(paths.src.app + "/templates/partials/"))
         .pipe(defineModule("node", {
             require: {
-                Handlebars: constants.HBS_PATH
+                Handlebars: "handlebars"
             }
         }))
-        .pipe(gulp.dest(paths.src.js + "/templates/partials/"));
+        .pipe(gulp.dest(paths.src.app + "/templates/partials/"));
 
+});
+
+gulp.task("js", function(){
+    var b = browserify({
+        entries: paths.src.app + "/app.js",
+        debug: true
+    });
+
+    return b.bundle()
+        .pipe(source("app.js"))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .on("error", function(err){
+            console.log(err);
+        })
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest(paths.dist.js));
 });
 
 gulp.task("watch", function(){
-    return gulp.watch([paths.src.scss + "/**/*.scss"], ["css"]);
+    gulp.watch([paths.src.scss + "/**/*.scss"], ["css"]);
+    gulp.watch([paths.src.views + "/**/*.hbs"], ["hbs-templates"]);
+    gulp.watch([paths.src.app + "/**/*.js"], ["js"]);
 });
 
 gulp.task("default", function(cb){
-    return runSequence(["copy", "bower"], "css", "server", "watch", cb);
+    return runSequence(["copy", "bower"], ["css", "js"], "server", "watch", cb);
 });
 
 gulp.task("debug", function(){

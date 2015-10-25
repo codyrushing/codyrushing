@@ -9,8 +9,9 @@ module.exports = function(options){
         r.push(options.postTitle);
     } else {
         if(options.tag){
-            r.push("Posts matching ");
+            r.push("Posts matching \"");
             r.push(options.tag);
+            r.push("\"");
         }
         else if(options.query){
             r.push("Results for ");

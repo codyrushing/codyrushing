@@ -24,6 +24,7 @@
 
 {{!-- scripts go here --}}
 {{#ifCond NODE_ENV "==" "production"}}
+<script type="application/javascript" src="/dist/js/app.js"></script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -33,4 +34,6 @@
   ga('create', 'UA-50776466-1', 'codyrushing.com');
   ga('send', 'pageview');
 </script>
+{{else}}
+<script type="application/javascript" src="/dist/js/app.js"></script>
 {{/ifCond}}

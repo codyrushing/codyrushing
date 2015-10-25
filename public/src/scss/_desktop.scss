@@ -9,7 +9,7 @@ $apod-size: 150px;
 		padding-right: $sidebar-width;
 	}
 
-	#main {
+	main {
 		position: relative;
 		z-index: 2;
 		padding: $main-padding;
@@ -31,7 +31,7 @@ $apod-size: 150px;
 	}
 
 	.single {
-		#main {
+		main {
 			padding: 4.5% $main-padding;
 			.post > .info {
 				float: right;
@@ -68,6 +68,7 @@ $apod-size: 150px;
 				margin: 0;
 				padding: 0;
 				border: 0;
+				position: static;
 				.next, .prev {
 					width: $sidebar-width;
 					float: none;
@@ -76,6 +77,9 @@ $apod-size: 150px;
 					left: 100%;
 					margin-left: $sidebar-width * -1;
 					position: fixed;
+					&.repaint {
+						animation: repaint 100ms;
+					}
 				}
 				.next {
 					top: $main-padding;
