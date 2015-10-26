@@ -44,6 +44,7 @@
     "lodash": "^3.10.1",
     "lwip": "0.0.8",
     "marked": "^0.3.5",
+    "moment": "^2.10.6",
     "qwest": "^2.2.0",
     "request": "^2.64.0",
     "run-sequence": "^1.1.4",

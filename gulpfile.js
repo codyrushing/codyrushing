@@ -23,11 +23,6 @@ var gulp = require("gulp"),
     nodemon = require("gulp-nodemon"),
     sass = require("gulp-sass");
 
-var hbs = handlebars({
-        // use handlebars instance that is bundled with koa-hbs
-        handlebars: require("handlebars")
-    });
-
 var path = require("path");
 
 var debug = false;
@@ -42,7 +37,7 @@ var paths = {
         img: srcBase + "/img",
         vector: srcBase + "/img/vector",
         app: srcBase + "/app",
-        views: srcBase + "/views"
+        views: __dirname + "/views"
     },
     dist: {
         css: distBase + "/css",
@@ -181,19 +176,19 @@ gulp.task("templates", function(){
 
 gulp.task("hbs-templates", function(){
     return gulp.src([paths.src.views + "/*.hbs"])
-        .pipe(hbs)
+        .pipe(handlebars())
         // .pipe(wrap('Handlebars.template(<%= contents %>)'))
         .pipe(defineModule("node", {
                 require: {
                     Handlebars: "handlebars/dist/handlebars.runtime.min"
                 }
         }))
-        .pipe(gulp.dest(paths.src.app + "/templates/"));
+        .pipe(gulp.dest(paths.src.app + "/templates"));
 });
 
 gulp.task("hbs-partials", function(){
-    return gulp.src([paths.src.views + "/partials/**/*.hbs", "!symbols.hbs"])
-        .pipe(hbs)
+    return gulp.src([paths.src.views + "/partials/**/*.hbs"])
+        .pipe(handlebars())
         .pipe(
             wrap("Handlebars.registerPartial(<%= processPartialName(file.relative) %>, Handlebars.template(<%= contents %>));", {}, {
                 imports: {
@@ -222,24 +217,23 @@ gulp.task("js", function(){
     });
 
     return b.bundle()
+        .on("error", function(err){
+            console.log(err.message);
+            this.emit("end");
+        })
         .pipe(source("app.js"))
         .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
-        .on("error", function(err){
-            console.log(err);
-        })
-        .pipe(sourcemaps.write())
         .pipe(gulp.dest(paths.dist.js));
 });
 
 gulp.task("watch", function(){
     gulp.watch([paths.src.scss + "/**/*.scss"], ["css"]);
-    gulp.watch([paths.src.views + "/**/*.hbs"], ["hbs-templates"]);
+    gulp.watch([paths.src.views + "/**/*.hbs"], ["templates"]);
     gulp.watch([paths.src.app + "/**/*.js"], ["js"]);
 });
 
 gulp.task("default", function(cb){
-    return runSequence(["copy", "bower"], ["css", "js"], "server", "watch", cb);
+    return runSequence(["copy", "bower"], ["templates", "css"], "js", "server", "watch", cb);
 });
 
 gulp.task("debug", function(){

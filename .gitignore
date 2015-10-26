@@ -28,7 +28,7 @@ node_modules
 bower_components
 public/dist
 si
-public/img/apod
+public/src/img/apod
 views/partials/symbols.hbs
 public/src/scss/generated
 public/src/app/templates
