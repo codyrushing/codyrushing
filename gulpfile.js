@@ -11,6 +11,7 @@ var gulp = require("gulp"),
     bower = require("gulp-bower"),
     base64 = require("gulp-base64"),
     concat = require("gulp-concat"),
+    uglify = require("gulp-uglify"),
     lazypipe = require("lazypipe"),
     minifyCss = require("gulp-minify-css"),
     rename = require("gulp-rename"),
@@ -217,12 +218,19 @@ gulp.task("js", function(){
     });
 
     return b.bundle()
+        .pipe(source("app.js"))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
         .on("error", function(err){
             console.log(err.message);
             this.emit("end");
         })
-        .pipe(source("app.js"))
-        .pipe(buffer())
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest(paths.dist.js))
+        .pipe(uglify())
+        .pipe(rename({
+            suffix: ".min"
+        }))
         .pipe(gulp.dest(paths.dist.js));
 });
 
@@ -232,8 +240,12 @@ gulp.task("watch", function(){
     gulp.watch([paths.src.app + "/**/*.js"], ["js"]);
 });
 
+gulp.task("build", function(cb){
+    return runSequence(["copy", "bower"], ["templates", "css"], "js", cb);
+});
+
 gulp.task("default", function(cb){
-    return runSequence(["copy", "bower"], ["templates", "css"], "js", "server", "watch", cb);
+    return runSequence("build", "server", "watch", cb);
 });
 
 gulp.task("debug", function(){

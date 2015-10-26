@@ -29,7 +29,7 @@
     "gulp-sass": "^2.0.4",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-svg-symbols": "^1.0.0",
-    "gulp-uglify": "^1.2.0",
+    "gulp-uglify": "^1.4.2",
     "gulp-wrap": "^0.11.0",
     "gulp.spritesmith": "^4.1.1",
     "highlight.js": "^8.8.0",
@@ -57,6 +57,7 @@
   "scripts": {
     "start": "node --harmony app.js",
     "postinstall": "bash postinstall.sh",
+    "launch": "export NODE_ENV=production;forever start -c 'node --harmony' app.js",
     "test": "test"
   },
   "repository": {
