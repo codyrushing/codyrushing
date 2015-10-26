@@ -241,7 +241,7 @@ gulp.task("watch", function(){
 });
 
 gulp.task("build", function(cb){
-    return runSequence(["copy", "bower"], ["templates", "css"], "js", cb);
+    return runSequence(["copy", "bower", "sprites"], ["templates", "css"], "js", cb);
 });
 
 gulp.task("default", function(cb){
