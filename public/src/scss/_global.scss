@@ -12,7 +12,8 @@ $transparent-white: rgba(255,255,255,.5);
 html { height: 100%; }
 
 body {
-	background: url("/src/img/bg.jpg") 20px 10px repeat;
+	background: url("/dist/img/bg.jpg") 20px 10px repeat;
+	background-color: #eee;
 	background-size: 45px 81px;
 	font-family: 'Merriweather', Georgia, serif;
 	font-weight: normal;

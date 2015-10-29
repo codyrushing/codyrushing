@@ -8,6 +8,7 @@ var gulp = require("gulp"),
     runSequence = require("run-sequence"),
     plumber = require("gulp-plumber"),
     wrap = require("gulp-wrap"),
+    imagemin = require("gulp-imagemin"),
     bower = require("gulp-bower"),
     base64 = require("gulp-base64"),
     concat = require("gulp-concat"),
@@ -113,7 +114,15 @@ gulp.task("bower", function(cb){
     return runSequence("bower-install", ["copyNormalizeSCSS", "copyHighlightSCSS"], cb);
 });
 
-gulp.task("copy", function(){
+
+
+gulp.task("images", function(){
+    gulp.src([paths.src.img + "/**/*.{jpg,png,gif}"])
+        .pipe(imagemin())
+        .pipe(gulp.dest(paths.dist.img));
+});
+
+gulp.task("copy", ["images"], function(){
     return gulp.src(paths.src.fonts + "/**/*")
         .pipe(gulp.dest(paths.dist.fonts));
 });
@@ -234,7 +243,11 @@ gulp.task("js", function(){
         .pipe(gulp.dest(paths.dist.js));
 });
 
-gulp.task("watch", function(){
+gulp.task("watchImages", function(){
+    gulp.watch([paths.src.img + "/**/*.{jpg,png,gif}"], ["images"]);
+});
+
+gulp.task("watch", ["watchImages"], function(){
     gulp.watch([paths.src.scss + "/**/*.scss"], ["css"]);
     gulp.watch([paths.src.views + "/**/*.hbs"], ["templates"]);
     gulp.watch([paths.src.app + "/**/*.js"], ["js"]);

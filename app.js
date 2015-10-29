@@ -1,6 +1,7 @@
 var koa = require("koa"),
     Post = require("./models/post"),
     constants = require("./constants"),
+    gzip = require("koa-gzip"),
     finalRequestHandler = require("./controller/final-request-handler");
 
 var fs = require("fs");
@@ -17,7 +18,7 @@ var apodFetch = function(){
 require("./settings")(app);
 router = require("./controller/routes")(app);
 
-
+// apod scrape background task
 apodFetch();
 setInterval(apodFetch, 1000 * 60 * 60);
 
@@ -39,7 +40,7 @@ app.use(function *(next){
 
 // static
 app.use(require("koa-static")("public", {
-    maxage: 1000 * 60 * 60
+    maxage: 1000 * 60 * 60 * 2
 }));
 
 // response
@@ -50,8 +51,9 @@ app
 
 // static
 app.use(require("koa-static")(constants.STATIC_PATH, {
-    maxage: 1000 * 60 * 60
+    maxage: 1000 * 60 * 60 * 10
 }));
 
+app.use(gzip());
 
 app.listen(3000);

@@ -116,7 +116,7 @@ module.exports = function(){
                                         // thumb
                                         app.apodData = _.assign(imageData, {
                                             url: "http://apod.nasa.gov",
-                                            thumbPath: "/" + path.relative(constants.STATIC_PATH, thumbLocalPath),
+                                            thumbPath: "/" + path.relative(constants.STATIC_PATH, thumbLocalPath).replace(/^src\//, "dist/"),
                                             timestamp: new Date().getTime()
                                         });
                                         resolve();

@@ -8,7 +8,6 @@ module.exports = function($incoming){
     $incoming = $incoming.eq(0)
         .on(app.animation.animationEndEvent, function(e){
             $(e.srcElement).removeClass("in");
-            window.dispatchEvent(new Event('resize'));
         });
 
     if(app.supports.animation){
