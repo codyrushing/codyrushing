@@ -57,8 +57,7 @@
   "devDependencies": {},
   "scripts": {
     "start": "node --harmony app.js",
-    "postinstall": "bash postinstall.sh",
-    "launch": "export NODE_ENV=production;forever start -c 'node --harmony' app.js",
+    "launch": "gulp watchImages &;export NODE_ENV=production;forever start -c 'node --harmony' app.js",
     "test": "test"
   },
   "repository": {
