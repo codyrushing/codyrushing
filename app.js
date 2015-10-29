@@ -49,11 +49,4 @@ app
     .use(finalRequestHandler)
     .use(router.allowedMethods());
 
-// static
-app.use(require("koa-static")(constants.STATIC_PATH, {
-    maxage: 1000 * 60 * 60 * 10
-}));
-
-app.use(gzip());
-
 app.listen(3000);
