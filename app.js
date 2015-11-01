@@ -1,7 +1,6 @@
 var koa = require("koa"),
     Post = require("./models/post"),
     constants = require("./constants"),
-    gzip = require("koa-gzip"),
     finalRequestHandler = require("./controller/final-request-handler");
 
 var fs = require("fs");
@@ -11,16 +10,23 @@ var app = koa(),
 
 var apodFetch = function(){
     require("./apod").call(app).then(function(apodData){
-        console.log("found apod data");
+        // found apod data here
     });
 };
 
 require("./settings")(app);
 router = require("./controller/routes")(app);
 
-// apod scrape background task
-apodFetch();
-setInterval(apodFetch, 1000 * 60 * 60);
+// force www
+app.use(function *(next){
+    if(this.hostname !== "localhost" && !this.hostname.startsWith("www.")){
+        this.status = 301;
+        this.redirect(constants.FULL_HOST + this.path);
+        this.body = "Redirecting to www";
+    } else {
+        yield next;
+    }
+});
 
 // x-response-time
 app.use(function *(next){
@@ -28,14 +34,6 @@ app.use(function *(next){
     yield next;
     var ms = new Date - start;
     this.set('X-Response-Time', ms + 'ms');
-});
-
-// logger
-app.use(function *(next){
-    var start = new Date;
-    yield next;
-    var ms = new Date - start;
-    console.log('%s %s - %s', this.method, this.url, ms);
 });
 
 // static
@@ -50,3 +48,7 @@ app
     .use(router.allowedMethods());
 
 app.listen(3000);
+
+// apod scrape background task
+apodFetch();
+setInterval(apodFetch, 1000 * 60 * 60);

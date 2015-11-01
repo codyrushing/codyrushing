@@ -1,4 +1,5 @@
 module.exports = {
+    FULL_HOST: "http://www.codyrushing.com",
     CONTENT_PATH: __dirname + "/content/",
     STATIC_PATH: __dirname + "/public/",
     POSTS_PER_PAGE: 3,
