@@ -114,10 +114,9 @@ gulp.task("bower", function(cb){
     return runSequence("bower-install", ["copyNormalizeSCSS", "copyHighlightSCSS"], cb);
 });
 
-
-
 gulp.task("images", function(){
     gulp.src([paths.src.img + "/**/*.{jpg,png,gif}"])
+        .pipe(plumber())
         .pipe(imagemin())
         .pipe(gulp.dest(paths.dist.img));
 });
@@ -158,6 +157,7 @@ gulp.task("css", function(cb){
 
 gulp.task("sprites", function(){
     return gulp.src(paths.src.vector + "/*.svg")
+        .pipe(plumber())
         .pipe(gulpSvgSymbols({
             templates: [paths.src.vector + "/symbols.hbs"]
         }))
@@ -186,6 +186,7 @@ gulp.task("templates", function(){
 
 gulp.task("hbs-templates", function(){
     return gulp.src([paths.src.views + "/*.hbs"])
+        .pipe(plumber())
         .pipe(handlebars())
         // .pipe(wrap('Handlebars.template(<%= contents %>)'))
         .pipe(defineModule("node", {
@@ -198,6 +199,7 @@ gulp.task("hbs-templates", function(){
 
 gulp.task("hbs-partials", function(){
     return gulp.src([paths.src.views + "/partials/**/*.hbs"])
+        .pipe(plumber())
         .pipe(handlebars())
         .pipe(
             wrap("Handlebars.registerPartial(<%= processPartialName(file.relative) %>, Handlebars.template(<%= contents %>));", {}, {
@@ -254,7 +256,7 @@ gulp.task("watch", ["watchImages"], function(){
 });
 
 gulp.task("build", function(cb){
-    return runSequence(["copy", "bower", "sprites"], ["templates", "css"], "js", cb);
+    return runSequence(["copy", "bower", "sprites", "images"], ["templates", "css"], "js", cb);
 });
 
 gulp.task("default", function(cb){
