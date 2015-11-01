@@ -1,5 +1,5 @@
 ---
-title: Emerging leaders in web tech Gulp, Browserify, Susy and others
+title: Emerging leaders in web tech: Gulp, Browserify, Susy and others
 date: 11/02/15
 tags: [tools, gulp, browserify, susy, browsersync]
 intro: Working in web dev, especially front-end, means that you're constantly watching the horizon for new tech.  The landscape is always in flux, but in the last year I feel like some true winners have emerged that most of us can get behind.
