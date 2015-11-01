@@ -56,7 +56,7 @@
   "devDependencies": {},
   "scripts": {
     "start": "node --harmony app.js",
-    "launch": "export NODE_ENV=production;forever start gulp watchImages;forever start -c 'node --harmony' app.js",
+    "launch": "export NODE_ENV=production;forever start node_modules/gulp/bin/gulp.js watchImages;forever start -c 'node --harmony' app.js",
     "stopall": "forever stopall",
     "test": "test"
   },
