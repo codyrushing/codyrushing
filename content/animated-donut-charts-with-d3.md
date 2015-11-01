@@ -7,6 +7,7 @@ intro: D3 donut charts have been done before, but I wasn't able to find one that
 
 D3 donut charts have been done before, but I wasn't able to find one that had everything I needed.  So I went ahead and made a simple utility class for creating and animating donut charts.  [Check it out on the githubs](https://github.com/codyrushing/donut-chart).
 
+<iframe frameborder=0 src="/demos/donut-chart/spurs.html" height="260" width="320"></iframe>
 
 D3 now has now built in [a more streamlined Pie API for pie and donut charts](https://github.com/mbostock/d3/wiki/Pie-Layout).  However, I wanted mine to have more features (layout control, extendibility, partial donuts, multiple data points, transitions with custom callbacks, etc), and it was easier to implement those features by drawing my own arcs.
 
