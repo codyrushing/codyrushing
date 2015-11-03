@@ -120,6 +120,10 @@ figure {
 				p {
 					margin: 1em 0 0;
 				}
+				iframe {
+					display: block;
+					margin: 1em auto 0;
+				}
 				& > :last-child {
 					margin-bottom: 0;
 				}

@@ -1,19 +1,11 @@
-# codyrushing
 Personal site and blog
 
+## Setup
 ```npm install```
 ```bower install```
-```node --harmony app.js```
+```bash postinstall.sh```
 
-```bash
-cd public/src/app
-npm link
-cd ../../../
-npm link app
-```
-```
-cd node_modules/koa-hbs/node_modules/handlebars
-npm link
-cd ../../../../
-npm link handlebars
-```
+## Run
+```gulp```
+
+App runs on port 3000

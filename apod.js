@@ -19,6 +19,19 @@ module.exports = function(){
         return _.isEmpty(app.apodData) || new Date().getTime() - app.apodData.timestamp > 1000 * 60 * 60;
     };
 
+    var pathExists = new Promise(function(resolve, reject){
+        fs.access(APOD_PATH, fs.R_OK | fs.W_OK, function(err){
+						if(!err) {
+								resolve();
+						} else {
+								fs.mkdir(APOD_PATH, function(error){
+										resolve();
+								})
+						}
+        })
+    });
+
+
     var scrapeDOM = new Promise(function(resolve, reject){
         var dateString = moment().format("DDMMYY");
 
@@ -57,7 +70,6 @@ module.exports = function(){
                         videoSrc = videoIframe.attr("src");
                         videoId = path.basename(videoSrc);
                         videoId = videoId.substring(0, videoId.indexOf("?"));
-                        console.log(videoId);
                         if(videoSrc.indexOf("youtube.com") > -1){
                             // youtube
                             r.imageSrc = "https://img.youtube.com/vi/" + videoId + "/mqdefault.jpg"
@@ -92,8 +104,10 @@ module.exports = function(){
             resolve();
         } else {
             // fetch page server side and scrape
-            scrapeDOM.then(function(imageData, useCache){
-                var ext = path.extname(imageData.imageSrc),
+            return Promise.all([scrapeDOM, pathExists]).then(function(scrapeData){
+                var imageData = scrapeData[0],
+										useCache = scrapeData.length > 1 ? scrapeData[1] : null,
+										ext = path.extname(imageData.imageSrc),
                     fullLocalPath = APOD_PATH + "/full" + ext,
                     thumbLocalPath = APOD_PATH + "/thumbnail" + ext;
 

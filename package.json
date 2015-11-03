@@ -36,7 +36,6 @@
     "jsdom": "^3.1.2",
     "koa": "^0.21.0",
     "koa-compress": "^1.0.8",
-    "koa-gzip": "^0.1.0",
     "koa-hbs": "^0.7.0",
     "koa-html-minifier": "^1.0.1",
     "koa-router": "^5.2.2",
@@ -57,7 +56,8 @@
   "devDependencies": {},
   "scripts": {
     "start": "node --harmony app.js",
-    "launch": "export NODE_ENV=production;forever start -c 'node --harmony' app.js",
+    "launch": "export NODE_ENV=production;forever start node_modules/gulp/bin/gulp.js watchImages;forever start -c 'node --harmony' app.js",
+    "stopall": "forever stopall",
     "test": "test"
   },
   "repository": {
