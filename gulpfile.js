@@ -118,6 +118,7 @@ gulp.task("bower", function(cb){
 
 gulp.task("images", function(){
     gulp.src([paths.src.img + "/**/*.{jpg,png,gif}"])
+        .pipe(plumber())
         .pipe(imagemin())
         .pipe(gulp.dest(paths.dist.img));
 });
@@ -172,7 +173,7 @@ gulp.task("server", function(){
     }
     return nodemon({
         script: "app.js",
-        ext: "js hbs",
+        ext: "js hbs md",
         ignore: ["public/*"],
         execMap: {
             js: nodeCommand
