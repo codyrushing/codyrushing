@@ -68,7 +68,7 @@ $apod-size: 150px;
 				margin: 0;
 				padding: 0;
 				border: 0;
-				position: static;
+				position: fixed;
 				.next, .prev {
 					width: $sidebar-width;
 					float: none;
@@ -77,8 +77,12 @@ $apod-size: 150px;
 					left: 100%;
 					margin-left: $sidebar-width * -1;
 					position: fixed;
-					&.repaint {
-						animation: repaint 100ms;
+					span {
+						overflow: hidden;
+					    text-overflow: ellipsis;
+					    display: -webkit-box;
+					    -webkit-box-orient: vertical;
+					    -webkit-line-clamp: 2;
 					}
 				}
 				.next {
@@ -108,6 +112,12 @@ $apod-size: 150px;
 					}
 				}
 			}
+
+			// hide page-navigation during transition
+			&.in .page-navigation a {
+				opacity: 0;
+			}
+
 		}
 	}
 

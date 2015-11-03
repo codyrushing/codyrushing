@@ -10,6 +10,10 @@ module.exports = function(route){
         request.get(route).then(function(xhr, response){
             app.setState(response);
             window.history.pushState(response, response.pageTitle, route);
+            if(typeof ga === "function"){
+                ga("send", "pageview", route);
+            }
+
         });
     } else {
         window.location.href = route;

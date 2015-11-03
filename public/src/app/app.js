@@ -21,6 +21,7 @@ App.prototype = {
         require("app/feature-detection").call(this);
     },
     bindEvents: function(){
+        var self = this;
         var bindPopstate = function(){
             $(window).on("popstate", this.on_popstate.bind(this));
         }
@@ -31,17 +32,19 @@ App.prototype = {
         // bind popstate event after a delay because Safari likes to throw one immediately
         setTimeout(bindPopstate.bind(this), 100);
 
-        $(document).on("click", "a[href^='/'], a[href^='"+this.fullHost+"']", this.onclick_internalLink.bind(this));
+        $(document).on("click", "a[href^='/'], a[href^='"+this.fullHost+"']", function(e){
+            self.onclick_internalLink.call(this, e, self);
+        });
 
         // dispatcher Events
         dispatcher.on("ready", require("app/actions/post-render-main"));
         dispatcher.on("routeChange", require("app/actions/navigate"));
     },
-    onclick_internalLink: function(e){
+    onclick_internalLink: function(e, app){
         var route;
         if (!e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey){
             e.preventDefault();
-            route = $(e.target).attr("href").replace(new RegExp("^"+this.fullHost), "");
+            route = $(this).attr("href").replace(new RegExp("^"+app.fullHost), "");
             if (route !== window.location.pathname){
                 dispatcher.emit("routeChange", route);
             }

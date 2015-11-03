@@ -11,4 +11,5 @@ module.exports = function(){
     if(app.state.pageTitle){
         document.title = app.state.pageTitle;
     }
+    window.scrollTo(0,0);
 }
