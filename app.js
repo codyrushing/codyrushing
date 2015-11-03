@@ -36,9 +36,12 @@ app.use(function *(next){
     this.set('X-Response-Time', ms + 'ms');
 });
 
+// etag
+app.use(require("koa-etag")());
+
 // static
 app.use(require("koa-static")("public", {
-    maxage: 1000 * 60 * 60 * 2
+    maxage: 1000 * 60 * 60 * 24
 }));
 
 // response
