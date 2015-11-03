@@ -18,3 +18,7 @@ This is my first time working with D3, but would definitely like to use it more.
 * Transitions are done differently than what I'm used to, but the more I worked with it the more it started to make sense.  Getting a simple transition complete callback to work was a little convoluted  &ndash; you basically have to queue up an additional transition that does nothing but execute your callback.  You can listen for the "end" event of a transition, but if there are multiple donut charts on the page transitioning at the same time, only one "end" will fire instead of firing once for each donut chart (see the [docs on transitions](https://github.com/mbostock/d3/wiki/Transitions#each) for more info about this).
 * It's pretty crucial to understand the way the select engine works, as well as enter and exit "loops".  Coming from jQuery-style DOM selecting, it was hard to understand that you select for something before it exists, and then throw that empty selection into an enter loop and start building it out.
 * There's a ton of good D3 code out there.  If you're not sure how to do something with D3, just google it and you'll likely find something similar that will get you started in the right direction.
+
+<pre>
+<code class="lang-javascript" data-src="https://raw.githubusercontent.com/codyrushing/donut-chart/master/js/donut-chart.js"></code>
+</pre>

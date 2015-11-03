@@ -27,6 +27,6 @@ Below is my sort-of boilerplate Gruntfile that I use to start out most projects.
 
 __Edit:__ For performance reasons, I've started using compass' watch script instead of dropping a <code class="language-bash">compass compile</code> to my watch task.  Because `compass watch` is blocking, you won't be able to run any other blocking processes like watch or nodemon alongside it without using something like [grunt-concurrent](https://github.com/sindresorhus/grunt-concurrent), which allows you to run multiple grunt processes in parallel.
 
-```
-<script type="text/javascript" src="http://gist-it.appspot.com/github/codyrushing/express-mvc-boilerplate/blob/master/Gruntfile.js"></script>
-```
+
+<pre>
+<code class="lang-javascript" data-src="https://raw.githubusercontent.com/codyrushing/express-mvc-boilerplate/master/Gruntfile.js"></code></pre>
