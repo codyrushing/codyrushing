@@ -37,6 +37,7 @@
     "koa": "^0.21.0",
     "koa-compress": "^1.0.8",
     "koa-etag": "^2.1.0",
+    "koa-fresh": "0.0.3",
     "koa-hbs": "^0.7.0",
     "koa-html-minifier": "^1.0.1",
     "koa-router": "^5.2.2",

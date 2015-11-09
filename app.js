@@ -36,6 +36,9 @@ app.use(function *(next){
     this.set('X-Response-Time', ms + 'ms');
 });
 
+// fresh middleware
+app.use(require("koa-fresh")())
+
 // etag
 app.use(require("koa-etag")());
 
