@@ -6,7 +6,7 @@ intro: After over a year on WordPress, this site is now built on [Koa.js](http:/
 ---
 By the time I was ready to launch this site almost two years ago, I was already regretting choosing [WordPress](https://wordpress.org/) as a platform.  It has had an amazing history, but like many popular open-source frameworks, WordPress had become bloated and opaque.  
 
-For the last couple of years, I have been working a lot with Node (specifically [Express](http://expressjs.com/)), and I saw that many of the developers of Express had moved on to a new framework called [Koa](http://koajs.com/).  It looked nice, so I decided to give it a go, and so far I've been happy.
+For the last couple of years, I have been working a lot with Node (specifically [Express](http://expressjs.com/)), and I saw that many of the developers of Express had moved on to a new framework called [Koa](http://koajs.com/).  It looked nice, so I decided to give it a go, and so far I've been happy &ndash; [Check it out on github](https://github.com/codyrushing/codyrushing).
 
 ## Why Koa?
 Koa is basically Express, but lighter and with more ES6 stuff &ndash; so it was pretty easy for me to pick up.  Other than personal preference, some of the main reasons for switching to a Node-based solution were:
