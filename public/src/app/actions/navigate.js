@@ -7,16 +7,13 @@ module.exports = function(route){
     require("app/page-transition-start")();
 
     if(app.supports.history){
-        request.get(route).then(function(xhr, response){
+        request.get(route, {ajax: true}).then(function(xhr, response){
             app.setState(response);
-            window.history.pushState(response, response.pageTitle, route);
+            window.history.pushState(app.state, app.state.pageTitle, route);
             if(typeof ga === "function"){
                 ga("send", "pageview", route);
             }
-
         });
-    } else {
-        window.location.href = route;
     }
 
 };
