@@ -212,16 +212,19 @@ $apod-size: 150px;
 	.social {
 		padding: 0;
 		margin: 0;
-		a {
-			top: $apod-size/2;
-			position: absolute;
+		text-align: center;
+		clear: both;
+		li {
+			float: none;
+			display: inline-block;
+			&:last-child {
+				margin-right: 0;
+			}
 		}
-		.github {
-			left: 0.75em;
-		}
-		.linkedin {
-			right: 0.75em;
-		}
+	}
+
+	.fine-print {
+		float: none;
 	}
 
 	#rpi { width: 32px; }
