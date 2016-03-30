@@ -165,10 +165,12 @@ gulp.task("sprites", function(){
 });
 
 gulp.task("server", function(){
-    var nodeCommand = debug ? "node --debug-brk --harmony" : "node --harmony";
+    var childProcess = require("child_process"),
+        nodeCommand = debug ? "node --debug-brk" : "node";
+
     if(debug){
-		require("child_process").spawn("node-inspector");
-		require("child_process").spawn("open", ["http://localhost:8080/debug?port=5858"]);
+  		childProcess.spawn("node-inspector");
+  		childProcess.spawn("open", ["http://localhost:8080/debug?port=5858"]);
     }
     return nodemon({
         script: "app.js",

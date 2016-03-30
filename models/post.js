@@ -172,14 +172,17 @@ Post.getAll = function(){
 
 
 Post.getAllForSearchQuery = function(query, si){
-    return new Promise(function(resolve, reject){
-        si.search({
-            "query": {"*": [query]}
-        }, function(err, results){
-            if(err) reject(err);
-            resolve(results);
-        })
-    });
+  return new Promise(function(resolve, reject){
+    si.search({
+      "query": {"*": [query]}
+    }, function(err, results){
+      if(err){
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    })
+  });
 };
 
 Post.getAllForTag = function(tag){
