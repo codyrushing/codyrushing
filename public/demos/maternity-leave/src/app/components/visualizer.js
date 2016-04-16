@@ -11,7 +11,10 @@ var visualizer = {
     })
     return this
   },
-  build: function({width=800, height=600, margins={top:50, right:50, bottom:50, left:50}}={}){
+  constants: {
+    DAMPER: 0.102
+  },
+  build: function({width=600, height=400, margins={top:50, right:50, bottom:50, left:50}}={}){
     this.width = width
     this.svg = this.root.append("svg")
       .attr({
@@ -35,10 +38,6 @@ var visualizer = {
 
     this.scale = {
       x: d3.scale.linear().range([0, width])
-    }
-
-    this.axis = {
-      x: d3.svg.axis().scale(this.scale.x).ticks(10).tickSubdivide(10).tickSize(10,10,-10).orient("bottom")
     }
 
   },
@@ -71,7 +70,7 @@ var visualizer = {
     }, 0)
   },
   weeksToRadius: function(weeks){
-    return Math.sqrt(weeks) * 2
+    return Math.sqrt(weeks)
   },
   processSectionsByPaid: function(sectionsByPaid){
     var totalWeeks = this.reduceTotalWeeks(this.dataset)
@@ -112,26 +111,26 @@ var visualizer = {
             y: y + Math.random()
           }
 
-      subsection.values.forEach((node) => {
-        // merge clusterData onto node
-        ["x", "y"].forEach((key) => {
-          node[key] = clusterData[key]
-        })
-        node.radius = this.weeksToRadius(this.reduceTotalWeeks([node]))
-        node.cluster = this.clusters.length
-      })
+      subsection.values.forEach((node, i, arr) => {
+        var angle = Math.PI * 2 / arr.length * i+1
 
-      this.clusters.push(clusterData)
+        node.radius = this.weeksToRadius(this.reduceTotalWeeks([node]))
+        node.cluster = clusterData
+        // set initial position of each node to be all around the cluster
+        node.x = node.cluster.x + Math.cos(angle) * node.radius + Math.random()
+        node.y = node.cluster.y + Math.sin(angle) * node.radius + Math.random()
+      })
 
       yOffset += radius
 
     })
   },
+  charge: function(d){
+    return -Math.pow(d.radius, 2.0) / 8;
+  },
   draw: function(){
     this.scale.x
       .domain( d3.extent(this.dataset.map(this.xAccessor)) )
-
-    this.clusters = []
 
     this.processSectionsByPaid(
       this.nestedStructure("paidLeave").entries(this.dataset)
@@ -140,119 +139,58 @@ var visualizer = {
     var force = d3.layout.force()
         .nodes(this.dataset)
         .size([this.width, this.height])
-        .gravity(.02)
-        .charge(0)
+        .gravity(0)
+        .friction(0.9)
+        .charge(this.charge)
+        .on("tick", (e) => {
+          return this.onTick(e)
+        })
 
-    this.companyNodes = this.mainGroup.selectAll("circle")
+    force.start()
+
+    setTimeout(() => {
+      // console.log("stopping")
+      // force.stop()
+    }, 10000)
+
+    console.log(this.dataset)
+
+    this.bubbles = this.mainGroup.selectAll("circle")
       .data(this.dataset)
       .enter().append("circle")
+      .attr('r', 0)
+      .attr('stroke-width', 1)
+      .attr("stroke", "red")
+      .attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; })
+      .attr("fill", "none")
+      .attr('r', function (d) { return d.radius; });
+
+    this.bubbles.transition()
+      .duration(1000)
+      .attr('r', function (d) { return d.radius; });
+
 
     // Run the layout a fixed number of times.
     // The ideal number of times scales with graph complexity.
     // Of course, don't run too long—you'll hang the page!
-    force.start()
-    for (var i = 100; i > 0; --i){
-      this.onTick({alpha: 0.5})
-    }
-    force.stop()
 
-    console.log("finished simulating")
-
-    this.companyNodes
-      .attr("cx", function(d) {
-        return Math.round(d.x)
-      })
-      .attr("cy", function(d) {
-        return Math.round(d.y)
-      })
-      .attr("r", function(d) {
-        return d.radius
-      })
-      .attr("name", function(d) {
-        return d.name
-      })
-
-    this.axisGroup.x.call(this.axis.x)
+    // this.axisGroup.x.call(this.axis.x)
   },
   onTick: function(e) {
-    this.companyNodes
-        .each(this.cluster.call(this, 10 * e.alpha * e.alpha))
-        .each(this.collide.call(this, .5))
-        // .attr("cx", function(d) { return d.x; })
-        // .attr("cy", function(d) { return d.y; })
-        // .attr("r", function(d) {
-        //   return d.radius
-        // })
+    console.log(e)
+    this.bubbles
+      .each(this.moveTowardCluster(e.alpha))
+      .attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; })
   },
-  // Move d to be adjacent to the cluster node.
-  cluster: function(alpha) {
+  moveTowardCluster: function(alpha){
+    var damper = 0.102
     return (d) => {
-      var cluster = this.clusters[d.cluster];
-      if (cluster.x !== d.x && cluster.y !== d.y){
-        if(isNaN(d.x) || isNaN(cluster.x)){
-          debugger
-        }
-        if(isNaN(d.y) || isNaN(cluster.y)){
-          debugger
-        }
-        var x = d.x - cluster.x,
-            y = d.y - cluster.y,
-            l = Math.sqrt(Math.max([x * x + y * y, 1])),
-            r = d.radius + cluster.radius;
-        if (l != r) {
-          l = (l - r) / l * alpha;
-          if(isNaN(x*l)){
-            debugger
-          }
-          if(isNaN(y*l)){
-            debugger
-          }
-          d.x -= x *= l;
-          d.y -= y *= l;
-          cluster.x += x;
-          cluster.y += y;
-        }
-      }
-    };
+      d.x = d.x + (d.cluster.x - d.x) * damper * alpha * 1.1
+      d.y = d.y + (d.cluster.y - d.y) * damper * alpha * 1.1
+    }
   },
-  // Resolves collisions between d and all other circles.
-  collide: function(alpha) {
-    var quadtree = d3.geom.quadtree(this.dataset),
-        padding = 1.5, // separation between same-color nodes
-        maxRadius = 12,
-        clusterPadding = 6; // separation between different-color nodes
-
-    return (d) => {
-      var r = d.radius + Math.max(padding, clusterPadding),
-          nx1 = d.x - r,
-          nx2 = d.x + r,
-          ny1 = d.y - r,
-          ny2 = d.y + r;
-      quadtree.visit(function(quad, x1, y1, x2, y2) {
-        if (quad.point && quad.point.x !== d.x && quad.point.y !== d.y) {
-          if (isNaN(d.x) && isNaN(quad.point.x)){
-            debugger
-          }
-          var x = d.x - quad.point.x,
-              y = d.y - quad.point.y,
-              l = Math.sqrt(Math.max([x * x + y * y, 1])),
-              r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? padding : clusterPadding);
-          if (l < r) {
-            l = (l - r) / l * alpha;
-            if(isNaN(x*l)){
-              debugger
-            }
-            d.x -= x *= l;
-            d.y -= y *= l;
-            quad.point.x += x;
-            quad.point.y += y;
-          }
-        }
-        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-      });
-    };
-  },
-
   loadData: function(url, done){
     if(!url) throw new Error("Data url must be provided")
     d3.csv(url, function(d){

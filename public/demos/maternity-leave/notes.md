@@ -22,3 +22,11 @@
 
 
 [Good explanation of force layout](http://bl.ocks.org/sathomas/11550728)
+
+The problem is how the nodes are positioned around the cluster in the initialization
+> Each node is slightly offset from the corresponding cluster’s center using Math.random. Without this offset, same-colored nodes would be coincident, which would cause divide-by-zero problems for our custom forces.
+
+More good examples:
+* [Gravity bubbles](http://www.triadsoft.com.ar/examples/gravity-bubbles.html)
+* [Gates foundation spending](http://vallandingham.me/bubble_chart/)
+  * [article](http://vallandingham.me/bubble_charts_in_js.html) and [annotated source](https://github.com/vlandham/bubble_chart/blob/gh-pages/src/bubble_chart.js)
