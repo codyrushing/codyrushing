@@ -9,7 +9,6 @@ var visualizer = {
       this.dataset = data.filter((node, i) => {
         return node.paidLeave !== null
       })
-      console.log(this.dataset)
       this.draw(this.dataset)
     })
     return this
@@ -88,6 +87,10 @@ var visualizer = {
       return max
     })
 
+    var totalMaxClusterRadius = maxClusters.reduce((a,b) => {
+      return a + Math.sqrt(this.reduceTotalWeeks(b.values))
+    }, 0)
+
     var totalMaxClusterWeeks = this.reduceTotalWeeks(
       maxClusters.reduce((a,b) => {
         return a.concat(b.values)
@@ -97,7 +100,7 @@ var visualizer = {
     sectionsByPaid.forEach((section,i) => {
       var prev = sectionsByPaid[i-1] || {x0: 0, x1:0}
       // use the number of weeks in our max cluster to determine width of section
-      section.width = this.reduceTotalWeeks(maxClusters[i].values) / totalMaxClusterWeeks * this.width
+      section.width = Math.sqrt(this.reduceTotalWeeks(maxClusters[i].values)) / totalMaxClusterRadius * this.width
       section.x0 = prev.x1
       section.x1 = section.x0 + section.width
 
@@ -130,7 +133,7 @@ var visualizer = {
         node.y = node.cluster.y + Math.sin(angle) * node.radius + Math.random()
       })
 
-      yOffset += radius
+      yOffset += radius + Math.sqrt(radius)
 
     })
   },
@@ -155,7 +158,7 @@ var visualizer = {
       .data(this.dataset)
       .enter().append("circle")
       .attr('stroke-width', 1)
-      .attr("stroke", "red")
+      .attr("stroke", "#ccc")
       .attr("fill", "none")
       .attr('paid', function (d) { return d.paidLeave; })
       .attr('unpaid', function (d) { return d.unpaidLeave || "null"; })
@@ -163,11 +166,11 @@ var visualizer = {
 
     force.start()
 
-    for(var i=100; i>0; i--){
+    for(var i=500; i>0; i--){
       force.tick()
     }
 
-    force.stop()
+    // force.stop()
 
 
     // Run the layout a fixed number of times.
@@ -177,7 +180,6 @@ var visualizer = {
     // this.axisGroup.x.call(this.axis.x)
   },
   onTick: function(e) {
-    console.log(this)
     this.bubbles
       // .each(this.bounceBack(e.alpha))
       .each(this.moveTowardCluster.call(this, e.alpha))
@@ -207,8 +209,8 @@ var visualizer = {
     }
   },
   collide: function(alpha){
-    var padding = 0.5, // separation between same-color nodes
-    clusterPadding = 5, // separation between different-color nodes
+    var padding = 0, // separation between same-color nodes
+    clusterPadding = 1, // separation between different-color nodes
     maxRadius = this.weeksToRadius(52);
 
     var quadtree = d3.geom.quadtree(this.dataset);
