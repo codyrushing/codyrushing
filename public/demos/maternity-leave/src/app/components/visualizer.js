@@ -69,7 +69,7 @@ var visualizer = {
     }, 0)
   },
   weeksToRadius: function(weeks){
-    return Math.sqrt(weeks)
+    return Math.sqrt(weeks) + 1
   },
   processSectionsByPaid: function(sectionsByPaid){
     // width of sections are based upon their largest cluster
@@ -116,25 +116,44 @@ var visualizer = {
     var yOffset = 0
     subsectionsByUnpaid.forEach((subsection, i) => {
       var radius = this.weeksToRadius(this.reduceTotalWeeks(subsection.values)),
-          y = yOffset,
+          packingBoxDimensions = [1, 1],
           clusterData = {
             radius: radius,
-            x: section.x0 + (section.x1 - section.x0)/2 + Math.random(),
-            y: y + Math.random()
+            x: section.x0 + section.width/2,
+            y: yOffset + radius * 1.5
           }
 
-      subsection.values.forEach((node, i, arr) => {
-        var angle = Math.PI * 2 / arr.length * i+1
+      // this.mainGroup.append("rect")
+      // .attr("x", clusterData.x-1)
+      // .attr("y", clusterData.y-1)
+      // .attr("key", subsection.key)
+      // .attr("radius", radius)
+      // .attr("width", 2)
+      // .attr("height", 2)
+      // .attr("r", 1)
+      // .attr("fill", "red")
 
+      subsection.values.forEach((node, i, arr) => {
         node.radius = this.weeksToRadius(this.reduceTotalWeeks([node]))
         node.cluster = clusterData
-        // set initial position of each node to be all around the cluster
-        node.x = node.cluster.x + Math.cos(angle) * node.radius + Math.random()
-        node.y = node.cluster.y + Math.sin(angle) * node.radius + Math.random()
       })
 
-      yOffset += radius + Math.sqrt(radius)
+      var packedLayout = d3.layout.pack()
+        .size(packingBoxDimensions)
+        .padding(10)
+        .value((d) => {
+          return d.radius * d.radius
+        })
+        .nodes({
+          children: subsection.values
+        })
 
+      subsection.values.forEach((node,i) => {
+        node.x += node.cluster.x - packingBoxDimensions[0]/2 + Math.random()
+        node.y += node.cluster.y - packingBoxDimensions[1]/2 + Math.random()
+      })
+
+      yOffset += radius * 3
     })
   },
   draw: function(){
@@ -145,15 +164,6 @@ var visualizer = {
       this.nestedStructure("paidLeave").entries(this.dataset)
     )
 
-    var force = d3.layout.force()
-        .nodes(this.dataset)
-        .size([this.width, this.height])
-        .gravity(0)
-        .charge(0)
-        .on("tick", (e) => {
-          return this.onTick(e)
-        })
-
     this.bubbles = this.mainGroup.selectAll("circle")
       .data(this.dataset)
       .enter().append("circle")
@@ -162,27 +172,39 @@ var visualizer = {
       .attr("fill", "none")
       .attr('paid', function (d) { return d.paidLeave; })
       .attr('unpaid', function (d) { return d.unpaidLeave || "null"; })
-      .attr('name', function(d) { return d.name; });
+      .attr('name', function(d) { return d.name; })
+      .attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; })
+      .attr('r', function (d) { return d.radius; })
+
+    var force = d3.layout.force()
+        .nodes(this.dataset)
+        .size([this.width, this.height])
+        .gravity(0)
+        .charge(0)
+        .friction(0)
+        .on("tick", (e) => {
+          return this.onTick(e)
+        })
 
     force.start()
 
-    for(var i=500; i>0; i--){
-      force.tick()
+    for(var i=0; i>0; i--){
+      // force.tick()
     }
 
-    // force.stop()
+    this.bubbles.transition()
+      .duration(1500)
+      .attrTween("r", function(d) {
+        var i = d3.interpolate(0, d.radius);
+        return function(t) { return d.radius = i(t); };
+      })
 
-
-    // Run the layout a fixed number of times.
-    // The ideal number of times scales with graph complexity.
-    // Of course, don't run too long—you'll hang the page!
-
-    // this.axisGroup.x.call(this.axis.x)
   },
   onTick: function(e) {
     this.bubbles
       // .each(this.bounceBack(e.alpha))
-      .each(this.moveTowardCluster.call(this, e.alpha))
+      // .each(this.moveTowardCluster.call(this, e.alpha))
       .each(this.collide.call(this, 0.5))
       .attr("cx", function(d) { return d.x; })
       .attr("cy", function(d) { return d.y; })
@@ -210,7 +232,7 @@ var visualizer = {
   },
   collide: function(alpha){
     var padding = 0, // separation between same-color nodes
-    clusterPadding = 1, // separation between different-color nodes
+    clusterPadding = 5, // separation between different-color nodes
     maxRadius = this.weeksToRadius(52);
 
     var quadtree = d3.geom.quadtree(this.dataset);

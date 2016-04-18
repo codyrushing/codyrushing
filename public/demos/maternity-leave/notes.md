@@ -20,6 +20,9 @@
   * still color code for industry
   * since
 
+__Problem__ : some nodes are getting mixed into the wrong cluster.  i think this is because of the initial placement which causes huge collision effects
+* place nodes radially around cluster in such a way they don't overlap
+
 
 [Good explanation of force layout](http://bl.ocks.org/sathomas/11550728)
 
@@ -30,3 +33,6 @@ More good examples:
 * [Gravity bubbles](http://www.triadsoft.com.ar/examples/gravity-bubbles.html)
 * [Gates foundation spending](http://vallandingham.me/bubble_chart/)
   * [article](http://vallandingham.me/bubble_charts_in_js.html) and [annotated source](https://github.com/vlandham/bubble_chart/blob/gh-pages/src/bubble_chart.js)
+
+## Media
+* [Time article](http://time.com/3984870/netflix-parental-leave/)
