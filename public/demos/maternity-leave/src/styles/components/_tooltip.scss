@@ -1,0 +1,15 @@
+$bgColor: #eee;
+
+.tooltip {
+  background: $bgColor;
+  padding: 10px;
+  .tooltip-accent {
+    bottom: -6px;
+    border-top: 6px solid $bgColor;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    width: 12px;
+    height: 6px;
+    position: absolute;
+  }
+}

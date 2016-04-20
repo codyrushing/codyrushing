@@ -1,10 +1,15 @@
 "use strict"
 import d3 from "d3"
+import isotip from "isotip"
 
 var visualizer = {
   init: function({url, element}){
     this.root = d3.select(element)
     this.initDOM()
+    isotip.init({
+      html: true,
+      removalDelay: 0
+    })
     this.loadData(url, (data) => {
       this.dataset = data.filter((node, i) => {
         return node.paidLeave !== null
@@ -14,13 +19,15 @@ var visualizer = {
     })
     return this
   },
-  initDOM: function({width=960, height=600, margins={top:50, right:50, bottom:50, left:50}}={}){
+  initDOM: function({width=960, height=600, margins={top:80, right:50, bottom:50, left:100}}={}){
     this.width = width
+    this.margins = margins
     this.svg = this.root.append("svg")
       .attr({
         "class": "maternity-visualizer",
         "width": width + margins.left + margins.right,
-        "height": height + margins.top + margins.bottom
+        "height": height + margins.top + margins.bottom,
+        "shape-rendering": "crispEdges"
       })
 
     this.mainGroup = this.svg.append("g")
@@ -30,14 +37,10 @@ var visualizer = {
       })
 
     this.axisGroup = {
-      x: this.mainGroup.append("g").attr({
+      x: this.svg.append("g").attr({
         "class": "axis x",
-        "transform": `translate(0,0)`
+        "transform": `translate(${margins.left},${margins.top - 10})`
       })
-    }
-
-    this.scale = {
-      x: d3.scale.linear().range([0, width])
     }
 
   },
@@ -83,20 +86,13 @@ var visualizer = {
       if(a.key === "N/A") return 1
       return b.median - a.median
     })
-
-    var industries = sectionsByIndustry.map((section) => section.median)
-    var allColors = d3.scale.category20().range()
-        .concat(d3.scale.category20b().range())
-        .concat(d3.scale.category20c().range())
-
-    this.colorScale = d3.scale.ordinal()
-      .range(allColors)
-      .domain(d3.range(allColors))
-
   },
   processSectionsByPaid: function(sectionsByPaid){
     // width of sections are based upon their largest cluster
     // so we first extract all of the largest clusters
+    var sectionPadding = 8,
+        workableWidth = this.width - sectionsByPaid.length * sectionPadding * 2
+
     var maxClusters = sectionsByPaid.map((section, i) => {
       var max, maxValue = 0;
       section.subsectionsByUnpaid = this.nestedStructure("unpaidLeave").entries(section.values).reverse()
@@ -123,9 +119,9 @@ var visualizer = {
     sectionsByPaid.forEach((section,i) => {
       var prev = sectionsByPaid[i-1] || {x0: 0, x1:0}
       // use the number of weeks in our max cluster to determine width of section
-      section.width = Math.sqrt(this.reduceTotalWeeks(maxClusters[i].values)) / totalMaxClusterRadius * this.width
-      section.x0 = prev.x1
-      section.x1 = section.x0 + section.width
+      section.width = Math.sqrt(this.reduceTotalWeeks(maxClusters[i].values)) / totalMaxClusterRadius * workableWidth
+      section.x0 = prev.x1 + sectionPadding
+      section.x1 = section.x0 + section.width + sectionPadding
 
       // begin building out the clusters for each section
       this.processSubsectionsByUnpaid(
@@ -186,6 +182,37 @@ var visualizer = {
   draw: function(){
     var self = this
 
+    this.axisGroup.x.append("line")
+      .attr("class", "line")
+      .attr("x1", 0)
+      .attr("x2", this.width)
+
+    this.axisGroup.x
+      .append("text")
+      .attr("transform", `translate(${this.width/2}, 0)`)
+      .attr("dy", "-2.5em")
+      .attr("class", "heading")
+      .text("Paid leave (weeks)")
+
+    var xTickGroups = this.axisGroup.x.selectAll("g.tick")
+      .data(this.sections.byPaid)
+      .enter()
+      .append("g")
+      .attr("class", "tick")
+      .attr("transform", (d) => `translate(${d.x0 + d.width/2}, 0)`)
+
+    xTickGroups
+      .append("text")
+      .text((d) => d.key)
+      .attr("y", "-0.5em")
+      .attr("dy", "0")
+
+    xTickGroups
+      .append("line")
+      .attr("y1", 0)
+      .attr("y2", 5)
+
+
     this.bubbleGroups = this.mainGroup.selectAll("g.bubble-group")
       .data(this.dataset)
       .enter().append("g")
@@ -200,27 +227,25 @@ var visualizer = {
         return classes.join(" ")
       })
       .classed("bubble-group", true)
+      .on("mouseover", function(d){
+        setTimeout(() => {
+          isotip.open(this, {
+            content: d.name
+          })
+        }, 0)
+      })
+      .on("mouseout", function(d){
+        isotip.close()
+      })
       .each(function(d,i){
         var group = d3.select(this),
             totalWeeks = self.reduceTotalWeeks([d]),
-            paidAngle = 0,
+            paidAngle = d.paidLeave/totalWeeks * (Math.PI * 2),
             arc = d3.svg.arc()
               .innerRadius(0)
               .outerRadius(d.radius)
               .startAngle(0)
 
-        if(d.paidLeave){
-          paidAngle = d.paidLeave/totalWeeks * (Math.PI * 2)
-          group.append("path")
-            .datum({
-              endAngle: paidAngle
-            })
-            .attr("class", "paid-portion")
-            .style("fill", () => {
-              return self.colorScale(d.industry)
-            })
-            .attr("d", arc)
-        }
         if(d.unpaidLeave){
           group.append("path")
             .datum({
@@ -229,16 +254,28 @@ var visualizer = {
             })
             .attr("class", "unpaid-portion")
             .style("fill", () => {
-              return self.colorScale(d.industry)
+              return self.scale.color(d.paidLeave)
+            })
+            .attr("d", arc)
+        }
+        if(d.paidLeave){
+          group.append("path")
+            .datum({
+              endAngle: paidAngle
+            })
+            .attr("class", "paid-portion")
+            .style("fill", () => {
+              return self.scale.color(d.paidLeave)
             })
             .attr("d", arc)
         }
       })
 
     this.bubbles = this.bubbleGroups.append("circle")
+      .attr("shape-rendering", "crispEdges")
       .attr("stroke-width", 1)
       .attr("stroke", (d) => {
-        return d3.rgb(this.colorScale(d.industry)).darker()
+        return d3.lab(this.scale.color(d.paidLeave)).darker()
       })
       .attr("fill", "none")
       .attr("paid", function (d) { return d.paidLeave; })
@@ -265,10 +302,13 @@ var visualizer = {
       byIndustry: d3.nest().key((d) => d.industry).entries(this.dataset)
     }
 
-    // var colorScale = d3.scale.category20().range()
-    //
-    // this.scale.x
-    //   .domain( d3.extent(this.dataset.map(this.xAccessor)) )
+    this.scale = {
+      //x: d3.scale.linear().range(d3.extent(this.dataset.map((d) => d.paidLeave))),
+      color: d3.scale.linear()
+          .domain( d3.extent(this.dataset.map(this.xAccessor)) )
+          .range(["#00A4FF", "#06D800"])
+          .interpolate(d3.interpolateLab)
+    }
 
     this.processSectionsByIndustry(this.sections.byIndustry)
     this.processSectionsByPaid(this.sections.byPaid)
@@ -282,7 +322,7 @@ var visualizer = {
       .attr("transform", (d) => {
         return `translate(${d.x},${d.y})`
       })
-      .each(this.bounceBack(e.alpha))
+      // .each(this.bounceBack(e.alpha))
       // .attr("cx", function(d) { return d.x; })
       // .attr("cy", function(d) { return d.y; })
       // .attr("r", function (d) { return d.radius; })
@@ -326,7 +366,7 @@ var visualizer = {
   },
   collide: function(alpha){
     var padding = 0, // separation between same-color nodes
-        clusterPadding = 6, // separation between different-color nodes
+        clusterPadding = 10, // separation between different-color nodes
         maxRadius = this.weeksToRadius(52);
 
     var quadtree = d3.geom.quadtree(this.dataset);

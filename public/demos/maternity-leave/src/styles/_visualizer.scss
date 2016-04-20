@@ -1,16 +1,30 @@
 .maternity-visualizer {
+  .axis {
+    line {
+      stroke: #ccc;
+    }
+    text {
+      fill: #555;
+      letter-spacing: -0.05em;
+      text-anchor: middle;
+    }
+    .heading {
+      font-size: 1.5em;
+    }
+  }
+
   .bubble-group {
     &:hover {
       cursor: pointer;
       circle {
-        stroke-width: 2.5px;
+        stroke-width: 2px;
       }
     }
     path {
       stroke: none;
     }
     .unpaid-portion {
-      opacity: 0.5;
+      opacity: 0.25;
     }
   }
 }

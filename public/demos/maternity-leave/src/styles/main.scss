@@ -1,6 +1,8 @@
 @import "lib/normalize";
 
+@import "global";
 @import "visualizer";
+@import "components/tooltip";
 
 line, path {
   fill: none;
