@@ -1,0 +1,16 @@
+.maternity-visualizer {
+  .bubble-group {
+    &:hover {
+      cursor: pointer;
+      circle {
+        stroke-width: 2.5px;
+      }
+    }
+    path {
+      stroke: none;
+    }
+    .unpaid-portion {
+      opacity: 0.5;
+    }
+  }
+}

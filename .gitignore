@@ -25,12 +25,15 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+npm-debug.log
+npm-debug.log.*
 bower_components
 public/dist
 si
 public/src/img/apod
 views/partials/symbols.hbs
 public/src/scss/generated
+lib
 public/src/app/templates
 
 .DS_STORE

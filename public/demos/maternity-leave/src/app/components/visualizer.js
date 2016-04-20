@@ -4,16 +4,17 @@ import d3 from "d3"
 var visualizer = {
   init: function({url, element}){
     this.root = d3.select(element)
-    this.build()
+    this.initDOM()
     this.loadData(url, (data) => {
       this.dataset = data.filter((node, i) => {
         return node.paidLeave !== null
       })
+      this.processData()
       this.draw(this.dataset)
     })
     return this
   },
-  build: function({width=960, height=600, margins={top:50, right:50, bottom:50, left:50}}={}){
+  initDOM: function({width=960, height=600, margins={top:50, right:50, bottom:50, left:50}}={}){
     this.width = width
     this.svg = this.root.append("svg")
       .attr({
@@ -71,6 +72,28 @@ var visualizer = {
   weeksToRadius: function(weeks){
     return Math.sqrt(weeks) + 1
   },
+  processSectionsByIndustry: function(sectionsByIndustry){
+    sectionsByIndustry.forEach((section) => {
+      section.mean = d3.mean(section.values, this.xAccessor)
+      section.median = d3.median(section.values, this.xAccessor)
+    })
+
+    sectionsByIndustry.sort((a,b) => {
+      if(b.key === "N/A") return -1
+      if(a.key === "N/A") return 1
+      return b.median - a.median
+    })
+
+    var industries = sectionsByIndustry.map((section) => section.median)
+    var allColors = d3.scale.category20().range()
+        .concat(d3.scale.category20b().range())
+        .concat(d3.scale.category20c().range())
+
+    this.colorScale = d3.scale.ordinal()
+      .range(allColors)
+      .domain(d3.range(allColors))
+
+  },
   processSectionsByPaid: function(sectionsByPaid){
     // width of sections are based upon their largest cluster
     // so we first extract all of the largest clusters
@@ -121,7 +144,8 @@ var visualizer = {
             radius: radius,
             x: section.x0 + section.width/2,
             y: yOffset + radius * 1.5
-          }
+          },
+          packLayout
 
       // this.mainGroup.append("rect")
       // .attr("x", clusterData.x-1)
@@ -138,7 +162,7 @@ var visualizer = {
         node.cluster = clusterData
       })
 
-      var packedLayout = d3.layout.pack()
+      packLayout = d3.layout.pack()
         .size(packingBoxDimensions)
         .padding(10)
         .value((d) => {
@@ -156,59 +180,112 @@ var visualizer = {
       yOffset += radius * 3
     })
   },
+  slugify: function(s){
+    return s.toLowerCase().replace(/[^a-zA-Z\d\s:]/g, "").replace(/\s+/g,"-")
+  },
   draw: function(){
-    this.scale.x
-      .domain( d3.extent(this.dataset.map(this.xAccessor)) )
+    var self = this
 
-    this.processSectionsByPaid(
-      this.nestedStructure("paidLeave").entries(this.dataset)
-    )
-
-    this.bubbles = this.mainGroup.selectAll("circle")
+    this.bubbleGroups = this.mainGroup.selectAll("g.bubble-group")
       .data(this.dataset)
-      .enter().append("circle")
-      .attr('stroke-width', 1)
-      .attr("stroke", "#ccc")
+      .enter().append("g")
+      .attr("transform", (d) => {
+        return `translate(${d.x},${d.y})`
+      })
+      .attr("class", (d) => {
+        var classes = [this.slugify(d.industry)]
+        if(d.subclassification){
+          classes.push(this.slugify(d.subclassification))
+        }
+        return classes.join(" ")
+      })
+      .classed("bubble-group", true)
+      .each(function(d,i){
+        var group = d3.select(this),
+            totalWeeks = self.reduceTotalWeeks([d]),
+            paidAngle = 0,
+            arc = d3.svg.arc()
+              .innerRadius(0)
+              .outerRadius(d.radius)
+              .startAngle(0)
+
+        if(d.paidLeave){
+          paidAngle = d.paidLeave/totalWeeks * (Math.PI * 2)
+          group.append("path")
+            .datum({
+              endAngle: paidAngle
+            })
+            .attr("class", "paid-portion")
+            .style("fill", () => {
+              return self.colorScale(d.industry)
+            })
+            .attr("d", arc)
+        }
+        if(d.unpaidLeave){
+          group.append("path")
+            .datum({
+              startAngle: paidAngle,
+              endAngle: Math.PI * 2
+            })
+            .attr("class", "unpaid-portion")
+            .style("fill", () => {
+              return self.colorScale(d.industry)
+            })
+            .attr("d", arc)
+        }
+      })
+
+    this.bubbles = this.bubbleGroups.append("circle")
+      .attr("stroke-width", 1)
+      .attr("stroke", (d) => {
+        return d3.rgb(this.colorScale(d.industry)).darker()
+      })
       .attr("fill", "none")
-      .attr('paid', function (d) { return d.paidLeave; })
-      .attr('unpaid', function (d) { return d.unpaidLeave || "null"; })
-      .attr('name', function(d) { return d.name; })
-      .attr("cx", function(d) { return d.x; })
-      .attr("cy", function(d) { return d.y; })
-      .attr('r', function (d) { return d.radius; })
+      .attr("paid", function (d) { return d.paidLeave; })
+      .attr("unpaid", function (d) { return d.unpaidLeave || "null"; })
+      .attr("name", function(d) { return d.name; })
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("r", function (d) { return d.radius; })
 
-    var force = d3.layout.force()
-        .nodes(this.dataset)
-        .size([this.width, this.height])
-        .gravity(0)
-        .charge(0)
-        .friction(0)
-        .on("tick", (e) => {
-          return this.onTick(e)
-        })
-
-    force.start()
-
-    for(var i=0; i>0; i--){
-      // force.tick()
+    this.forceLayout = d3.layout.force()
+          .nodes(this.dataset)
+          .size([this.width, this.height])
+          .gravity(0)
+          .charge(0)
+          .friction(0)
+          .on("tick", (e) => {
+            return this.onTick(e)
+          })
+          .start()
+  },
+  processData: function(){
+    this.sections = {
+      byPaid: this.nestedStructure("paidLeave").entries(this.dataset),
+      byIndustry: d3.nest().key((d) => d.industry).entries(this.dataset)
     }
 
-    this.bubbles.transition()
-      .duration(1500)
-      .attrTween("r", function(d) {
-        var i = d3.interpolate(0, d.radius);
-        return function(t) { return d.radius = i(t); };
-      })
+    // var colorScale = d3.scale.category20().range()
+    //
+    // this.scale.x
+    //   .domain( d3.extent(this.dataset.map(this.xAccessor)) )
+
+    this.processSectionsByIndustry(this.sections.byIndustry)
+    this.processSectionsByPaid(this.sections.byPaid)
 
   },
   onTick: function(e) {
-    this.bubbles
-      // .each(this.bounceBack(e.alpha))
+    this.bubbleGroups
       // .each(this.moveTowardCluster.call(this, e.alpha))
+      // .each(this.cluster.call(this, e.alpha))
       .each(this.collide.call(this, 0.5))
-      .attr("cx", function(d) { return d.x; })
-      .attr("cy", function(d) { return d.y; })
-      .attr('r', function (d) { return d.radius; })
+      .attr("transform", (d) => {
+        return `translate(${d.x},${d.y})`
+      })
+      .each(this.bounceBack(e.alpha))
+      // .attr("cx", function(d) { return d.x; })
+      // .attr("cy", function(d) { return d.y; })
+      // .attr("r", function (d) { return d.radius; })
   },
   moveTowardCluster: function(alpha){
     var damper = 0.202
@@ -230,10 +307,27 @@ var visualizer = {
       }
     }
   },
+  cluster: function(alpha){
+    return function(d) {
+      var cluster = d.cluster;
+      if (cluster === d) return;
+      var x = d.x - cluster.x,
+          y = d.y - cluster.y,
+          l = Math.sqrt(x * x + y * y),
+          r = d.radius + cluster.radius;
+      if (l != r) {
+        l = (l - r) / l * alpha;
+        d.x -= x *= l;
+        d.y -= y *= l;
+        cluster.x += x;
+        cluster.y += y;
+      }
+    };
+  },
   collide: function(alpha){
     var padding = 0, // separation between same-color nodes
-    clusterPadding = 5, // separation between different-color nodes
-    maxRadius = this.weeksToRadius(52);
+        clusterPadding = 6, // separation between different-color nodes
+        maxRadius = this.weeksToRadius(52);
 
     var quadtree = d3.geom.quadtree(this.dataset);
     return function(d) {
