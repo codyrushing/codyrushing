@@ -1,16 +1,27 @@
 .maternity-visualizer {
   .axis {
+    position: fixed;
     line {
       stroke: #ccc;
     }
-    text {
+    .tick text {
       fill: #555;
       letter-spacing: -0.05em;
       text-anchor: middle;
     }
-    .heading {
-      font-size: 1.5em;
+    .label-group {
+      text {
+        text-anchor: end;
+      }
+      .heading {
+        font-size: 1.4em;
+        fill: $textColor;
+      }
+      .heading-unit {
+        font-size: 1em;
+      }
     }
+
   }
 
   .bubble-group {
@@ -22,9 +33,6 @@
     }
     path {
       stroke: none;
-    }
-    .unpaid-portion {
-      opacity: 0.25;
     }
   }
 }

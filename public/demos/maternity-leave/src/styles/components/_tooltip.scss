@@ -1,15 +1,51 @@
-$bgColor: #eee;
+$bgColor: #fff;
+$tooltipAccentSize: 6px;
 
 .tooltip {
   background: $bgColor;
   padding: 10px;
+  border: 1px solid darken($bgColor, 10%);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
   .tooltip-accent {
-    bottom: -6px;
-    border-top: 6px solid $bgColor;
-    border-right: 6px solid transparent;
-    border-left: 6px solid transparent;
-    width: 12px;
-    height: 6px;
     position: absolute;
   }
+  &.tooltip-top > .tooltip-accent,
+  &.tooltip-bottom > .tooltip-accent {
+    width: $tooltipAccentSize * 2;
+    height: $tooltipAccentSize;
+  }
+  &.tooltip-top > .tooltip-accent {
+    bottom: -$tooltipAccentSize;
+    border-top: $tooltipAccentSize solid $bgColor;
+    border-right: $tooltipAccentSize solid transparent;
+    border-left: $tooltipAccentSize solid transparent;
+  }
+  &.tooltip-bottom > .tooltip-accent {
+    top: -$tooltipAccentSize;
+    border-bottom: $tooltipAccentSize solid $bgColor;
+    border-right: $tooltipAccentSize solid transparent;
+    border-left: $tooltipAccentSize solid transparent;
+  }
+
+  .item {
+    @include clearfix();
+    padding: 4px 0;
+  }
+
+  .item-label {
+    color: lighten($textColor, 30%)
+  }
+
+  .item-value {
+    float: right;
+    &.positive {
+      color: green;
+      font-weight: bold;
+    }
+    &.negative {
+      color: red;
+      font-weight: bold;
+    }
+  }
+
 }

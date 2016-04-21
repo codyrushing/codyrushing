@@ -23,8 +23,9 @@
 __Problem__ : some nodes are getting mixed into the wrong cluster.  i think this is because of the initial placement which causes huge collision effects
 * place nodes radially around cluster in such a way they don't overlap
 
-
 [Good explanation of force layout](http://bl.ocks.org/sathomas/11550728)
+
+[diverging color scales](http://bl.ocks.org/nitaku/34eaba160faac9c8c6c2)
 
 The problem is how the nodes are positioned around the cluster in the initialization
 > Each node is slightly offset from the corresponding cluster’s center using Math.random. Without this offset, same-colored nodes would be coincident, which would cause divide-by-zero problems for our custom forces.

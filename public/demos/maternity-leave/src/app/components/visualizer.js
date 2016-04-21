@@ -2,6 +2,8 @@
 import d3 from "d3"
 import isotip from "isotip"
 
+import tooltipTemplate from "../templates/tooltip"
+
 var visualizer = {
   init: function({url, element}){
     this.root = d3.select(element)
@@ -19,7 +21,7 @@ var visualizer = {
     })
     return this
   },
-  initDOM: function({width=960, height=600, margins={top:80, right:50, bottom:50, left:100}}={}){
+  initDOM: function({width=960, height=600, margins={top:50, right:50, bottom:50, left:120}}={}){
     this.width = width
     this.margins = margins
     this.svg = this.root.append("svg")
@@ -29,6 +31,54 @@ var visualizer = {
         "height": height + margins.top + margins.bottom,
         "shape-rendering": "crispEdges"
       })
+
+    let defs = this.svg.append("defs")
+    defs.append("pattern")
+      .attr({
+        id: "pattern-stripe",
+        width: 1.5,
+        height: 1.5,
+        patternUnits: "userSpaceOnUse",
+        patternTransform: "rotate(45)"
+      })
+        .append("rect")
+        .attr({
+          width: 0.75,
+          height: 1.5,
+          transform: "translate(0,0)",
+          fill: "white"
+        })
+
+    defs.append("mask")
+      .attr("id", "mask-stripe")
+        .append("circle")
+        .attr({
+          cx: 0,
+          cy: 0,
+          r: this.width,
+          fill: "url(#pattern-stripe)"
+        })
+/*
+<pattern id="pattern-stripe"
+  width="2" height="2"
+  patternUnits="userSpaceOnUse"
+  patternTransform="rotate(45)">
+  <rect width="1" height="2" transform="translate(0,0)" fill="white"></rect>
+</pattern>
+<mask id="mask-stripe">
+  <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+</mask>
+*/
+
+    // this.svg.append("rect")
+    //   .attr({
+    //     x: 100,
+    //     y: 100,
+    //     width: 400,
+    //     height: 400
+    //   })
+    //   .style("mask", "url(#mask-stripe)")
+
 
     this.mainGroup = this.svg.append("g")
       .attr({
@@ -79,6 +129,16 @@ var visualizer = {
     sectionsByIndustry.forEach((section) => {
       section.mean = d3.mean(section.values, this.xAccessor)
       section.median = d3.median(section.values, this.xAccessor)
+
+      section.values.forEach((node) => {
+        node.sections = (node.sections || {})
+        node.sections.byIndustry = section
+        node.diffFromMeanOverall = (node.paidLeave - this.overall.mean) / this.overall.mean
+        node.diffFromMeanIndustry = (node.paidLeave - section.mean) / section.mean
+        node.diffFromMedianOverall = (node.paidLeave - this.overall.median) / this.overall.median
+        node.diffFromMedianIndustry = (node.paidLeave - section.median) / section.median
+      })
+
     })
 
     sectionsByIndustry.sort((a,b) => {
@@ -187,12 +247,22 @@ var visualizer = {
       .attr("x1", 0)
       .attr("x2", this.width)
 
-    this.axisGroup.x
+    // axis labels
+    this.axisLabelsGroup = this.axisGroup.x
+      .append("g")
+      .attr("class", "label-group")
+      .attr("transform", `translate(-10,-2)`)
+
+    this.axisLabelsGroup
       .append("text")
-      .attr("transform", `translate(${this.width/2}, 0)`)
-      .attr("dy", "-2.5em")
       .attr("class", "heading")
-      .text("Paid leave (weeks)")
+      .attr("dy", "-0.7em")
+      .text("Paid leave")
+
+    this.axisLabelsGroup
+      .append("text")
+      .attr("class", "heading-unit")
+      .text("(weeks)")
 
     var xTickGroups = this.axisGroup.x.selectAll("g.tick")
       .data(this.sections.byPaid)
@@ -201,12 +271,14 @@ var visualizer = {
       .attr("class", "tick")
       .attr("transform", (d) => `translate(${d.x0 + d.width/2}, 0)`)
 
+    // tick labels
     xTickGroups
       .append("text")
       .text((d) => d.key)
       .attr("y", "-0.5em")
       .attr("dy", "0")
 
+    // tick notches
     xTickGroups
       .append("line")
       .attr("y1", 0)
@@ -230,7 +302,7 @@ var visualizer = {
       .on("mouseover", function(d){
         setTimeout(() => {
           isotip.open(this, {
-            content: d.name
+            content: tooltipTemplate(d)
           })
         }, 0)
       })
@@ -253,10 +325,9 @@ var visualizer = {
               endAngle: Math.PI * 2
             })
             .attr("class", "unpaid-portion")
-            .style("fill", () => {
-              return self.scale.color(d.paidLeave)
-            })
             .attr("d", arc)
+            .style("fill", self.scale.color(d.paidLeave))
+            .style("mask", 'url("#mask-stripe")')
         }
         if(d.paidLeave){
           group.append("path")
@@ -264,46 +335,50 @@ var visualizer = {
               endAngle: paidAngle
             })
             .attr("class", "paid-portion")
-            .style("fill", () => {
-              return self.scale.color(d.paidLeave)
-            })
+            .style("fill", self.scale.color(d.paidLeave))
             .attr("d", arc)
         }
       })
 
     this.bubbles = this.bubbleGroups.append("circle")
-      .attr("shape-rendering", "crispEdges")
       .attr("stroke-width", 1)
       .attr("stroke", (d) => {
-        return d3.lab(this.scale.color(d.paidLeave)).darker()
+        return d3.lab(this.scale.color(d.paidLeave)).darker(0.5)
       })
       .attr("fill", "none")
-      .attr("paid", function (d) { return d.paidLeave; })
-      .attr("unpaid", function (d) { return d.unpaidLeave || "null"; })
-      .attr("name", function(d) { return d.name; })
       .attr("cx", 0)
       .attr("cy", 0)
       .attr("r", function (d) { return d.radius; })
 
     this.forceLayout = d3.layout.force()
-          .nodes(this.dataset)
-          .size([this.width, this.height])
-          .gravity(0)
-          .charge(0)
-          .friction(0)
-          .on("tick", (e) => {
-            return this.onTick(e)
-          })
-          .start()
+      .nodes(this.dataset)
+      .size([this.width, this.height])
+      .gravity(0)
+      .charge(0)
+      .friction(0)
+      .on("tick", (e) => {
+        return this.onTick(e)
+      })
+      .start()
+
+    // for(var n=100; n>0; n--){
+    //   this.forceLayout.tick()
+    // }
+    //
+    // this.forceLayout.stop()
   },
   processData: function(){
+    this.overall = {
+      mean: d3.mean(this.dataset, this.xAccessor),
+      median: d3.mean(this.dataset, this.xAccessor)
+    }
+
     this.sections = {
       byPaid: this.nestedStructure("paidLeave").entries(this.dataset),
       byIndustry: d3.nest().key((d) => d.industry).entries(this.dataset)
     }
 
     this.scale = {
-      //x: d3.scale.linear().range(d3.extent(this.dataset.map((d) => d.paidLeave))),
       color: d3.scale.linear()
           .domain( d3.extent(this.dataset.map(this.xAccessor)) )
           .range(["#00A4FF", "#06D800"])
@@ -315,17 +390,22 @@ var visualizer = {
 
   },
   onTick: function(e) {
-    this.bubbleGroups
-      // .each(this.moveTowardCluster.call(this, e.alpha))
-      // .each(this.cluster.call(this, e.alpha))
-      .each(this.collide.call(this, 0.5))
-      .attr("transform", (d) => {
-        return `translate(${d.x},${d.y})`
-      })
-      // .each(this.bounceBack(e.alpha))
-      // .attr("cx", function(d) { return d.x; })
-      // .attr("cy", function(d) { return d.y; })
-      // .attr("r", function (d) { return d.radius; })
+    if(e.alpha < 0.05){
+      this.forceLayout.stop()
+    } else {
+      this.bubbleGroups
+        // .each(this.moveTowardCluster.call(this, e.alpha))
+        // .each(this.cluster.call(this, e.alpha))
+        .each(this.collide.call(this, 0.5))
+        .attr("transform", (d) => {
+          return `translate(${d.x},${d.y})`
+        })
+        // .each(this.bounceBack(e.alpha))
+        // .attr("cx", function(d) { return d.x; })
+        // .attr("cy", function(d) { return d.y; })
+        // .attr("r", function (d) { return d.radius; })
+
+    }
   },
   moveTowardCluster: function(alpha){
     var damper = 0.202

@@ -1,0 +1,25 @@
+<div class="tooltip-content">
+  <h4>{{name}}</h4>
+  <div class="stats">
+    <div class="item">
+      <span class="item-label">Leave (paid):</span> <span class="item-value">{{paidLeave}}</span>
+      <div class="item">
+        <span class="item-label">Compared to overall avg:</span> {{percentDiff diffFromMeanOverall}}
+      </div>
+      <div class="item">
+        <span class="item-label">Compared to industry avg:</span> {{percentDiff diffFromMeanIndustry}}
+      </div>
+    </div>
+    <div class="item">
+      <span class="item-label">Leave (unpaid):</span> <span class="item-value">{{nullSafe unpaidLeave}}</span>
+    </div>
+    <div>
+      <span class="item-label">Industry:</span> <span class="item-value">{{industry}}</span>
+      {{#if subclassification}}
+        <div class="item">
+          <span class="item-label">Subclassification:</span> <span class="item-value">{{nullSafe subclassification}}</span>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>

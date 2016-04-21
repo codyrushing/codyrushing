@@ -7,7 +7,8 @@ const runSequence = require("run-sequence")
 var paths = {
   src: {
     app: path.join(__dirname, "src", "app"),
-    styles: path.join(__dirname, "src", "styles")
+    styles: path.join(__dirname, "src", "styles"),
+    views: path.join(__dirname, "src", "views")
   },
   dist: {
     js: path.join(__dirname, "dist", "js"),
@@ -30,9 +31,6 @@ gulp.task("css", ["copyNormalizeSCSS"], (done) => {
 })
 
 gulp.task("buildCss", () => {
-
-
-
   return gulp.src( [path.join(paths.src.styles, "*.scss"), "!" + path.join(paths.src.styles, "_*.scss")] )
     .pipe(gulpPlugins.plumber({
       errorHandler: function(error){
@@ -85,12 +83,64 @@ gulp.task("js", ["eslint"], () => {
     .pipe(gulpPlugins.notify("app.js built :)"))
 })
 
+gulp.task("templates", function(){
+  return runSequence(["hbs-templates", "hbs-partials"])
+})
+
+gulp.task("hbs-templates", function(){
+  return gulp.src([
+      path.join(paths.src.views, "**/*.hbs"),
+      path.join("!", paths.src.views, "partials", "**/*.hbs")
+    ])
+    .pipe(gulpPlugins.plumber())
+    .pipe(gulpPlugins.handlebars({
+      handlebars: require("handlebars")
+    }))
+    .pipe(gulpPlugins.defineModule("node", {
+      require: {
+        Handlebars: "handlebars/dist/handlebars.runtime"
+      }
+    }))
+    .pipe(gulp.dest( path.join(paths.src.app, "templates") ))
+})
+
+gulp.task("hbs-partials", function(){
+  var partialsDest = path.join(paths.src.app, "templates", "partials")
+
+  return gulp.src( path.join(paths.src.views, "partials", "**/*.hbs") )
+    .pipe(gulpPlugins.plumber())
+    .pipe(gulpPlugins.handlebars({
+      handlebars: require("handlebars")
+    }))
+    .pipe(
+      gulpPlugins.wrap("Handlebars.registerPartial(<%= processPartialName(file.relative) %>, Handlebars.template(<%= contents %>));", {}, {
+        imports: {
+          processPartialName: function(fileName) {
+            return JSON.stringify(path.basename(fileName, '.js'))
+          }
+        }
+      })
+    )
+    .pipe(gulpPlugins.concat("all.js"))
+    .pipe(gulpPlugins.wrap("function(){<%= contents %>}"))
+    .pipe(gulp.dest(partialsDest))
+    .pipe(gulpPlugins.defineModule("node", {
+      require: {
+        Handlebars: "handlebars"
+      }
+    }))
+    .pipe(gulp.dest(partialsDest))
+})
+
 gulp.task("watch", (done) => {
   gulpPlugins.watch(path.join(paths.src.app, "**/*.js"), () => {
     runSequence("js")
   })
   gulpPlugins.watch(path.join(paths.src.styles, "**/*.scss"), () => {
     runSequence("buildCss")
+  })
+  gulpPlugins.watch(path.join(paths.src.views, "**/*.hbs"), () => {
+    runSequence("templates")
   })
   done()
 })
@@ -102,5 +152,5 @@ gulp.task("preview", () => {
 })
 
 gulp.task("dev", (done) => {
-  runSequence(["js", "css"], "watch", "preview", done)
+  runSequence("templates", ["js", "css"], "watch", "preview", done)
 })
