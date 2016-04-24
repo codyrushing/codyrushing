@@ -7,6 +7,7 @@ import tooltipTemplate from "../templates/tooltip"
 var visualizer = {
   init: function({url, element}){
     this.root = d3.select(element)
+      .classed("maternity-visualizer", true)
 
     this.clusterKey = "all"
 
@@ -26,20 +27,21 @@ var visualizer = {
     })
     return this
   },
-  initDOM: function({width=960, height=600, margins={top:50, right:50, bottom:50, left:120}}={}){
+  initDOM: function({width=1100, height=600, margins={top:100, right:50, bottom:50, left:120}}={}){
     this.width = width
     this.margins = margins
 
     this.svg = this.root.append("svg")
       .attr({
-        "class": "maternity-visualizer",
+        "class": "graph",
         "width": width + margins.left + margins.right,
         "height": height + margins.top + margins.bottom,
         "shape-rendering": "crispEdges"
       })
 
-    let defs = this.svg.append("defs")
-    defs.append("pattern")
+    this.defs = this.svg.append("defs")
+
+    this.defs.append("pattern")
       .attr({
         id: "pattern-stripe",
         width: 1.5,
@@ -55,7 +57,7 @@ var visualizer = {
           fill: "white"
         })
 
-    defs.append("mask")
+    this.defs.append("mask")
       .attr("id", "mask-stripe")
         .append("circle")
         .attr({
@@ -64,40 +66,12 @@ var visualizer = {
           r: this.width,
           fill: "url(#pattern-stripe)"
         })
-/*
-<pattern id="pattern-stripe"
-  width="2" height="2"
-  patternUnits="userSpaceOnUse"
-  patternTransform="rotate(45)">
-  <rect width="1" height="2" transform="translate(0,0)" fill="white"></rect>
-</pattern>
-<mask id="mask-stripe">
-  <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
-</mask>
-*/
-
-    // this.svg.append("rect")
-    //   .attr({
-    //     x: 100,
-    //     y: 100,
-    //     width: 400,
-    //     height: 400
-    //   })
-    //   .style("mask", "url(#mask-stripe)")
-
 
     this.mainGroup = this.svg.append("g")
       .attr({
         "class": "main",
         "transform": `translate(${margins.left}, ${margins.top})`
       })
-
-    this.axisGroup = {
-      x: this.svg.append("g").attr({
-        "class": "axis x",
-        "transform": `translate(${margins.left},${margins.top - 10})`
-      })
-    }
 
   },
   nestedStructure: function(...props){
@@ -133,7 +107,8 @@ var visualizer = {
   },
   processSectionsByIndustry: function(dataset){
     var sectionsByIndustry = d3.nest().key((d) => d.industry).entries(dataset),
-        standaloneThreshold = Math.floor(sectionsByIndustry.length/2)
+        standaloneThreshold = Math.floor(sectionsByIndustry.length/2),
+        industryGroups
 
     sectionsByIndustry.forEach((section) => {
       section.mean = d3.mean(section.values, this.xAccessor)
@@ -165,16 +140,28 @@ var visualizer = {
         }, [])
     })
 
-    this.industrySector = this.svg.append("g")
-      .attr("class", "industries")
+    industryGroups = this.mainGroup.append("g")
+      .attr("class", "industries").selectAll("g")
+      .data(this.singularIndustrySections)
+      .enter()
+      .append("g")
+        .attr("class", (d) => this.slugify(d.key))
+        .call((groups) => {
+          var self = this
+          this.addAxisToGroup(groups)
+          groups.each(function(d){
+            self.setupChart(d.values, d3.select(this), "industry")
+          })
+        })
 
-    this.singularIndustrySections.forEach((section, i) => {
-      var industryGroup = this.industrySector.append("g")
-        .attr("class", this.slugify(section.key))
-
-      // create an entire new chart here
-      this.setupChart(section.values, "industry")
-    })
+    // industry group headline
+    industryGroups
+      .append("text")
+        .text((d) => d.key)
+        .attr("class", "industry-title")
+        .attr("x", -this.margins.left)
+        .attr("dx", 24)
+        .attr("dy", "-1.5em")
 
     this.svg.attr("height", this.yOffset)
 
@@ -236,27 +223,11 @@ var visualizer = {
             y: yOffset + radius * 1.5
           };
 
-      // if (clusterKey === "industry"){
-      //   debugger
-      // }
-
-      // this.mainGroup.append("rect")
-      // .attr("x", clusterData.x-1)
-      // .attr("y", clusterData.y-1)
-      // .attr("key", subsection.key)
-      // .attr("radius", radius)
-      // .attr("width", 2)
-      // .attr("height", 2)
-      // .attr("r", 1)
-      // .attr("fill", "red")
-
       subsection.values.forEach((node) => {
         node.clusters = (node.clusters || {})
         node.radius = this.weeksToRadius(this.reduceTotalWeeks([node]))
         node.clusters[clusterKey] = clusterData
       })
-
-      // this.positionAroundCluster(subsection.values)
 
       yOffset += radius * 3
     })
@@ -289,32 +260,37 @@ var visualizer = {
   slugify: function(s){
     return s.toLowerCase().replace(/[^a-zA-Z\d\s:]/g, "").replace(/\s+/g,"-")
   },
-  draw: function(){
-    var self = this
+  buildAxis: function(){
 
-    this.axisGroup.x.append("line")
+    var axisGroup = this.defs.append("g").attr({
+      "id": "x-axis",
+      "class": "axis x",
+      "transform": `translate(0,-10)`
+    })
+
+    axisGroup.append("line")
       .attr("class", "line")
       .attr("x1", 0)
       .attr("x2", this.width)
 
     // axis labels
-    this.axisLabelsGroup = this.axisGroup.x
+    var axisLabelsGroup = axisGroup
       .append("g")
       .attr("class", "label-group")
       .attr("transform", `translate(-10,-2)`)
 
-    this.axisLabelsGroup
+    axisLabelsGroup
       .append("text")
       .attr("class", "heading")
       .attr("dy", "-0.7em")
       .text("Paid leave")
 
-    this.axisLabelsGroup
+    axisLabelsGroup
       .append("text")
       .attr("class", "heading-unit")
       .text("(weeks)")
 
-    var xTickGroups = this.axisGroup.x.selectAll("g.tick")
+    var axisTickGroups = axisGroup.selectAll("g.tick")
       .data(this.sections.byPaid)
       .enter()
       .append("g")
@@ -322,18 +298,27 @@ var visualizer = {
       .attr("transform", (d) => `translate(${d.x0 + d.width/2}, 0)`)
 
     // tick labels
-    xTickGroups
+    axisTickGroups
       .append("text")
       .text((d) => d.key)
       .attr("y", "-0.5em")
       .attr("dy", "0")
 
     // tick notches
-    xTickGroups
+    axisTickGroups
       .append("line")
       .attr("y1", 0)
       .attr("y2", 5)
 
+  },
+  addAxisToGroup: function(group){
+    group.append("use").attr("xlink:href", "#x-axis")
+  },
+  draw: function(){
+    var self = this
+
+    this.buildAxis()
+    this.addAxisToGroup(this.mainGroup)
 
     this.bubbleGroups = this.mainGroup.selectAll("g.bubble-group")
       .data(this.dataset)
@@ -411,16 +396,36 @@ var visualizer = {
       })
       .start()
   },
-  setupChart: function(dataset, clusterKey="all"){
+  setupChart: function(dataset, groupElement, clusterKey="all"){
     var sections = this.nestedStructure("paidLeave").entries(dataset),
         yOffset = this.yOffset || 0
 
     this.yOffset = yOffset
 
+    if(groupElement){
+      groupElement.attr("transform", `translate(0,${this.yOffset})`)
+    }
+
+    var chartOptions = this.root.append("div")
+      .attr("class", "chart-options")
+      .style("top", `${Math.round(this.yOffset)}px`)
+      .style("right", `${this.margins.right}px`)
+
     // this should only happen for the first call
     if(clusterKey === "all"){
       this.sections = (this.sections || {})
       this.sections.byPaid = this.processSectionsByPaid(sections)
+    } else {
+      chartOptions
+        .append("div")
+          .attr("class", "options")
+          .selectAll("a")
+            .data(
+              d3.nest().key((d) => d.subclassification).entries(dataset)
+            )
+            .enter()
+            .append("a")
+            .text((d) => d.key)
     }
 
     // begin building out the clusters for each section
@@ -439,7 +444,7 @@ var visualizer = {
         this.nestedStructure("unpaidLeave").entries(section.values).reverse(),
         yOffset,
         clusterKey
-      )
+      ) + this.margins.bottom + this.margins.top
     })
 
     this.yOffset += d3.max(sectionHeights)

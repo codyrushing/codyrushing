@@ -1,4 +1,6 @@
 .maternity-visualizer {
+  position: relative;
+
   .axis {
     position: fixed;
     line {
@@ -22,6 +24,19 @@
       }
     }
 
+    .industries .label-group {
+      .heading {
+        font-size: 1em;
+      }
+    }
+
+  }
+
+  .industries {
+    .industry-title {
+      font-size: 3em;
+      @include headingFont;
+    }
   }
 
   .bubble-group {
@@ -35,4 +50,10 @@
       stroke: none;
     }
   }
+
+  .chart-options {
+    position: absolute;
+    right: 0;
+  }
+
 }
