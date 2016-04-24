@@ -6,6 +6,8 @@ $tooltipAccentSize: 6px;
   padding: 10px;
   border: 1px solid darken($bgColor, 10%);
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  min-width: 300px;
+  max-width: 400px;
   .tooltip-accent {
     position: absolute;
   }
@@ -27,17 +29,56 @@ $tooltipAccentSize: 6px;
     border-left: $tooltipAccentSize solid transparent;
   }
 
+  h3 {
+    @include bodyFont;
+    margin: 0;
+    padding: 0;
+  }
+
+  .stats {
+    padding-bottom: 10px;
+  }
+
   .item {
     @include clearfix();
-    padding: 4px 0;
+    clear: both;
+    padding: 8px 0 0;
+    font-size: 1.1em;
+    border-bottom: 1px dotted #ccc;
+    &:first-child {
+      padding-top: 0;
+    }
+    span {
+      background: $bgColor;
+      padding-bottom: 1px;
+      position: relative;
+      bottom: -3px;
+    }
+    &.sub {
+      font-size: 0.8em;
+      line-height: 1;
+      padding: 2px 0 0;
+      margin-left: 10px;
+    }
+    &.sub + .sub {
+      padding-top: 0px;
+    }
+  }
+
+  .item-label,
+  .item-value {
+    display: block;
   }
 
   .item-label {
+    float: left;
+    padding-right: 0.3em;
     color: lighten($textColor, 30%)
   }
 
   .item-value {
     float: right;
+    padding-left: 0.3em;
     &.positive {
       color: green;
       font-weight: bold;

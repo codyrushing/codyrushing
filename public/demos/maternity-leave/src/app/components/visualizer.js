@@ -7,11 +7,16 @@ import tooltipTemplate from "../templates/tooltip"
 var visualizer = {
   init: function({url, element}){
     this.root = d3.select(element)
-    this.initDOM()
+
+    this.clusterKey = "all"
+
     isotip.init({
       html: true,
       removalDelay: 0
     })
+
+    this.initDOM()
+
     this.loadData(url, (data) => {
       this.dataset = data.filter((node, i) => {
         return node.paidLeave !== null
@@ -24,6 +29,7 @@ var visualizer = {
   initDOM: function({width=960, height=600, margins={top:50, right:50, bottom:50, left:120}}={}){
     this.width = width
     this.margins = margins
+
     this.svg = this.root.append("svg")
       .attr({
         "class": "maternity-visualizer",
@@ -125,7 +131,10 @@ var visualizer = {
   weeksToRadius: function(weeks){
     return Math.sqrt(weeks) + 1
   },
-  processSectionsByIndustry: function(sectionsByIndustry){
+  processSectionsByIndustry: function(dataset){
+    var sectionsByIndustry = d3.nest().key((d) => d.industry).entries(dataset),
+        standaloneThreshold = Math.floor(sectionsByIndustry.length/2)
+
     sectionsByIndustry.forEach((section) => {
       section.mean = d3.mean(section.values, this.xAccessor)
       section.median = d3.median(section.values, this.xAccessor)
@@ -138,14 +147,38 @@ var visualizer = {
         node.diffFromMedianOverall = (node.paidLeave - this.overall.median) / this.overall.median
         node.diffFromMedianIndustry = (node.paidLeave - section.median) / section.median
       })
-
     })
 
+    // sort industry cohorts by # of companies they have
     sectionsByIndustry.sort((a,b) => {
-      if(b.key === "N/A") return -1
-      if(a.key === "N/A") return 1
-      return b.median - a.median
+      return b.values.length - a.values.length
     })
+
+    // the top half of industries get their own standalone graph in the industry breakdown
+    this.singularIndustrySections = sectionsByIndustry.slice(0, standaloneThreshold)
+    // the remaining get grouped
+    this.singularIndustrySections.push({
+      key: "Miscellaneous",
+      values: sectionsByIndustry.slice(standaloneThreshold, sectionsByIndustry.length)
+        .reduce((a,b) => {
+          return a.concat(b.values)
+        }, [])
+    })
+
+    this.industrySector = this.svg.append("g")
+      .attr("class", "industries")
+
+    this.singularIndustrySections.forEach((section, i) => {
+      var industryGroup = this.industrySector.append("g")
+        .attr("class", this.slugify(section.key))
+
+      // create an entire new chart here
+      this.setupChart(section.values, "industry")
+    })
+
+    this.svg.attr("height", this.yOffset)
+
+    return sectionsByIndustry
   },
   processSectionsByPaid: function(sectionsByPaid){
     // width of sections are based upon their largest cluster
@@ -178,30 +211,34 @@ var visualizer = {
 
     sectionsByPaid.forEach((section,i) => {
       var prev = sectionsByPaid[i-1] || {x0: 0, x1:0}
+
       // use the number of weeks in our max cluster to determine width of section
       section.width = Math.sqrt(this.reduceTotalWeeks(maxClusters[i].values)) / totalMaxClusterRadius * workableWidth
       section.x0 = prev.x1 + sectionPadding
       section.x1 = section.x0 + section.width + sectionPadding
 
-      // begin building out the clusters for each section
-      this.processSubsectionsByUnpaid(
-        section,
-        section.subsectionsByUnpaid
-      )
+      // draw mean rectangle
+      if(parseInt(section.key) === this.overall.mean){
+        // do something
+      }
 
     })
+
+    return sectionsByPaid
   },
-  processSubsectionsByUnpaid: function(section, subsectionsByUnpaid){
-    var yOffset = 0
+  processSubsectionsByUnpaid: function(section, subsectionsByUnpaid, yOffset, clusterKey){
+    var originalYOffset = yOffset
     subsectionsByUnpaid.forEach((subsection, i) => {
       var radius = this.weeksToRadius(this.reduceTotalWeeks(subsection.values)),
-          packingBoxDimensions = [1, 1],
           clusterData = {
             radius: radius,
             x: section.x0 + section.width/2,
             y: yOffset + radius * 1.5
-          },
-          packLayout
+          };
+
+      // if (clusterKey === "industry"){
+      //   debugger
+      // }
 
       // this.mainGroup.append("rect")
       // .attr("x", clusterData.x-1)
@@ -213,28 +250,41 @@ var visualizer = {
       // .attr("r", 1)
       // .attr("fill", "red")
 
-      subsection.values.forEach((node, i, arr) => {
+      subsection.values.forEach((node) => {
+        node.clusters = (node.clusters || {})
         node.radius = this.weeksToRadius(this.reduceTotalWeeks([node]))
-        node.cluster = clusterData
+        node.clusters[clusterKey] = clusterData
       })
 
-      packLayout = d3.layout.pack()
-        .size(packingBoxDimensions)
-        .padding(10)
-        .value((d) => {
-          return d.radius * d.radius
-        })
-        .nodes({
-          children: subsection.values
-        })
-
-      subsection.values.forEach((node,i) => {
-        node.x += node.cluster.x - packingBoxDimensions[0]/2 + Math.random()
-        node.y += node.cluster.y - packingBoxDimensions[1]/2 + Math.random()
-      })
+      // this.positionAroundCluster(subsection.values)
 
       yOffset += radius * 3
     })
+    return yOffset - originalYOffset
+  },
+  positionAroundCluster: function(dataset){
+
+    this.nestedStructure("paidLeave").entries(dataset).forEach((section) => {
+      this.nestedStructure("unpaidLeave").entries(section.values).reverse().forEach((subsection) => {
+        var packingBoxDimensions = [1, 1],
+            packLayout = d3.layout.pack()
+              .size([packingBoxDimensions])
+              .padding(10)
+              .value((d) => {
+                return d.radius * d.radius
+              })
+              .nodes({
+                children: subsection.values
+              })
+
+        subsection.values.forEach((node) => {
+          node.x = node.clusters[this.clusterKey].x - packingBoxDimensions[0]/2 + Math.random()
+          node.y = node.clusters[this.clusterKey].y - packingBoxDimensions[1]/2 + Math.random()
+        })
+
+      })
+    })
+
   },
   slugify: function(s){
     return s.toLowerCase().replace(/[^a-zA-Z\d\s:]/g, "").replace(/\s+/g,"-")
@@ -360,34 +410,62 @@ var visualizer = {
         return this.onTick(e)
       })
       .start()
+  },
+  setupChart: function(dataset, clusterKey="all"){
+    var sections = this.nestedStructure("paidLeave").entries(dataset),
+        yOffset = this.yOffset || 0
 
-    // for(var n=100; n>0; n--){
-    //   this.forceLayout.tick()
-    // }
-    //
-    // this.forceLayout.stop()
+    this.yOffset = yOffset
+
+    // this should only happen for the first call
+    if(clusterKey === "all"){
+      this.sections = (this.sections || {})
+      this.sections.byPaid = this.processSectionsByPaid(sections)
+    }
+
+    // begin building out the clusters for each section
+    var sectionHeights = sections.map((section) => {
+      let paidSection = section
+      // if we already have established paid sections,
+      // then find the corresponding paid section
+      if(clusterKey !== "all"){
+        paidSection = this.sections.byPaid.find((item) => {
+          return section.key === item.key
+        })
+      }
+
+      return this.processSubsectionsByUnpaid(
+        paidSection,
+        this.nestedStructure("unpaidLeave").entries(section.values).reverse(),
+        yOffset,
+        clusterKey
+      )
+    })
+
+    this.yOffset += d3.max(sectionHeights)
   },
   processData: function(){
     this.overall = {
       mean: d3.mean(this.dataset, this.xAccessor),
-      median: d3.mean(this.dataset, this.xAccessor)
-    }
-
-    this.sections = {
-      byPaid: this.nestedStructure("paidLeave").entries(this.dataset),
-      byIndustry: d3.nest().key((d) => d.industry).entries(this.dataset)
+      median: d3.median(this.dataset, this.xAccessor)
     }
 
     this.scale = {
       color: d3.scale.linear()
           .domain( d3.extent(this.dataset.map(this.xAccessor)) )
-          .range(["#00A4FF", "#06D800"])
+          .range(["#6FC6F7", "#27CC22"])
           .interpolate(d3.interpolateLab)
     }
 
-    this.processSectionsByIndustry(this.sections.byIndustry)
-    this.processSectionsByPaid(this.sections.byPaid)
+    this.setupChart(this.dataset)
+    this.processSectionsByIndustry(this.dataset)
+    this.positionAroundCluster(this.dataset)
 
+    setTimeout(() => {
+      this.clusterKey = "industry"
+      this.positionAroundCluster(this.dataset)
+      this.forceLayout.start()
+    }, 5000)
   },
   onTick: function(e) {
     if(e.alpha < 0.05){
@@ -410,8 +488,8 @@ var visualizer = {
   moveTowardCluster: function(alpha){
     var damper = 0.202
     return (d) => {
-      d.x = d.x + (d.cluster.x - d.x) * damper * alpha
-      d.y = d.y + (d.cluster.y - d.y) * damper * alpha
+      d.x = d.x + (d.clusters[this.clusterKey].x - d.x) * damper * alpha
+      d.y = d.y + (d.clusters[this.clusterKey].y - d.y) * damper * alpha
     }
   },
   bounceBack: function(alpha){
@@ -429,7 +507,7 @@ var visualizer = {
   },
   cluster: function(alpha){
     return function(d) {
-      var cluster = d.cluster;
+      var cluster = d.clusters[this.clusterKey];
       if (cluster === d) return;
       var x = d.x - cluster.x,
           y = d.y - cluster.y,
@@ -445,34 +523,36 @@ var visualizer = {
     };
   },
   collide: function(alpha){
-    var padding = 0, // separation between same-color nodes
-        clusterPadding = 10, // separation between different-color nodes
-        maxRadius = this.weeksToRadius(52);
+    var padding = 0, // separation between nodes within cluster
+        clusterPadding = 10, // separation between clusters
+        maxRadius = this.weeksToRadius(52)
 
-    var quadtree = d3.geom.quadtree(this.dataset);
-    return function(d) {
+    var quadtree = d3.geom.quadtree(this.dataset)
+    return (d) => {
       var r = d.radius + maxRadius + Math.max(padding, clusterPadding),
           nx1 = d.x - r,
           nx2 = d.x + r,
           ny1 = d.y - r,
-          ny2 = d.y + r;
-      quadtree.visit(function(quad, x1, y1, x2, y2) {
+          ny2 = d.y + r
+
+      quadtree.visit((quad, x1, y1, x2, y2) => {
         if (quad.point && (quad.point !== d)) {
           var x = d.x - quad.point.x,
               y = d.y - quad.point.y,
               l = Math.sqrt(x * x + y * y),
-              r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? padding : clusterPadding);
+              r = d.radius + quad.point.radius + (d.clusters[this.clusterKey] === quad.point.clusters[this.clusterKey] ? padding : clusterPadding)
+
           if (l < r) {
-            l = (l - r) / l * alpha;
-            d.x -= x *= l;
-            d.y -= y *= l;
-            quad.point.x += x;
-            quad.point.y += y;
+            l = (l - r) / l * alpha
+            d.x -= x *= l
+            d.y -= y *= l
+            quad.point.x += x
+            quad.point.y += y
           }
         }
-        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-      });
-    };
+        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1
+      })
+    }
   },
   loadData: function(url, done){
     if(!url) throw new Error("Data url must be provided")

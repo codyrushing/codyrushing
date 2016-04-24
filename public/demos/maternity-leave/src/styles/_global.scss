@@ -13,7 +13,7 @@ $textColor: #333;
     content: "";
     display: table;
     clear: both;
-  }  
+  }
 }
 
 * {
@@ -23,6 +23,7 @@ $textColor: #333;
 body {
   @include bodyFont;
   font-size: 14px;
+  line-height: 1.2;
   color: $textColor;
 }
 
