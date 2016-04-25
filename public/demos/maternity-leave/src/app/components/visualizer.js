@@ -27,7 +27,7 @@ var visualizer = {
     })
     return this
   },
-  initDOM: function({width=1100, height=600, margins={top:100, right:50, bottom:50, left:120}}={}){
+  initDOM: function({width=1100, height=600, margins={top:150, right:50, bottom:50, left:120}}={}){
     this.width = width
     this.margins = margins
 
@@ -150,7 +150,7 @@ var visualizer = {
           var self = this
           this.addAxisToGroup(groups)
           groups.each(function(d){
-            self.setupChart(d.values, d3.select(this), "industry")
+            self.setupChart(d.values, d3.select(this), d, "industry")
           })
         })
 
@@ -396,7 +396,7 @@ var visualizer = {
       })
       .start()
   },
-  setupChart: function(dataset, groupElement, clusterKey="all"){
+  setupChart: function(dataset, groupElement, cohort, clusterKey="all"){
     var sections = this.nestedStructure("paidLeave").entries(dataset),
         yOffset = this.yOffset || 0
 
@@ -406,8 +406,8 @@ var visualizer = {
       groupElement.attr("transform", `translate(0,${this.yOffset})`)
     }
 
-    var chartOptions = this.root.append("div")
-      .attr("class", "chart-options")
+    var chartFilters = this.root.append("div")
+      .attr("class", "chart-filters")
       .style("top", `${Math.round(this.yOffset)}px`)
       .style("right", `${this.margins.right}px`)
 
@@ -416,16 +416,40 @@ var visualizer = {
       this.sections = (this.sections || {})
       this.sections.byPaid = this.processSectionsByPaid(sections)
     } else {
-      chartOptions
-        .append("div")
-          .attr("class", "options")
+      chartFilters
           .selectAll("a")
             .data(
-              d3.nest().key((d) => d.subclassification).entries(dataset)
+              d3.nest().key((d) => d.subclassification)
+              .entries(dataset)
+              .filter((subsection) => {
+                // remove subsections if its name is an empty or it only has one node
+                return subsection.key && subsection.values.length > 1
+              })
+              .sort((a,b) => {
+                return b.values.length - a.values.length
+              })
             )
             .enter()
             .append("a")
-            .text((d) => d.key)
+              .attr("class", "filter-link")
+              .text((d) => d.key)
+              .attr("data-industry", cohort.key)
+              .attr("data-subclassification", (d) => d.key)
+              .on("click", (d, i) => {
+                var e = d3.event,
+                    el = d3.select(e.target)
+
+                el
+                  .classed({
+                    "active": !e.target.classList.contains("active")
+                  })
+
+                this.toggleFilter([
+                  el.attr("data-industry"),
+                  el.attr("data-subclassification")
+                ])
+
+              })
     }
 
     // begin building out the clusters for each section
@@ -448,6 +472,34 @@ var visualizer = {
     })
 
     this.yOffset += d3.max(sectionHeights)
+  },
+  toggleFilter: function(filterPair){
+    var filterGroup
+    this.filters = (this.filters || {})
+    filterGroup = this.filters[filterPair[0]]
+    if (filterGroup && filterGroup.includes(filterGroup[1])){
+      console.log(``)
+      this.removeFilter(filterPair)
+    } else {
+      this.addFilter(filterPair)
+    }
+  },
+  addFilter: function(filterPair){
+    var filterGroup
+    this.filters = (this.filters || {})
+    this.filters[filterPair[0]] = (this.filters[filterPair[0]] || [])
+    this.filters[filterPair[0]].push(filterPair[1])
+    this.filterChanged()
+  },
+  removeFilter: function(filterPair){
+    var filterGroup
+    this.filters = (this.filters || {})
+    this.filters[filterPair[0]] = (this.filters[filterPair[0]] || [])
+    this.filters[filterPair[0]] = this.filters[filterPair[0]].filter((filterValue) => filterValue !== filterPair[1])
+    this.filterChanged()
+  },
+  filterChanged: function(){
+    console.log(this.filters)
   },
   processData: function(){
     this.overall = {
