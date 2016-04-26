@@ -3,6 +3,7 @@ $tooltipAccentSize: 6px;
 
 .tooltip {
   background: $bgColor;
+  z-index: 3;
   padding: 10px;
   border: 1px solid darken($bgColor, 10%);
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);

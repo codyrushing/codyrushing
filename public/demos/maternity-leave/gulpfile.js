@@ -81,6 +81,11 @@ gulp.task("js", ["eslint"], () => {
     .pipe(source("app.js"))
     .pipe(gulp.dest(paths.dist.js))
     .pipe(gulpPlugins.notify("app.js built :)"))
+    .pipe(gulpPlugins.streamify(gulpPlugins.uglify()))
+    .pipe(gulpPlugins.rename({
+      suffix: ".min"
+    }))
+    .pipe(gulp.dest(paths.dist.js))
 })
 
 gulp.task("templates", function(){

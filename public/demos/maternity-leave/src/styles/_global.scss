@@ -27,6 +27,12 @@ body {
   color: $textColor;
 }
 
+a:focus,
+button:focus,
+input:focus {
+  outline: none;
+}
+
 h1,
 h2,
 h3,

@@ -76,7 +76,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 28195,"Opower","Technology","Software",17,null
 27710,"Linkedin","Technology","Consumer Internet",16,null
 31836,"Blue State Digital","Advertising",,16,null
-28228,"SunEdison","Natural Resources","Diversified Energy ",16,null
+28228,"SunEdison","Natural Resources","Diversified Energy",16,null
 27974,"Goldman Sachs","Finance","Diversified",16,16
 29544,"Media Math","Technology","B2B Tech Services",16,null
 28237,"Airbnb, Inc.","Technology","Consumer Internet",16,null
@@ -119,7 +119,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 30755,"Chegg","Technology","Consumer Internet",16,null
 27911,"Sedgwick LLP","Law Firm",,16,null
 29479,"The Nation","Publishing",,16,null
-21582,"korn ferry","Business Services","Staffing & Outsourcing ",16,null
+21582,"korn ferry","Business Services","Staffing & Outsourcing",16,null
 28176,"Blackstone Group","Finance","Diversified",16,null
 27666,"Johnson & Johnson","Pharmaceutical",,16,null
 28181,"Vodafone Group PLC","Telecommunications",,16,null
@@ -127,7 +127,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 21617,"Palantir","Technology","Software",16,null
 40009,"15Five","Technology","Software",16,null
 27694,"KPMG","Consulting Services",,16,0
-33875,"ustwo","Design ",,16,null
+33875,"ustwo","Design",,16,null
 28598,"Maersk Group","Natural Resources","Oil & Gas",15,0
 27097,"Sheppard, Mullin, Richter & Hampton LLP","Law Firm",,15,null
 28235,"Box","Technology","Consumer Internet",14,null
@@ -265,7 +265,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 27562,"Fitzpatrick, Cella, Harper & Scinto","Law Firm",,12,null
 30151,"Kyruus","Technology","B2B Tech Services",12,null
 30919,"Federal Management Partners (FMP), Inc.","Consulting Services",,12,4
-31434,"Vox Media","Media","Diversified ",12,0
+31434,"Vox Media","Media","Diversified",12,0
 40651,"Feeding America","Nonprofit","Civic & Social",12,4
 27567,"Fortress Investment Group","Finance","Asset Management",12,null
 30156,"Fortune Magazine","Media","News",12,null
@@ -303,7 +303,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 31739,"Madison International Realty","Real Estate","Investment Trust",12,0
 34299,"Rackspace Inc.","Technology","B2B Tech Services",12,null
 31228,"Butzel Long","Law Firm",,12,null
-21524,"zenefits","Technology","B2B Tech Services ",12,null
+21524,"zenefits","Technology","B2B Tech Services",12,null
 27362,"Bain Capital","Finance","Asset Management",12,null
 27875,"Reed Smith LLP","Law Firm",,12,null
 27364,"Baker Botts LLP","Law Firm",,12,12
@@ -534,7 +534,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 29194,"Kelly Services OCG","Consulting Services",,8,null
 27886,"Robert Baird & Co.","Finance","Diversified",8,null
 27375,"Bayer AG","Pharmaceutical",,8,9
-29964,"audible","Technology","Manufacturing ",8,null
+29964,"audible","Technology","Manufacturing",8,null
 29200,"St. Edward's University","Educational Services","College & Universities",8,4
 27386,"Birchbox","Technology","Consumer Internet",8,4
 28695,"New Balance","Retail","Shoes, Accessories and Apparel",8,4
@@ -556,7 +556,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 27429,"CenturyLink, Inc.","Telecommunications",,8,null
 29506,"Capella University","Educational Services","College & Universities",8,4
 27944,"State Street Corporation","Finance","Diversified",8,null
-27947,"Stryker Corporation","Healthcare","Medical Devices ",8,4
+27947,"Stryker Corporation","Healthcare","Medical Devices",8,4
 32590,"FM Global","Insurance","Property & Casualty",8,null
 29263,"alnylam","Pharmaceutical",,8,4
 39508,"The Aspen Institute","Nonprofit","Public Policy",8,4
@@ -600,7 +600,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 31072,"University of Pittsburgh Medical Center","Healthcare","Hospitals & Clinics",6,6
 30308,"Carestream","Healthcare","Services",6,null
 30053,"FSG","Consulting Services",,6,18
-30309,"Abbott Vascular","Healthcare","Medical Devices ",6,12
+30309,"Abbott Vascular","Healthcare","Medical Devices",6,12
 29798,"Invesco","Finance","Asset Management",6,6
 42086,"Carlson Capital, LP","Finance","Asset Management",6,6
 27978,"The Sherwin-Williams Company","Industrial","Building Materials Manufacturing",6,null
@@ -612,7 +612,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 30570,"Vanderbilt University","Educational Services","College & Universities",6,6
 27726,"Marshalls","Retail","Department Store",6,null
 30061,"Windstream Communications","Telecommunications",,6,null
-21659,"GlobalFoundries","Technology","Manufacturing ",6,6
+21659,"GlobalFoundries","Technology","Manufacturing",6,6
 31598,"University of California, San Diego","Educational Services","College & Universities",6,null
 26943,"Sierra Club","Nonprofit","Environmental Organization",6,6
 28243,"Sephora","Cosmetics",,6,6
@@ -662,7 +662,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 30869,"Bottle Rocket LLC","Technology","Software",6,6
 33686,"American Society for the Prevention of Cruelty to Animals","Nonprofit","Animal Welfare",6,6
 28027,"Valeant","Pharmaceutical",,6,6
-28283,"Creganna Medical","Healthcare","Medical Devices ",6,6
+28283,"Creganna Medical","Healthcare","Medical Devices",6,6
 27772,"Neiman Marcus","Retail","Department Store",6,9
 28284,"Liberty Property Trust","Real Estate","Investment Trust",6,6
 32666,"Michaels","Retail","Crafts, Fabrics & Party Supplies",6,6
@@ -702,8 +702,8 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 27542,"Exelon Corporation","Natural Resources","Electric Power Generation",6,6
 28054,"Anthem, Inc.","Insurance","Health",6,6
 28310,"Garmin","Technology","Manufacturing",6,6
-31155,"Dentsply International","Healthcare","Medical Devices ",6,6
-27019,"Mccormick","Consumer Packaged Goods","Packaged Foods ",6,null
+31155,"Dentsply International","Healthcare","Medical Devices",6,6
+27019,"Mccormick","Consumer Packaged Goods","Packaged Foods",6,null
 29620,"George Washington University","Educational Services","College & Universities",6,6
 27545,"Exxon Mobil","Natural Resources","Oil & Gas",6,22
 28313,"march of dimes","Nonprofit","Healthcare",6,18
@@ -721,7 +721,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 29378,"CWCapital","Real Estate","Investment Trust",6,6
 32450,"Cardinal Solutions","Technology","B2B Tech Services",6,6
 30405,"Expeditors International","Transportation","Freight & Logistics",6,6
-38085,"American Academy Of Pediatrics","Nonprofit","Medical ",6,10
+38085,"American Academy Of Pediatrics","Nonprofit","Medical",6,10
 27305,"Abercrombie & Fitch","Retail","Shoes, Accessories and Apparel",6,6
 27561,"Fitch Ratings","Information Services","Financial",6,6
 29894,"Cadillac","Automotive","Manufacturers",6,6
@@ -766,7 +766,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 27083,"Cargill","Natural Resources","Agriculture and Food Processing",6,6
 29928,"The Wharton School of the University of Pennsylvania","Educational Services","College & Universities",6,6
 29418,"hautelook","Retail","Online",6,6
-31469,"Sungard Availability Services","Technology","B2B Tech Services ",6,6
+31469,"Sungard Availability Services","Technology","B2B Tech Services",6,6
 27345,"Aramark Holdings Corporation","Business Services","Food & Hospitality",6,0
 27857,"Procter & Gamble","Consumer Packaged Goods","Packaged Products",6,46
 28654,"Lubrizol","Natural Resources","Chemicals",6,null
@@ -805,18 +805,18 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 27625,"Honeywell International Inc.","Industrial","Diversified",6,12
 28678,"Parallon","Healthcare","Services",6,null
 32518,"California State University, Northridge","Educational Services","College & Universities",6,null
-30215,"Boston Scientific","Healthcare","Medical Devices ",6,6
+30215,"Boston Scientific","Healthcare","Medical Devices",6,6
 35847,"California State University, Sacramento","Educational Services","College & Universities",6,null
 27883,"Revlon","Cosmetics",,6,6
 30217,"The Bon-Ton Stores","Retail","Department Store",6,null
-27373,"Bausch & Lomb","Healthcare","Medical Devices ",6,null
+27373,"Bausch & Lomb","Healthcare","Medical Devices",6,null
 27885,"Rite Aid Corporation","Pharmacies & Drug Stores",,6,null
-27374,"Baxter International Inc.","Healthcare","Medical Devices ",6,12
+27374,"Baxter International Inc.","Healthcare","Medical Devices",6,12
 29451,"Solstice Mobile","Technology","B2B Tech Services",6,null
 31244,"Amdocs","Technology","B2B Tech Services",6,null
 29454,"Astellas Pharma","Pharmaceutical",,6,null
-27379,"Becton, Dickinson and Company","Healthcare","Medical Devices ",6,6
-35345,"Alere Inc","Healthcare","Medical Devices ",6,12
+27379,"Becton, Dickinson and Company","Healthcare","Medical Devices",6,6
+35345,"Alere Inc","Healthcare","Medical Devices",6,12
 27894,"Royal Bank of Scotland Group","Finance","Diversified",6,null
 29203,"WebMD","Technology","Consumer Internet",6,6
 27128,"NYU School of Medicine","Educational Services","College & Universities",6,8
@@ -824,7 +824,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 37653,"British Airways","Transportation","Passenger Air",6,null
 29974,"UF Health","Healthcare","Hospitals & Clinics",6,6
 37142,"American Management Association","Nonprofit","Professional Development",6,6
-35607,"Bard Medical","Healthcare","Medical Devices ",6,5
+35607,"Bard Medical","Healthcare","Medical Devices",6,5
 27389,"Blue Cross Blue Shield","Insurance","Health",6,6
 30746,"FHI 360","Nonprofit","Development",6,6
 29979,"Angie's List","Technology","Consumer Internet",6,6
@@ -840,7 +840,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 27655,"J.C. Penney Company, Inc.","Retail","Department Store",6,4
 29220,"Joy Global Inc","Industrial","Equipment Manufacturing",6,6
 33060,"Sterling Brands","Advertising",,6,null
-29477,"Paychex Inc","Business Services","Staffing & Outsourcing ",6,null
+29477,"Paychex Inc","Business Services","Staffing & Outsourcing",6,null
 31014,"Say Media","Advertising",,6,null
 29992,"Cadence Design Systems","Technology","Manufacturing",6,6
 30505,"University of Minnesota","Educational Services","College & Universities",6,6
@@ -851,7 +851,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 29741,"Santander","Finance","Personal & Commercial Banking",6,6
 21897,"Quintiles Transnational","Pharmaceutical",,6,null
 29487,"INC Research ","Pharmaceutical",,6,6
-30255,"Bard","Healthcare","Medical Devices ",6,6
+30255,"Bard","Healthcare","Medical Devices",6,6
 27411,"Cameron International Corporation","Natural Resources","Oilfield Services",6,6
 27923,"Sikorsky","Aerospace",,6,null
 28976,"mylan","Pharmaceutical",,6,null
@@ -918,8 +918,8 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 30185,"New Hampshire Department of Health and Human Services","Government","State",5,7
 38641,"PC Connection","Technology","B2B Tech Services",5,1
 27874,"Raytheon Company","Technology","Security",5,7
-30984,"Straumann Group","Healthcare","Medical Devices ",5,7
-28685,"Hologic","Healthcare","Medical Devices ",5,8
+30984,"Straumann Group","Healthcare","Medical Devices",5,7
+28685,"Hologic","Healthcare","Medical Devices",5,8
 27382,"Berkshire Hathaway","Conglomerate",,5,0
 27383,"Best Buy Co., Inc.","Retail","Electronics",5,7
 35884,"Baptist Health South Florida","Healthcare","Hospitals & Clinics",5,7
@@ -938,9 +938,9 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 33716,"American Institutes for Research","Nonprofit","Research",4,null
 28066,"Winn Dixie","Retail","Supermarket Company",4,24
 27813,"Ogilvy & Mather","Advertising",,4,null
-29634,"APS Healthcare, Inc","Healthcare","Behavioral ",4,0
+29634,"APS Healthcare, Inc","Healthcare","Behavioral",4,0
 28617,"Massachusetts General Hospital","Healthcare","Hospitals & Clinics",4,8
-29137,"Varian Medical Systems","Healthcare","Medical Devices ",4,null
+29137,"Varian Medical Systems","Healthcare","Medical Devices",4,null
 36562,"Major League Baseball","Sports",,4,12
 27061,"General assembly","Educational Services","Management",4,5
 29654,"Moss Adams","Accounting Services",,4,null
@@ -1037,7 +1037,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 28056,"Western Digital Corporation","Technology","Manufacturing",1,12
 28086,"Schoolzilla","Technology","B2B Tech Services",1,null
 30931,"Harrison and Star","Advertising",,1,null
-32475,"Benco Dental","Healthcare","Medical Devices ",1,null
+32475,"Benco Dental","Healthcare","Medical Devices",1,null
 30173,"CubeSmart","Real Estate","Other",1,11
 27855,"Princeton Review","Educational Services","Management",1,null
 21822,"Meredith Corporation","Media","Diversified",1,null
@@ -1074,7 +1074,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 36977,"AlliedBarton Security Services","Business Services","Security",0,4
 30324,"The BNSF Railway","Transportation","Rail",0,null
 33397,"Grady Health System","Healthcare","Hospitals & Clinics",0,null
-33655,"Skyhook Wireless","Technology","B2B Tech Services ",0,null
+33655,"Skyhook Wireless","Technology","B2B Tech Services",0,null
 30585,"American Red Cross","Nonprofit","Humanitarian Aid Organization",0,6
 35449,"Everlast Worldwide Inc","Retail","Shoes, Accessories and Apparel",0,null
 30843,"NC State University","Educational Services","College & Universities",0,null
@@ -1164,7 +1164,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 33534,"Boston Public Library","Nonprofit","Libraries",0,12
 27106,"Popeyes Louisiana Kitchen","Hospitality","Restaurants",0,12
 30465,"Payless ShoeSource","Retail","Shoes, Accessories and Apparel",0,12
-36354,"Ashoka","Nonprofit","Civic & Social ",0,null
+36354,"Ashoka","Nonprofit","Civic & Social",0,null
 30723,"RTI International","Nonprofit","Research",0,32
 29957,"overstock.com","Retail","Online",0,12
 33029,"State of Washington","Government","State",0,12
@@ -1186,7 +1186,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 28454,"Spacex","Aerospace",,0,12
 42535,"Legacy.com","Business Services","Technology Solutions",0,null
 27660,"Jacobs Engineering Group Inc.","Industrial","Engineering",0,12
-30762,"Advanced Bionics Corporation","Healthcare","Medical Devices ",0,12
+30762,"Advanced Bionics Corporation","Healthcare","Medical Devices",0,12
 21585,"Univar","Natural Resources","Chemicals",0,12
 37423,"Atlas Travel","Leisure, Travel & Tourism",,0,null
 30256,"Ball Aerospace","Aerospace",,0,null
@@ -1198,7 +1198,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 31797,"YWCA","Nonprofit","Civic & Social",0,6
 41527,"Lutheran Family Services Rocky Mountains","Nonprofit","Family Care",0,null
 27931,"Sodexo","Business Services","Food & Hospitality",0,12
-37176,"Colorado Public Radio","Media","Diversified ",0,null
+37176,"Colorado Public Radio","Media","Diversified",0,null
 39739,"Norwegian Cruise Line","Leisure, Travel & Tourism",,0,12
 29759,"ARES Corporation","Technology","Security",0,12
 28736,"menards","Retail","Furniture & Home Improvement",0,null
@@ -1230,7 +1230,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 27217,"University of Pennsylvania","Educational Services","College & Universities",null,12
 33646,"Barnabas Health","Healthcare","Hospitals & Clinics",null,12
 27992,"Toyota","Automotive","Manufacturers",null,12
-27226,"ACLU","Nonprofit","Civic & Social ",null,12
+27226,"ACLU","Nonprofit","Civic & Social",null,12
 28252,"Bessemer Trust","Finance","Asset Management",null,12
 28253,"Huntington Ingalls","Maritime",,null,12
 30080,"Centura Health","Healthcare","Hospitals & Clinics",null,12
@@ -1265,7 +1265,7 @@ id,name,industry,subclassification,leave_paid,leave_unpaid
 32708,"Atos","Technology","B2B Tech Services",null,12
 28072,"Wynn Las Vegas","Hospitality","Casinos",null,12
 32709,"Army Civilian Service","Government","Federal",null,12
-33733,"Archdiocese of Newark","Nonprofit","Religious ",null,12
+33733,"Archdiocese of Newark","Nonprofit","Religious",null,12
 28073,"Xcel Energy Inc.","Natural Resources","Electric & Gas Utility",null,12
 27563,"Flextronics","Electronics","Manufacturing",null,12
 27308,"Adecco S.A.","Business Services","Staffing & Outsourcing",null,12

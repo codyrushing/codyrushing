@@ -30,6 +30,8 @@ __Problem__ : some nodes are getting mixed into the wrong cluster.  i think this
 The problem is how the nodes are positioned around the cluster in the initialization
 > Each node is slightly offset from the corresponding cluster’s center using Math.random. Without this offset, same-colored nodes would be coincident, which would cause divide-by-zero problems for our custom forces.
 
+filter out subclassifications that have <2 nodes, no need to filter then
+
 More good examples:
 * [Gravity bubbles](http://www.triadsoft.com.ar/examples/gravity-bubbles.html)
 * [Gates foundation spending](http://vallandingham.me/bubble_chart/)

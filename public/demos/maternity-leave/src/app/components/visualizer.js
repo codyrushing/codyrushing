@@ -3,11 +3,14 @@ import d3 from "d3"
 import isotip from "isotip"
 
 import tooltipTemplate from "../templates/tooltip"
+import overallControlsTemplate from "../templates/overall-controls"
 
 var visualizer = {
   init: function({url, element}){
     this.root = d3.select(element)
       .classed("maternity-visualizer", true)
+
+    this.forceTemperature = 0.5
 
     this.clusterKey = "all"
 
@@ -27,11 +30,27 @@ var visualizer = {
     })
     return this
   },
-  initDOM: function({width=1100, height=600, margins={top:150, right:50, bottom:50, left:120}}={}){
+  initDOM: function({width=1100, height=600, margins={top:75, right:0, bottom:50, left:120}}={}){
     this.width = width
     this.margins = margins
+    this.sectorMargins = {
+      top: 150
+    }
 
-    this.svg = this.root.append("svg")
+    this.root
+      .style("width", `${this.width + this.margins.left + this.margins.right}px`)
+
+    this.overallControls = this.root.append("div")
+      .attr("class", "overall-controls")
+      .style("padding-left", `${this.margins.left}px`)
+      .html(overallControlsTemplate({
+        margins: this.margins
+      }))
+
+    this.graphContents = this.root.append("div")
+      .attr("class", "graph-contents")
+
+    this.svg = this.graphContents.append("svg")
       .attr({
         "class": "graph",
         "width": width + margins.left + margins.right,
@@ -73,6 +92,151 @@ var visualizer = {
         "transform": `translate(${margins.left}, ${margins.top})`
       })
 
+    this.bindEvents()
+
+  },
+  bindEvents: function(){
+    var input = this.overallControls.select("input"),
+        buttons = this.overallControls.selectAll("button")
+
+    input.on("keyup", () => {
+      var el = d3.event.currentTarget
+      this.searchByTerm(el.value)
+    })
+
+    buttons.on("click", () => {
+      this.updateViewStrategy(d3.event.currentTarget.getAttribute("data-cluster-key"))
+    })
+
+  },
+  updateViewStrategy: function(strategy){
+    if (this.clusterKey !== strategy){
+      this.clusterKey = strategy
+      if (strategy === "industry"){
+        this.transitionToIndustry()
+      } else if(strategy === "all"){
+        this.transitionToOverall()
+      }
+    }
+  },
+  endAll: function(transition, callback) {
+      var n = 0
+      transition
+          .each(function() { ++n })
+          .each("end", function() { if (!--n) callback.apply(this, arguments) })
+  },
+  transitionToIndustry: function(){
+    var ease = "quad-in-out",
+        duration = 1000
+
+    this.overallControls.selectAll("button")
+      .classed({
+        "active": function(d){
+          return this.getAttribute("data-cluster-key") === "industry"
+        }
+      })
+
+    this.svg.attr("height", this.yOffset)
+
+    this.root.classed({
+      "industry-view": true
+    })
+
+    this.graphContents.transition()
+      .ease(ease)
+      .duration(duration)
+      .styleTween("transform", (d, i, a) => {
+        var self = this
+        return function(t){
+          return `translate(0,${Math.round(self.overallViewHeight - self.margins.top) * -t}px)`
+        }
+      })
+
+    this.bubbleGroups.transition()
+      .ease(ease)
+      .duration(duration)
+      .attrTween("transform", (d, i, a) => {
+        var cluster = d.clusters[this.clusterKey]
+        return function(t){
+          var xDiff = cluster.x - d.x,
+              yDiff = cluster.y - d.y
+          return `translate(${d.x + xDiff*t},${d.y + yDiff*t})`
+        }
+      })
+      .call(this.endAll, () => {
+        this.positionAroundCluster(this.dataset)
+        this.forceTemperature = 0.1
+        this.forceLayout.start()
+      })
+  },
+  transitionToOverall: function(){
+    var ease = "quad-in-out",
+        duration = 1000
+
+    this.clearFilters()
+
+    this.overallControls.selectAll("button")
+      .classed({
+        "active": function(d){
+          return this.getAttribute("data-cluster-key") === "all"
+        }
+      })
+
+    this.graphContents.transition()
+      .ease(ease)
+      .duration(duration)
+      .styleTween("transform", (d, i, a) => {
+        var self = this
+        return function(t){
+          var i = 1-t
+          return `translate(0,${Math.round(self.overallViewHeight - self.margins.top) * -i}px)`
+        }
+      })
+
+    this.bubbleGroups.transition()
+      .ease(ease)
+      .duration(duration)
+      .attrTween("transform", (d, i, a) => {
+        var cluster = d.clusters[this.clusterKey]
+        return function(t){
+          var xDiff = cluster.x - d.x,
+              yDiff = cluster.y - d.y
+          return `translate(${d.x + xDiff*t},${d.y + yDiff*t})`
+        }
+      })
+      .call(this.endAll, () => {
+        this.root.classed({
+          "industry-view": false
+        })
+        this.svg.attr("height", this.overallViewHeight)
+        this.positionAroundCluster(this.dataset)
+        this.forceTemperature = 0.5
+        this.forceLayout.start()
+      })
+  },
+  searchByTerm: function(term){
+    var searchRegex = new RegExp(`${term}`, "gi")
+    this.highlightData(
+      this.dataset.filter(function(d){
+        return d.name.match(searchRegex) || d.industry.match(searchRegex)
+      })
+    )
+  },
+  highlightData: function(data){
+    this.bubbleGroups
+      .classed({
+        "inactive": (d) => {
+          return !data.includes(d)
+        }
+      })
+    if(data.length === 1){
+      let matchingBubbleGroup = this.bubbleGroups.filter((d) => {
+        return d === data[0]
+      }).node()
+      this.showTooltip(data[0], matchingBubbleGroup)
+    } else {
+      this.hideTooltip()
+    }
   },
   nestedStructure: function(...props){
     var nest = d3.nest()
@@ -134,10 +298,18 @@ var visualizer = {
     // the remaining get grouped
     this.singularIndustrySections.push({
       key: "Miscellaneous",
+      isHeterogenous: true,
       values: sectionsByIndustry.slice(standaloneThreshold, sectionsByIndustry.length)
         .reduce((a,b) => {
           return a.concat(b.values)
         }, [])
+    })
+
+    // store a reference to the singularIndustrySection on each node
+    Object.keys(this.singularIndustrySections).forEach((key) => {
+      this.singularIndustrySections[key].values.forEach((node) => {
+        node.sections.byChartGroup = this.singularIndustrySections[key]
+      })
     })
 
     industryGroups = this.mainGroup.append("g")
@@ -155,15 +327,15 @@ var visualizer = {
         })
 
     // industry group headline
-    industryGroups
-      .append("text")
-        .text((d) => d.key)
-        .attr("class", "industry-title")
-        .attr("x", -this.margins.left)
-        .attr("dx", 24)
-        .attr("dy", "-1.5em")
+    // industryGroups
+    //   .append("text")
+    //     .text((d) => d.key)
+    //     .attr("class", "industry-title")
+    //     .attr("x", -this.margins.left)
+    //     .attr("dx", 24)
+    //     .attr("dy", "-1.5em")
 
-    this.svg.attr("height", this.yOffset)
+    this.svg.attr("height", this.overallViewHeight)
 
     return sectionsByIndustry
   },
@@ -234,12 +406,11 @@ var visualizer = {
     return yOffset - originalYOffset
   },
   positionAroundCluster: function(dataset){
-
     this.nestedStructure("paidLeave").entries(dataset).forEach((section) => {
       this.nestedStructure("unpaidLeave").entries(section.values).reverse().forEach((subsection) => {
         var packingBoxDimensions = [1, 1],
             packLayout = d3.layout.pack()
-              .size([packingBoxDimensions])
+              .size(packingBoxDimensions)
               .padding(10)
               .value((d) => {
                 return d.radius * d.radius
@@ -314,6 +485,17 @@ var visualizer = {
   addAxisToGroup: function(group){
     group.append("use").attr("xlink:href", "#x-axis")
   },
+  showTooltip: function(d, el){
+    this.hideTooltip()
+    setTimeout(() => {
+      isotip.open(el, {
+        content: tooltipTemplate(d)
+      })
+    }, 0)
+  },
+  hideTooltip: function(){
+    isotip.close()
+  },
   draw: function(){
     var self = this
 
@@ -327,22 +509,17 @@ var visualizer = {
         return `translate(${d.x},${d.y})`
       })
       .attr("class", (d) => {
-        var classes = [this.slugify(d.industry)]
+        var classes = ["bubble-group", this.slugify(d.industry)]
         if(d.subclassification){
           classes.push(this.slugify(d.subclassification))
         }
         return classes.join(" ")
       })
-      .classed("bubble-group", true)
-      .on("mouseover", function(d){
-        setTimeout(() => {
-          isotip.open(this, {
-            content: tooltipTemplate(d)
-          })
-        }, 0)
+      .on("mouseover", (d) => {
+        this.showTooltip(d, d3.event.currentTarget)
       })
-      .on("mouseout", function(d){
-        isotip.close()
+      .on("mouseout", (d) => {
+        this.hideTooltip()
       })
       .each(function(d,i){
         var group = d3.select(this),
@@ -391,12 +568,21 @@ var visualizer = {
       .gravity(0)
       .charge(0)
       .friction(0)
-      .on("tick", (e) => {
-        return this.onTick(e)
-      })
+      .on("tick", this.onTick.bind(this))
       .start()
   },
-  setupChart: function(dataset, groupElement, cohort, clusterKey="all"){
+  getSecondaryKey: function(d, isHeterogenous){
+    if(isHeterogenous){
+      let pieces = [d.industry]
+      if(d.subclassification){
+        pieces.push(d.subclassification)
+      }
+      return pieces.join(": ")
+    } else {
+      return d.subclassification
+    }
+  },
+  setupChart: function(dataset, groupElement, chartGroup, clusterKey="all"){
     var sections = this.nestedStructure("paidLeave").entries(dataset),
         yOffset = this.yOffset || 0
 
@@ -406,20 +592,34 @@ var visualizer = {
       groupElement.attr("transform", `translate(0,${this.yOffset})`)
     }
 
-    var chartFilters = this.root.append("div")
-      .attr("class", "chart-filters")
+    var industryChartHeader = this.graphContents.append("div")
+      .attr("class", (d) => {
+        var classes = ["industry-chart-header"]
+        if(chartGroup && chartGroup.key){
+          classes.push(this.slugify(chartGroup.key))
+        }
+        return classes.join(" ")
+      })
       .style("top", `${Math.round(this.yOffset)}px`)
-      .style("right", `${this.margins.right}px`)
 
     // this should only happen for the first call
     if(clusterKey === "all"){
       this.sections = (this.sections || {})
       this.sections.byPaid = this.processSectionsByPaid(sections)
     } else {
-      chartFilters
-          .selectAll("a")
-            .data(
-              d3.nest().key((d) => d.subclassification)
+      industryChartHeader.append("h2")
+        .attr("class", "industry-title")
+        .text(chartGroup.key)
+
+      chartGroup.filterLabels = industryChartHeader
+        .append("div")
+        .attr("class", "industry-filters")
+        .selectAll("a")
+          .data(
+            d3.nest()
+              .key((d) => {
+                return this.getSecondaryKey(d, chartGroup.isHeterogenous)
+              })
               .entries(dataset)
               .filter((subsection) => {
                 // remove subsections if its name is an empty or it only has one node
@@ -428,33 +628,34 @@ var visualizer = {
               .sort((a,b) => {
                 return b.values.length - a.values.length
               })
-            )
-            .enter()
-            .append("a")
-              .attr("class", "filter-link")
-              .text((d) => d.key)
-              .attr("data-industry", cohort.key)
-              .attr("data-subclassification", (d) => d.key)
-              .on("click", (d, i) => {
-                var e = d3.event,
-                    el = d3.select(e.target)
+          )
+          .enter()
+          .append("a")
+            .attr("class", "filter-link")
+            .text((d) => d.key)
+            .attr("data-industry", chartGroup.key)
+            .attr("data-subclassification", (d) => d.key)
+            .on("click", (d, i) => {
+              var e = d3.event,
+                  el = d3.select(e.target)
 
-                el
-                  .classed({
-                    "active": !e.target.classList.contains("active")
-                  })
+              this.toggleFilter([
+                el.attr("data-industry"),
+                el.attr("data-subclassification")
+              ])
 
-                this.toggleFilter([
-                  el.attr("data-industry"),
-                  el.attr("data-subclassification")
-                ])
-
-              })
+            })
     }
 
     // begin building out the clusters for each section
     var sectionHeights = sections.map((section) => {
-      let paidSection = section
+      var paidSection = section,
+          extraVerticalSpacing = this.margins.bottom + this.sectorMargins.top
+
+      if(chartGroup && chartGroup.key === "Miscellaneous"){
+        extraVerticalSpacing += 60
+      }
+
       // if we already have established paid sections,
       // then find the corresponding paid section
       if(clusterKey !== "all"){
@@ -468,8 +669,10 @@ var visualizer = {
         this.nestedStructure("unpaidLeave").entries(section.values).reverse(),
         yOffset,
         clusterKey
-      ) + this.margins.bottom + this.margins.top
+      ) + extraVerticalSpacing
     })
+
+    this.overallViewHeight = (this.overallViewHeight || d3.max(sectionHeights))
 
     this.yOffset += d3.max(sectionHeights)
   },
@@ -477,11 +680,18 @@ var visualizer = {
     var filterGroup
     this.filters = (this.filters || {})
     filterGroup = this.filters[filterPair[0]]
-    if (filterGroup && filterGroup.includes(filterGroup[1])){
-      console.log(``)
+    if (filterGroup && filterGroup.includes(filterPair[1])){
       this.removeFilter(filterPair)
     } else {
       this.addFilter(filterPair)
+    }
+  },
+  clearFilters: function(){
+    if(this.filters){
+      Object.keys(this.filters).forEach((key) => {
+        this.filters[key] = []
+      })
+      this.filterChanged()
     }
   },
   addFilter: function(filterPair){
@@ -499,7 +709,30 @@ var visualizer = {
     this.filterChanged()
   },
   filterChanged: function(){
-    console.log(this.filters)
+    Object.keys(this.filters).forEach((key) => {
+      var matchingIndustrySection = this.singularIndustrySections.find((section) => section.key === key)
+
+      // toggle "active" class to labels
+      matchingIndustrySection.filterLabels
+        .classed({
+          "active": (d) => {
+            return this.filters[key].includes(d.key)
+          }
+        })
+
+      // toggle "inactive" class in bubble groups
+
+      this.bubbleGroups
+        // filter out nodes that are not in chartGroup
+        .filter((d) => {
+          return d.sections.byChartGroup.key === matchingIndustrySection.key
+        })
+        .classed({
+          "inactive": (d) => {
+            return this.filters[key].length && !this.filters[key].includes(this.getSecondaryKey(d, matchingIndustrySection.isHeterogenous))
+          }
+        })
+    })
   },
   processData: function(){
     this.overall = {
@@ -518,29 +751,22 @@ var visualizer = {
     this.processSectionsByIndustry(this.dataset)
     this.positionAroundCluster(this.dataset)
 
-    setTimeout(() => {
-      this.clusterKey = "industry"
-      this.positionAroundCluster(this.dataset)
-      this.forceLayout.start()
-    }, 5000)
+    // setTimeout(() => {
+    //   this.clusterKey = "industry"
+    //   this.positionAroundCluster(this.dataset)
+    //   this.forceLayout.start()
+    // }, 5000)
   },
   onTick: function(e) {
-    if(e.alpha < 0.05){
-      this.forceLayout.stop()
-    } else {
       this.bubbleGroups
         // .each(this.moveTowardCluster.call(this, e.alpha))
         // .each(this.cluster.call(this, e.alpha))
-        .each(this.collide.call(this, 0.5))
+        .each(this.collide.call(this, this.forceTemperature))
         .attr("transform", (d) => {
           return `translate(${d.x},${d.y})`
         })
         // .each(this.bounceBack(e.alpha))
-        // .attr("cx", function(d) { return d.x; })
-        // .attr("cy", function(d) { return d.y; })
-        // .attr("r", function (d) { return d.radius; })
 
-    }
   },
   moveTowardCluster: function(alpha){
     var damper = 0.202
