@@ -758,6 +758,9 @@ var visualizer = {
     // }, 5000)
   },
   onTick: function(e) {
+    if(e.alpha < 0.07){
+      this.forceLayout.stop()
+    } else {
       this.bubbleGroups
         // .each(this.moveTowardCluster.call(this, e.alpha))
         // .each(this.cluster.call(this, e.alpha))
@@ -766,7 +769,7 @@ var visualizer = {
           return `translate(${d.x},${d.y})`
         })
         // .each(this.bounceBack(e.alpha))
-
+    }
   },
   moveTowardCluster: function(alpha){
     var damper = 0.202
