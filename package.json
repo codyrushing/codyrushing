@@ -1,0 +1,24 @@
+{
+  "name": "codyrushing",
+  "version": "0.0.1",
+  "description": "Cody Rushing personal site",
+  "main": "index.js",
+  "dependencies": {
+    "normalize-scss": "^7.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "jekyll serve --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codyrushing/codyrushing.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codyrushing/codyrushing/issues"
+  },
+  "homepage": "https://github.com/codyrushing/codyrushing#readme"
+}
