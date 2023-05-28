@@ -1,3 +1,0 @@
-var Handlebars = require("handlebars/dist/handlebars.runtime");module.exports = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"controls-content\">\n  <div class=\"button-group\">\n    <button data-cluster-key=\"all\" class=\"active\">Overall</button>\n    <button data-cluster-key=\"industry\">By industry</button>\n  </div>\n  <div class=\"search\">\n    <input type=\"text\" placeholder=\"Search by company name or industry\" />\n  </div>\n</div>\n";
-},"useData":true});

@@ -1,0 +1,7 @@
+{
+  "name": "@cody-rushing/api",
+  "packageManager": "yarn@3.5.1",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
