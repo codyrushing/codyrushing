@@ -408,6 +408,7 @@ __metadata:
     "@astrojs/tailwind": ^3.1.3
     astro: ^2.5.0
     tailwindcss: ^3.0.24
+    webfontloader: ^1.6.28
   languageName: unknown
   linkType: soft
 
@@ -5634,6 +5635,13 @@ __metadata:
   version: 2.0.1
   resolution: "web-namespaces@npm:2.0.1"
   checksum: b6d9f02f1a43d0ef0848a812d89c83801d5bbad57d8bb61f02eb6d7eb794c3736f6cc2e1191664bb26136594c8218ac609f4069722c6f56d9fc2d808fa9271c6
+  languageName: node
+  linkType: hard
+
+"webfontloader@npm:^1.6.28":
+  version: 1.6.28
+  resolution: "webfontloader@npm:1.6.28"
+  checksum: cbebbe593cb0d27dbb4d418f7f96bd9893024f1f2062e858af76209b6524e25d766964b6e2a724f3b694fadef661dd3a01065455a96df05337b3281ca09ab656
   languageName: node
   linkType: hard
 

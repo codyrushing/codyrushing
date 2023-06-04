@@ -4,10 +4,12 @@ export interface Props {
 }
 
 const { title } = Astro.props;
+
+import AnimatedBackground from '../components/AnimatedBackground.astro';
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark:bg-gray-800" lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description">
@@ -15,22 +17,66 @@ const { title } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> 		
 	</head>
-	<body>
+	<body class="dark:bg-gray-800 dark:text-gray-300">
 		<slot />
+		<AnimatedBackground />
 	</body>
 </html>
+<script>
+	import wf from 'webfontloader';
+	wf.load({
+		google: { 
+			families: ['Inter Tight:700', 'Lora:italic,400,700']	
+		}
+	});
+</script>
 <style is:global>
 	:root {
 		--accent: 124, 58, 237;
 		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
+		--font-heading: 'Inter Tight', sans-serif;
+		--font-body: 'Lora', serif;
 	}
 	html {
 		font-family: system-ui, sans-serif;
 		background-color: #F6F6F6;
 	}
+	p, span, li,
+	h1, h2, h3, h4, h5, h6 {
+		visibility: hidden;
+	}
+	html.wf-active p,
+	html.wf-active span,
+	html.wf-active li,
+	html.wf-active h1,
+	html.wf-active h2,
+	html.wf-active h3,
+	html.wf-active h3,
+	html.wf-active h4,
+	html.wf-active h5,
+	html.wf-active h6 {
+		visibility: visible;
+	}
 	code {
 		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
 			Bitstream Vera Sans Mono, Courier New, monospace;
+	}
+	body {
+    font-family: var(--font-body);
+		font-weight: 400;
+		min-height: 100vh;
+	}
+	body h1, 
+	body h2, 
+	body h3, 
+	body h4, 
+	body h5, 
+	body h6 {
+		font-family: var(--font-heading);
+		font-weight: 700;
 	}
 </style>
