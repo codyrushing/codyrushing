@@ -1,59 +1,55 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Picture } from '@astrojs/image/components';
 ---
 
 <Layout title="Cody Rushing">
 	<main>
-		<p class="text-lg">
-			<span class="heading">Cody Rushing</span> builds software with a focus on performance, scalability, and elegance. His specialties include expressive UIs, data visualization, and API design.
-		</p>
-		<p>His favorite tools are TypeScript, Node.js, React, and D3.  WebGL, Python, and SQL are also cool.</p>
-		<p>Lifelong learner ✌</p>
+		<section class="bio flex md:gap-8 flex-col md:flex-row gap-4">
+			<div class="bio-text order-2 basis-3/4 gap-4 flex flex-col">
+				<p class="text-xl">
+					<span class="heading">Cody Rushing</span> builds software with a focus on performance, scalability, and elegance.
+				</p>
+				<p class="text-lg">His specialties include expressive UIs, data visualization, and API design.</p>
+				<p>
+					<span class="p-1 -my-4 highlight font-bold rounded bg-sky-400/80 text-gray-800">TypeScript</span>, 
+					<span class="p-1 -my-4 highlight font-bold rounded bg-green-400/80 text-gray-800">Node.js</span>, 
+					<span class="p-1 -my-4 highlight font-bold rounded bg-blue-400/80 text-gray-800">React</span>, 
+					and <span class="p-1 -my-4 highlight font-bold rounded bg-orange-400/80 text-gray-800">D3</span> 
+					are among his favorite tools.</p>
+				<p class="text-lg">Lifelong learner ✌</p>	
+				<ul class="links flex flex-wrap gap-4 items-end">
+					<li>github</li>
+					<li>email</li>
+					<li>resume/cv</li>
+					<li>linkedin</li>
+				</ul>		
+			</div>
+			<figure class="order-1 basis-1/4 rounded-full overflow-hidden bg-white aspect-square flex w-24 ring-4 ring-slate-500 self-center md:w-auto md:self-start">
+				<Picture class="w-100 flex" src="/headshot-bw-white-bg.jpg" formats={['webp','avif','jpeg']} widths={[232, 116]} aspectRatio="1:1" alt="Cody Rushing" />
+			</figure>
+		</section>
 	</main>
 </Layout>
 
 <style>
 	main {
 		margin: auto;
-		padding: 1.5rem;
-		max-width: 60ch;
-	}
-	p + p {
-		@apply mt-4;
+		@apply p-8;
 	}
 	.heading {
 		font-family: var(--font-heading);
+		@apply text-2xl;
 	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
+	.highlight {
+		font-family: var(--font-heading);
 	}
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		border: 1px solid rgba(var(--accent), 25%);
-		background-color: white;
-		padding: 1rem;
-		border-radius: 0.4rem;
+
+	.links li {
+		list-style: disc;		
+		list-style-position: inside;
 	}
-	.instructions code {
-		font-size: 0.875em;
-		font-weight: bold;
-		background: rgba(var(--accent), 12%);
-		color: rgb(var(--accent));
-		border-radius: 4px;
-		padding: 0.3em 0.45em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent));
-	}
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 1rem;
-		padding: 0;
+	.links li:first-child {
+		list-style: none;
 	}
 </style>

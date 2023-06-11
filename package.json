@@ -6,5 +6,8 @@
   ],
   "scripts": {
     "ui": "cd packages/site; yarn run develop"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.3"
   }
 }

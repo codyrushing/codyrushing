@@ -5,7 +5,7 @@ export interface Props {
 
 const { title } = Astro.props;
 
-import AnimatedBackground from '../components/AnimatedBackground.astro';
+import AnimatedBackground from '../components/animated-background/index.astro';
 ---
 
 <!DOCTYPE html>
@@ -22,7 +22,9 @@ import AnimatedBackground from '../components/AnimatedBackground.astro';
 		<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> 		
 	</head>
 	<body class="dark:bg-gray-800 dark:text-gray-300">
-		<slot />
+		<div class="content-wrapper max-w-screen-lg	mx-auto">
+			<slot />
+		</div>
 		<AnimatedBackground />
 	</body>
 </html>
@@ -78,5 +80,9 @@ import AnimatedBackground from '../components/AnimatedBackground.astro';
 	body h6 {
 		font-family: var(--font-heading);
 		font-weight: 700;
+	}
+	.content-wrapper {
+		position: relative;
+		z-index: 1;
 	}
 </style>
