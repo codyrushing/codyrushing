@@ -1,0 +1,108 @@
+---
+export interface Props extends astroHTML.JSX.AnchorHTMLAttributes {
+  classes?: string[];
+  underlineHeight?: number;
+  step?: number;
+}
+
+const { classes=[], step=16, underlineHeight=6, ...rest } = Astro.props;
+---
+<a data-step={step} class={classes.concat(['styled-link hover:text-sky-400 focus:text-sky-400 relative whitespace-nowrap']).join(' ')} {...rest}>
+  <slot />
+  <svg height={underlineHeight} class="underline top-full left-0 right-0 absolute hidden">
+    <path />
+  </svg>
+</a>
+<style>
+.styled-link {
+
+}
+.styled-link svg.underline {
+  pointer-events: none;
+}
+.styled-link svg.underline path {
+  transition: 0.2s ease-in-out;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  /* stroke-opacity: 0.5; */
+}
+
+.styled-link:hover svg.underline {
+  
+}
+.styled-link:hover svg.underline path {
+  /* stroke-opacity: 1; */
+}
+
+</style>
+<script>
+function handleStyledLink(link:HTMLAnchorElement){
+  const linkWidth = link.offsetWidth;
+  const svg : SVGElement = link.querySelector('svg.underline');
+  const path = svg.querySelector('path');
+
+  if(svg && path){
+    // allow svg to be a little wider so that the stroke linecap does not get cut off
+    const padding = 2;
+    const height = parseInt(svg.getAttribute('height') ?? '6')
+    const y = height/2;
+    const stepTarget = parseInt(link.getAttribute('data-step') ?? '16');
+    const step = linkWidth / Math.floor(linkWidth/stepTarget);
+    const restState = [`M0,${height/2}`]; 
+    
+    const width = linkWidth + padding * 2;
+    svg.setAttribute('width', width.toString());
+    svg.style.transform = `translate(-${padding}px, 1.5px)`;
+
+    let x = 0;
+    while(x < linkWidth - padding * 2){
+      // curve up
+      restState.push(`Q${x+step/4},${y}`);
+      x += step/2;
+      restState.push(`${x},${y}`);
+      // curve down
+      restState.push(`Q${x+step/4},${y}`);
+      x += step/2;
+      restState.push(`${x},${y}`);
+    }
+
+    path.setAttribute('d', restState.join(' '));
+    path.style.transform = `translate(${padding}px, 0)`;
+    svg.classList.remove('hidden');
+
+    x = 0;
+    const activeState = [`M${x},${y}`];
+    while(x < linkWidth - padding * 2){
+      // curve up
+      activeState.push(`Q${x+step/4},0`);
+      x += step/2;
+      activeState.push(`${x},${y}`);
+      // curve down
+      activeState.push(`Q${x+step/4},${height}`);
+      x += step/2;
+      activeState.push(`${x},${y}`);
+    }
+
+    link.addEventListener(
+      'mouseenter',
+      function onMouseEnter(e){
+        path.setAttribute('d', activeState.join(' '));
+      }
+    );
+
+    link.addEventListener(
+      'mouseleave',
+      function onMouseLeave(){
+        path.setAttribute('d', restState.join(' '));
+      }
+    )
+  }
+}
+
+for(const styledLink of document.querySelectorAll('a.styled-link')){
+  handleStyledLink(styledLink as HTMLAnchorElement);
+}
+</script>

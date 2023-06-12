@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Picture } from '@astrojs/image/components';
+import StyledLink from '../components/StyledLink.astro';
 ---
 
 <Layout title="Cody Rushing">
@@ -12,18 +13,23 @@ import { Picture } from '@astrojs/image/components';
 				</p>
 				<p class="text-lg">His specialties include expressive UIs, data visualization, and API design.</p>
 				<p>
-					<span class="p-1 -my-4 highlight font-bold rounded bg-sky-400/80 text-gray-800">TypeScript</span>, 
-					<span class="p-1 -my-4 highlight font-bold rounded bg-green-400/80 text-gray-800">Node.js</span>, 
-					<span class="p-1 -my-4 highlight font-bold rounded bg-blue-400/80 text-gray-800">React</span>, 
-					and <span class="p-1 -my-4 highlight font-bold rounded bg-orange-400/80 text-gray-800">D3</span> 
+					<span class="p-1 highlight font-bold rounded bg-sky-400/80 text-gray-800">TypeScript</span>, 
+					<span class="p-1 highlight font-bold rounded bg-green-400/80 text-gray-800">Node.js</span>, 
+					<span class="p-1 highlight font-bold rounded bg-blue-400/80 text-gray-800">React</span>, 
+					and <span class="p-1 highlight font-bold rounded bg-orange-400/80 text-gray-800">D3</span> 
 					are among his favorite tools.</p>
 				<p class="text-lg">Lifelong learner ✌</p>	
-				<ul class="links flex flex-wrap gap-4 items-end">
-					<li>github</li>
-					<li>email</li>
-					<li>resume/cv</li>
-					<li>linkedin</li>
-				</ul>		
+				<nav class="links flex flex-wrap gap-4 items-end">
+					<StyledLink href="https://github.com/codyrushing" target="_blank">github</StyledLink>
+					<StyledLink href="mailto:codyrushing+site@gmail.com">email</StyledLink>
+					<StyledLink href="https://www.linkedin.com/in/crushing/" target="_blank">linkedin</StyledLink>
+					<StyledLink href="/resume">
+						resume/cv
+						<!-- <svg class="inline-block h-6 -mt-2 -mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15M9 12l3 3m0 0l3-3m-3 3V2.25" />
+						</svg> -->
+					</StyledLink>
+				</nav>
 			</div>
 			<figure class="order-1 basis-1/4 rounded-full overflow-hidden bg-white aspect-square flex w-24 ring-4 ring-slate-500 self-center md:w-auto md:self-start">
 				<Picture class="w-100 flex" src="/headshot-bw-white-bg.jpg" formats={['webp','avif','jpeg']} widths={[232, 116]} aspectRatio="1:1" alt="Cody Rushing" />
@@ -33,10 +39,6 @@ import { Picture } from '@astrojs/image/components';
 </Layout>
 
 <style>
-	main {
-		margin: auto;
-		@apply p-8;
-	}
 	.heading {
 		font-family: var(--font-heading);
 		@apply text-2xl;
