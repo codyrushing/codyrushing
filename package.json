@@ -1,13 +1,12 @@
 {
   "name": "codyrushing",
-  "packageManager": "yarn@3.5.1",
+  "packageManager": "yarn@3.6.0",
   "workspaces": [
     "packages/*"
   ],
-  "scripts": {
-    "ui": "cd packages/site; yarn run develop"
-  },
   "devDependencies": {
+    "@types/node": "^20.3.1",
+    "ts-node": "^10.9.1",
     "typescript": "^5.1.3"
   }
 }

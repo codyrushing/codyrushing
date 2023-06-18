@@ -12,5 +12,9 @@
   }
 </style>
 <script>
-console.log('hello');
+import createBackgroundViz from './background-viz';
+const canvasElements = document.querySelectorAll('canvas.animated-bg');
+for(const canvasElement of canvasElements){
+  createBackgroundViz(canvasElement as HTMLCanvasElement);
+}
 </script>
