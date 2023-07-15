@@ -7,9 +7,11 @@ import StyledLink from '../components/StyledLink.astro';
 <Layout title="Cody Rushing">
 	<main>
 		<section class="bio flex md:gap-8 flex-col md:flex-row gap-4">
-			<div class="bio-text order-2 basis-3/4 gap-4 flex flex-col">
+			<h1 class="heading order-1">Cody Rushing</h1>
+
+			<div class="bio-text order-3 basis-3/4 gap-4 flex flex-col">
 				<p class="text-xl">
-					<span class="heading">Cody Rushing</span> builds software with a focus on performance, scalability, and elegance.
+					I am a software engineer that builds software with a focus on performance, scalability, and elegance.
 				</p>
 				<p class="text-lg">His specialties include expressive UIs, data visualization, and API design.</p>
 				<p>
@@ -31,7 +33,7 @@ import StyledLink from '../components/StyledLink.astro';
 					</StyledLink>
 				</nav>
 			</div>
-			<figure class="order-1 basis-1/4 rounded-full overflow-hidden bg-white aspect-square flex w-24 ring-4 ring-slate-500 self-center md:w-auto md:self-start">
+			<figure class="order-2 basis-1/4 rounded-full overflow-hidden bg-white aspect-square flex w-24 ring-4 ring-slate-500 self-center md:w-auto md:self-start">
 				<Picture class="w-100 flex" src="/headshot-bw-white-bg.jpg" formats={['webp','avif','jpeg']} widths={[232, 116]} aspectRatio="1:1" alt="Cody Rushing" />
 			</figure>
 		</section>
