@@ -2,8 +2,7 @@
 import * as PIXI from 'pixi.js' 
 import * as d3Shape from 'd3-shape';
 import * as d3Scale from 'd3-scale';
-import { createNoise2D } from 'simplex-noise';
-const noise = createNoise2D();
+import * as d3ScaleChromatic from 'd3-scale-chromatic';
 
 export default function createBackgroundViz(canvas:HTMLCanvasElement){
   const app = new PIXI.Application({ view: canvas, backgroundAlpha: 0, antialias: true, resizeTo: window });  
@@ -11,29 +10,24 @@ export default function createBackgroundViz(canvas:HTMLCanvasElement){
   
   app.stage.addChild(graphics);
 
-  let t = 0;
-  
+  let t = 0;  
   const contourAmplitudeScale = d3Scale.scaleLinear();
   contourAmplitudeScale.domain([-1, 1]);
   contourAmplitudeScale.range([5, 15]);
   
-  let startAngle = Math.random() * Math.PI * 2;
+  const startAngle0 = Math.random() * Math.PI * 2;
+  const startAngle1 = Math.random() * Math.PI * 2;
 
   const line = d3Shape.line();
   line.curve(d3Shape.curveCatmullRomOpen.alpha(0.5));
+  const colorScale = d3ScaleChromatic.interpolateGnBu;
   // line.curve(d3Shape.curveCardinalOpen.tension(0.5));
 
-  let hasLogged = false;
   app.ticker.add(function onFrame(){
     t += 0.01;
     graphics.clear();
     const { width, height } = app.view;
     const step = Math.max(Math.min(width/20, 50), 25);
-
-    if(!hasLogged){
-      console.log('step', step);
-      hasLogged=true
-    }
 
     const rotorRadius = Math.min(step, 40);
     const innerRadius = rotorRadius / 2;
@@ -43,58 +37,54 @@ export default function createBackgroundViz(canvas:HTMLCanvasElement){
       innerRadius * (1+radiusWiggleFactor)
     ]);
 
-    // generate contour points
-    let x = -(rotorRadius * 2 + step);
-    let y = height * 0.1;
-    let i = 0;
-    const contourPoints : number[] = [];
-    while(x < width + (rotorRadius * 2 + step * 2)){
-      contourPoints.push(x, y + Math.sin(t + i * 0.1) * contourAmplitudeScale(Math.sin(t + i * 0.5)));
-      i += 1;
-      x += step;
-    }
+    function buildRibbon(y:number, startAngle:number){
+      // generate contour points
+      let x = -(rotorRadius * 2 + step);
+      let i = 0;
+      const contourPoints : number[] = [];
+      while(x < width + (rotorRadius * 2 + step)){
+        contourPoints.push(x, y + Math.sin(t + i * 0.1) * contourAmplitudeScale(Math.sin(t + i * 0.5)));
+        i += 1;
+        x += step;
+      }
 
-    // generate lines following contour points
-    const lineCount = 8;
-    for(let i=0; i<lineCount; i+=1){
-      let lineAngle = startAngle + (Math.PI * 2 / lineCount / 2 * i) + t * 0.5;
-      let angle = lineAngle;
-      const lineData : [number, number][] = [];
-      
-      // walk through contour points
-      for(let j=0; j<contourPoints.length; j+=2){
+      // generate lines following contour points
+      const lineCount = 12;
+      for(let i=0; i<lineCount; i+=1){
+        let lineAngle = startAngle + (Math.PI * 2 / lineCount / 2 * i) + t * 0.5;
+        let angle = lineAngle;
+        const lineData : [number, number][] = [];
         
-        // determine rotation
-        const [x0, y0, x1, y1] = contourPoints.slice(j, j+4);
-        const distance = Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2));
-        angle += (distance / (Math.PI * 2 * rotorRadius) * (Math.PI * 2));
+        // walk through contour points
+        for(let j=0; j<contourPoints.length; j+=2){
+          
+          // determine rotation
+          const [x0, y0, x1, y1] = contourPoints.slice(j, j+4);
+          const distance = Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2));
+          angle += (distance / (Math.PI * 2 * rotorRadius) * (Math.PI * 2));
 
-        const innerRadius = innerRadiusScale(Math.sin((x1 + t * 1)));
+          const innerRadius = innerRadiusScale(Math.sin((x1 + t * 1)));
 
-        // get coords of point
-        lineData.push([
-          x0 + Math.cos(angle) * innerRadius,
-          y0 + Math.sin(angle) * innerRadius  
-        ]);
+          // get coords of point
+          lineData.push([
+            x0 + Math.cos(angle) * innerRadius,
+            y0 + Math.sin(angle) * innerRadius  
+          ]);
+        }
 
-        graphics.lineStyle(1, 0x6b7280, 0.1);
+        const color = colorScale(Math.sin(startAngle + t * 0.2));
+        graphics.lineStyle(1, color, 0.4);
         line(lineData);
         // this magically works because the pixi graphics API
         // is modeled after the HTML Canvas API, which allows
         // us to trick D3 into rendering pixi
         // @ts-ignore
         line.context(graphics);
-  
-        // debug
-        // graphics.lineStyle(1, 0x333333, 1);
-        // graphics.drawCircle(x0, y0, step/2);        
       }
-      
-      // graphics.lineStyle(1, 0x333333, 1);
-      // graphics.drawCircle(x0, y0, step/2);        
-
     }
 
+    buildRibbon(height * 0.08, startAngle0);
+    buildRibbon(height * 0.92, startAngle1);
 
   });
 }

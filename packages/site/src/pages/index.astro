@@ -6,41 +6,48 @@ import StyledLink from '../components/StyledLink.astro';
 
 <Layout title="Cody Rushing">
 	<main>
-		<section class="bio flex md:gap-8 flex-col md:flex-row gap-4">
-			<h1 class="heading order-1">Cody Rushing</h1>
-
-			<div class="bio-text order-3 basis-3/4 gap-4 flex flex-col">
-				<p class="text-xl">
-					I am a software engineer that builds software with a focus on performance, scalability, and elegance.
-				</p>
-				<p class="text-lg">His specialties include expressive UIs, data visualization, and API design.</p>
-				<p>
-					<span class="p-1 highlight font-bold rounded bg-sky-400/80 text-gray-800">TypeScript</span>, 
-					<span class="p-1 highlight font-bold rounded bg-green-400/80 text-gray-800">Node.js</span>, 
-					<span class="p-1 highlight font-bold rounded bg-blue-400/80 text-gray-800">React</span>, 
-					and <span class="p-1 highlight font-bold rounded bg-orange-400/80 text-gray-800">D3</span> 
-					are among his favorite tools.</p>
-				<p class="text-lg">Lifelong learner ✌</p>	
-				<nav class="links flex flex-wrap gap-4 items-end">
-					<StyledLink href="https://github.com/codyrushing" target="_blank">github</StyledLink>
-					<StyledLink href="mailto:codyrushing+site@gmail.com">email</StyledLink>
-					<StyledLink href="https://www.linkedin.com/in/crushing/" target="_blank">linkedin</StyledLink>
-					<StyledLink href="/resume">
-						resume/cv
-						<!-- <svg class="inline-block h-6 -mt-2 -mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15M9 12l3 3m0 0l3-3m-3 3V2.25" />
-						</svg> -->
-					</StyledLink>
-				</nav>
+		<section class="bio">			
+			<div class="flex md:gap-8 flex-col md:flex-row gap-4">
+				<div class="bio-text order-3 basis-3/4 gap-4 flex flex-col">
+					<p class="text-xl">
+						I build software with a focus on performance, scalability, and elegance.
+					</p>
+					<p class="text-lg">My specialties include expressive UIs, data visualization, and API/system design.</p>
+					<p class="text-lg">Lifelong learner <span class="font-sans">✌</span></p>	
+					<div class="bg-slate-900/50 p-4 rounded-md">
+						<nav class="links flex flex-wrap gap-4 items-end">
+							<StyledLink classes={["font-bold"]} href="https://github.com/codyrushing" target="_blank">github</StyledLink>
+							<StyledLink href="mailto:codyrushing+site@gmail.com">email</StyledLink>
+							<StyledLink href="https://www.linkedin.com/in/crushing/" target="_blank">linkedin</StyledLink>
+							<StyledLink href="/resume">
+								resume/cv
+								{/* <svg class="inline-block h-6 -mt-2 -mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15M9 12l3 3m0 0l3-3m-3 3V2.25" />
+								</svg> */}
+							</StyledLink>
+						</nav>
+					</div>
+				</div>
+				<div class="avatar-tagline order-2 basis-1/4 h-24 flex gap-4 bg-slate-900/50 rounded-l-full">
+					<figure class="avatar aspect-square flex w-24 self-center bg-white ring-4 ring-slate-500 rounded-full flex overflow-hidden">
+						<Picture height="100%" width="100%" class="w-100" src="/headshot-bw-white-bg.jpg" formats={['webp','avif','jpeg']} widths={[232, 116]} aspectRatio="1:1" alt="Cody Rushing" />
+					</figure>
+					<div class="tagline p-2 pl-0 flex flex-col content-center gap-0 self-center">
+						<h1 class="name-heading flex-1 text-2xl">Cody Rushing</h1>
+						<p class="text-sky-400 font-bold leading-none border-l-2 pl-2"><span class="text-green-500">full-stack</span> software engineer</p>
+					</div>
+				</div>
 			</div>
-			<figure class="order-2 basis-1/4 rounded-full overflow-hidden bg-white aspect-square flex w-24 ring-4 ring-slate-500 self-center md:w-auto md:self-start">
-				<Picture class="w-100 flex" src="/headshot-bw-white-bg.jpg" formats={['webp','avif','jpeg']} widths={[232, 116]} aspectRatio="1:1" alt="Cody Rushing" />
-			</figure>
 		</section>
 	</main>
 </Layout>
 
 <style>
+	.avatar-tagline {
+		font-family: var(--font-heading);
+		border-bottom-right-radius: 9999px;
+	}
+
 	.heading {
 		font-family: var(--font-heading);
 		@apply text-2xl;

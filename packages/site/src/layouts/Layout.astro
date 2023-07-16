@@ -21,8 +21,8 @@ import AnimatedBackground from '../components/animated-background/index.astro';
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> 		
 	</head>
-	<body class="dark:bg-gray-800 dark:text-gray-300">
-		<div class="content-wrapper max-w-screen-lg	mx-auto">
+	<body class="dark:bg-gray-800 dark:text-gray-300 flex flex-col">
+		<div class="content-wrapper max-w-screen-lg	mx-auto flex flex-1">
 			<slot />
 		</div>
 		<AnimatedBackground />
@@ -47,6 +47,11 @@ wf.load({
 		font-family: system-ui, sans-serif;
 		background-color: #F6F6F6;
 	}
+
+	body {
+		overscroll-behavior-y: none;
+	}
+
 	p, span, li,
 	h1, h2, h3, h4, h5, h6 {
 		visibility: hidden;
