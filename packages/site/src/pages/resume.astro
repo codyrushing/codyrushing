@@ -5,9 +5,364 @@ import StyledLink from '../components/StyledLink.astro';
 
 <Layout title="Cody Rushing - Resume/CV">
 	<main>
-    <h1>Resume</h1>
+    <header>
+      <h1>Cody Rushing</h1>
+      <section class="contact">
+        <ul class="inline-list">
+          <li><a href="tel:15127367313">+1 512 736 7313</a></li>
+          <li><a href="mailto:codyrushing@gmail.com">codyrushing@gmail.com</a></li>
+        </ul>
+        <ul class="inline-list">
+          <li><a href="https://linkedin.com/in/crushing">linkedin.com/in/crushing</a></li>
+          <li><a href="https://github.com/codyrushing">github.com/codyrushing</a></li>
+        </ul>
+      </section>
+    </header>
+
+    <section class="work-history">
+      <h2>Relevant work history</h2>
+      <ul class="roles">
+        <li>
+          <div class="brief">
+            <span class="company">Curb</span>
+            <span class="location">(Austin, TX)</span>
+            <span class="position">Software Engineer</span>
+            <div class="duration">
+              <span>July 2016</span>
+              <span>Present</span>
+            </div>
+          </div>
+          <div class="details">
+            <ul>
+              <li>Built and maintained the Curb REST data API to securely deliver both historical and real-time IoT device data to end users and partner organizations.  Built with Express and Websockets.</li>
+              <li>Designed and built an administration app for B2B partners to monitor thousands of devices and customers across their entire fleet.  Built with React and Express.</li>
+              <li>Built a suite of custom data viz components in D3.js and integrating them into a React app.  Demo at <a href="https://app.energycurb.com/demo">app.energycurb.com/demo</a>.</li>
+              <li>Assisted in rearchitecting a monolithic legacy application into a suite of microservices.</li>              
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="brief">
+            <span class="company">GreenSync</span>
+            <span class="location">(Melbourne, Australia)</span>
+            <span class="position">Developer</span>
+            <div class="duration">
+              <span>October 2015</span>
+              <span>March 2016</span>
+            </div>
+          </div>
+          <div class="details">
+            <ul>
+              <li>Implementing features and bug fixes for customer-facing AngularJS + Ruby on Rails application providing real-time electrical metering data.</li>
+              <li>Maintaining and extending a suite of browser-based interactive graphs built with D3.js.</li>
+              <li>Building an automated front-end build process with Gulp.js.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="brief">
+            <span class="company">Atlassian</span>
+            <span class="location">(Austin, TX)</span>
+            <span class="position">Web Developer</span>
+            <div class="duration">
+              <span>November 2014</span>
+              <span>August 2015</span>
+            </div>
+          </div>
+          <div class="details">
+            <p>Developing front-end codebase for atlassian.com and associated web properties.</p>
+            <ul>
+              <li>Built a lightweight jQuery-based component library for use on atlassian.com.  Establishing a streamlined development workflow with Gulp.js.</li>
+              <li>Maintaining and extending atlassian.com/git, a single-page app built with React.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="brief">
+            <span class="company">Razorfish</span>
+            <span class="location">(Austin, TX)</span>
+            <span class="position">Senior Presentation Layer Engineer</span>
+            <div class="duration">
+              <span>April 2012</span>
+              <span>October 2014</span>
+            </div>
+          </div>
+          <div class="details">
+            <p>Building public-facing web applications for clients such as BlackBerry, Samsung, and others.</p>
+            <ul>
+              <li>Developing a jQuery-based client-side app paired with the largest Adobe CQ project to date. Building
+              custom CMS extensions, analytics, and interactive widgets.</li>
+              <li>Delivering a standalone fully-accessible library of custom UI components for a major US airline.</li>
+              <li>Adding a Bootstrap-based UI layer onto a large-scale enterprise e-commerce implementation.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="brief">
+            <span class="company">Monkee-Boy Web Design</span>
+            <span class="location">(Austin, TX)</span>
+            <span class="position">Front-End Developer</span>
+            <div class="duration">
+              <span>July 2008</span>
+              <span>April 2012</span>
+            </div>
+          </div>
+          <div class="details">
+            <p>Working alongside back-end team to develop mostly PHP-based web apps.</p>
+            <ul>
+              <li>Building and maintaining a mobile-first responsive web template.</li>
+              <li>Developing single-page mobile/tablet web apps.</li>
+              <li>Ensuring cross-browser and cross-device support.</li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="skills">
+      <h2>Skills</h2>
+      <h3>Proficient with:</h3>
+      <ul class="inline-list">
+        <li>Node.js</li>
+        <li>React</li>
+        <li>D3</li>
+        <li>CSS</li>
+        <li>Express</li>
+        <li>API design</li>
+        <li>MongoDB</li>
+        <li>Auth0</li>
+        <li>Websockets</li>
+        <li>SVG</li>
+        <li>TDD</li>
+        <li>Redis</li>
+      </ul>
+      <h3>Comfortable with:</h3>
+      <ul class="inline-list">
+        <li>Python</li>
+        <li>Flask</li>
+        <li>AWS</li>
+        <li>TypeScript</li>
+        <li>RabbitMQ</li>
+        <li>Three.js</li>
+        <li>WebGL</li>
+      </ul>
+    </section>
+
+    <section class="education">
+      <h2>Education</h2>
+      <h3>University of Texas at Austin</h3>
+      <p>B.S in General Kinesiology (Biology minor) – May 2010</p>
+    </section>
+
+    <section class="references">
+      <h2>References</h2>
+      <ul>
+        <li>
+          <div class="heading">
+            <h3>Simon Russell</h3>
+            <span class="title">Head of Technology – GreenSync</span>
+          </div>
+          <ul class="contact">
+            <li><a href="tel:+61404496855">+61 404 496 855</a> – <a href="mailto:simon@greensync.com.au">simon@greensync.com.au</a></li>
+          </ul>
+        </li>
+        <li>
+          <div class="heading">
+            <h3>William Paoli</h3>
+            <span class="title">Web Development Team Lead – Atlassian</span>
+          </div>
+          <ul class="contact">
+            <li><a href="tel:+16507036590">+1 650 703 6590</a> – <a href="mailto:wpaoli@atlassian.com">wpaoli@atlassian.com</a></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+		
 	</main>
 </Layout>
 
 <style>
+      h1 {
+        font-size: 2.8rem;
+      }
+      h2 {
+        font-size: 1.8rem;
+      }
+      h3 {
+        font-size: 1.1rem;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: 'Merriweather', serif;
+        font-weight: 700;
+        margin-bottom: 0.5em;
+      }
+
+      h1:first-child,
+      h2:first-child,
+      h3:first-child {
+        margin-top: 0;
+      }
+
+      p {
+        margin: 0 0 0.5rem;
+      }
+
+      ul {
+        padding: 0 0 0.75rem 0;
+      }
+
+      ul:last-child {
+        padding-bottom: 0;
+      }
+
+      li {
+        margin-bottom: 1rem;
+      }
+
+      li:last-child {
+        margin-bottom: 0;
+      }
+
+      ul ul {
+        padding-left: 1.2rem;
+      }
+
+      ul ul li {
+        margin-bottom: 0.25rem;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      body > section,
+      header {
+        margin-bottom: 2rem;
+      }
+
+      body > section:last-child {
+        margin-bottom: 0;
+      }
+
+      .inline-list {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        margin: 0;
+        padding: 0.5rem 0;
+      }
+
+      .inline-list > li {
+        margin-bottom: 0.25rem;
+      }
+
+      .inline-list > li:before {
+        content: "\2022";
+        display: inline-block;
+        margin: 0 0.5rem;
+      }
+
+      .inline-list > li:first-child:before {
+        display: none;
+      }
+
+      .inline-list > li:first-child {
+        margin-left: 0;
+      }
+      header .inline-list {
+        justify-content: flex-end;
+        border-top: 1px solid #333;
+      }
+      header .inline-list:first-child {
+        border-top: none;
+      }
+
+      .roles {
+        list-style: none;
+      }
+
+      .brief {
+        display: flex;
+        padding-bottom: 0.5rem;
+      }
+
+      .brief span {
+        font-size: 1.1rem;
+        margin-left: 1rem;
+        line-height: 1.4;
+      }
+
+      .brief span:first-child {
+        margin-left: 0;
+      }
+
+      .brief .company {
+        font-family: 'Merriweather', serif;
+        font-weight: 700;
+      }
+
+      .brief .location {
+        font-style: italic;
+      }
+
+      .brief .position {
+
+      }
+
+      .brief .duration {
+        margin-left: auto;
+      }
+
+      .brief .duration span {
+        margin-left: 0;
+      }
+
+      .brief .duration span:last-child:before {
+        content: '-';
+        display: inline-block;
+        margin: 0 0.5rem;
+      }
+
+      .references > ul {
+        display: flex;
+      }
+
+      .references > ul > li {
+        flex: 1;
+      }
+
+      .references li {
+        list-style: none;
+      }
+
+      .references .heading {
+        display: flex;
+      }
+
+      .references .heading h3 {
+        margin-right: 1em;
+      }
+
+      .references .contact > li {
+        list-style: circle;
+      }
+
+      @media print {
+        html,
+        body {
+          font-size: 12px;
+        }
+
+        ul ul {
+          padding-left: 1.4em;
+        }
+
+        body {
+          margin: 0 auto;
+        }
+      }	
 </style>

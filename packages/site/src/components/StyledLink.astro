@@ -9,7 +9,7 @@ const { classes=[], step=16, underlineHeight=6, ...rest } = Astro.props;
 ---
 <a data-step={step} class={classes.concat(['styled-link hover:text-sky-400 focus:text-sky-400 relative whitespace-nowrap']).join(' ')} {...rest}>
   <slot />
-  <svg height={underlineHeight} class="underline top-full left-0 right-0 absolute">
+  <svg height={underlineHeight} class="underline left-0 right-0 absolute">
     <path />
   </svg>
 </a>
@@ -18,10 +18,11 @@ const { classes=[], step=16, underlineHeight=6, ...rest } = Astro.props;
   content: '';
   display: block;
   position:absolute;
-  bottom: -5.5px;
+  bottom: -0.1rem;
   left: -1px;
   right: -1px;
   border-bottom-width: 2px;
+  opacity: 0.5;
 }
 .styled-link.ready:after {
   display: none;
@@ -29,11 +30,14 @@ const { classes=[], step=16, underlineHeight=6, ...rest } = Astro.props;
 
 .styled-link.ready svg.underline {
   display: block;
+  opacity: 0.5;
 }
 
 .styled-link svg.underline {
+  transition: opacity 0.2s ease-in-out;
   pointer-events: none;
   display: none;
+  bottom: -2px;
 }
 .styled-link svg.underline path {
   transition: 0.2s ease-in-out;
@@ -45,8 +49,8 @@ const { classes=[], step=16, underlineHeight=6, ...rest } = Astro.props;
   /* stroke-opacity: 0.5; */
 }
 
-.styled-link:hover svg.underline {
-  
+.styled-link:hover svg.underline {  
+  opacity: 0.8;
 }
 .styled-link:hover svg.underline path {
   /* stroke-opacity: 1; */

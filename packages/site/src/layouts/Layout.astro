@@ -1,9 +1,10 @@
 ---
 export interface Props {
 	title: string;
+	showAnimatedBackground?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, showAnimatedBackground=false } = Astro.props;
 
 import AnimatedBackground from '../components/animated-background/index.astro';
 ---
@@ -25,7 +26,7 @@ import AnimatedBackground from '../components/animated-background/index.astro';
 		<div class="content-wrapper max-w-screen-lg	mx-auto flex flex-1">
 			<slot />
 		</div>
-		<AnimatedBackground />
+		{showAnimatedBackground && <AnimatedBackground />}
 	</body>
 </html>
 <script>

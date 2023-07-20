@@ -3,20 +3,28 @@ import Layout from '../layouts/Layout.astro';
 import { Picture } from '@astrojs/image/components';
 import StyledLink from '../components/StyledLink.astro';
 ---
-
-<Layout title="Cody Rushing">
+<Layout showAnimatedBackground={true} title="Cody Rushing">
 	<main>
 		<section class="bio">			
-			<div class="flex md:gap-8 flex-col md:flex-row gap-4">
+			<div class="flex lg:gap-8 flex-col lg:flex-row gap-4">
 				<div class="bio-text order-3 basis-3/4 gap-4 flex flex-col">
-					<p class="text-xl">
-						I build software with a focus on performance, scalability, and elegance.
+					<div class="
+							tagline 
+							hidden py-2 pr-4 pl-0 gap-2
+							lg:flex
+						">
+						<h1 class="name-heading text-3xl leading-none">Cody Rushing</h1>
+						<p class="text-xl text-sky-400 font-bold leading-none border-t-1 mt-1 pt-1"><span class="text-green-500">full-stack</span> software engineer</p>
+					</div>
+
+					<p class="text-lg md:text-2xl">
+						I build software with a focus on performance, elegance, and scalability.
 					</p>
 					<p class="text-lg">My specialties include expressive UIs, data visualization, and API/system design.</p>
 					<p class="text-lg">Lifelong learner <span class="font-sans">✌</span></p>	
-					<div class="bg-slate-900/50 p-4 rounded-md">
-						<nav class="links flex flex-wrap gap-4 items-end">
-							<StyledLink classes={["font-bold"]} href="https://github.com/codyrushing" target="_blank">github</StyledLink>
+					<div class="bg-slate-900/60 py-4 px-2 rounded-full -mx-4 md:mx-0">
+						<nav class="links flex flex-wrap gap-4 justify-center text-sm">
+							<StyledLink href="https://github.com/codyrushing" target="_blank">github</StyledLink>
 							<StyledLink href="mailto:codyrushing+site@gmail.com">email</StyledLink>
 							<StyledLink href="https://www.linkedin.com/in/crushing/" target="_blank">linkedin</StyledLink>
 							<StyledLink href="/resume">
@@ -28,13 +36,25 @@ import StyledLink from '../components/StyledLink.astro';
 						</nav>
 					</div>
 				</div>
-				<div class="avatar-tagline order-2 basis-1/4 h-24 flex gap-4 bg-slate-900/50 rounded-l-full">
-					<figure class="avatar aspect-square flex w-24 self-center bg-white ring-4 ring-slate-500 rounded-full flex overflow-hidden">
-						<Picture height="100%" width="100%" class="w-100" src="/headshot-bw-white-bg.jpg" formats={['webp','avif','jpeg']} widths={[232, 116]} aspectRatio="1:1" alt="Cody Rushing" />
+				<div class="
+					avatar-tagline 
+					order-2 basis-1/4 h-24 flex gap-4 bg-slate-900/60 rounded-full overflow-visible
+					lg:rounded-none lg:bg-transparent lg:flex-col lg:gap-0 lg:h-auto lg:overflow-visible
+				">
+					<figure class="
+						avatar 
+						aspect-square flex w-24 self-center bg-white ring-4 ring-slate-500 rounded-full flex overflow-hidden
+						lg:w-full
+					">
+						<Picture height="100%" width="100%" src="/headshot-bw-white-bg.jpg" formats={['webp','avif','jpeg']} widths={[232, 116]} aspectRatio="1:1" alt="Cody Rushing" />
 					</figure>
-					<div class="tagline p-2 pl-0 flex flex-col content-center gap-0 self-center">
-						<h1 class="name-heading flex-1 text-2xl">Cody Rushing</h1>
-						<p class="text-sky-400 font-bold leading-none border-l-2 pl-2"><span class="text-green-500">full-stack</span> software engineer</p>
+					<div class="
+						tagline 
+						py-2 pr-4 pl-0 flex flex-col content-center gap-0 self-center
+						lg:hidden						
+					">
+						<h1 class="name-heading flex-1 text-2xl leading-none">Cody Rushing</h1>
+						<p class="text-sky-400 font-bold leading-none border-t-1 mt-1 pt-1"><span class="text-green-500">full-stack</span> software engineer</p>
 					</div>
 				</div>
 			</div>
@@ -46,6 +66,10 @@ import StyledLink from '../components/StyledLink.astro';
 	.avatar-tagline {
 		font-family: var(--font-heading);
 		border-bottom-right-radius: 9999px;
+	}
+
+	.tagline {
+		font-family: var(--font-heading);
 	}
 
 	.heading {
