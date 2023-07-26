@@ -4,8 +4,7 @@ export interface Props extends astroHTML.JSX.AnchorHTMLAttributes {
   underlineHeight?: number;
   step?: number;
 }
-
-const { classes=[], step=16, underlineHeight=6, ...rest } = Astro.props;
+const { classes=[], step=12, underlineHeight=6, ...rest } = Astro.props;
 ---
 <a data-step={step} class={classes.concat(['styled-link hover:text-sky-400 focus:text-sky-400 relative whitespace-nowrap']).join(' ')} {...rest}>
   <slot />
@@ -14,14 +13,18 @@ const { classes=[], step=16, underlineHeight=6, ...rest } = Astro.props;
   </svg>
 </a>
 <style>
+.styled-link:link, .styled-link:visited {
+  text-decoration: none;
+}
+
 .styled-link:after {
   content: '';
   display: block;
   position:absolute;
-  bottom: -0.1rem;
+  bottom: -0.2rem;
   left: -1px;
   right: -1px;
-  border-bottom-width: 2px;
+  border-bottom-width: 1.5px;
   opacity: 0.5;
 }
 .styled-link.ready:after {
@@ -37,16 +40,20 @@ const { classes=[], step=16, underlineHeight=6, ...rest } = Astro.props;
   transition: opacity 0.2s ease-in-out;
   pointer-events: none;
   display: none;
-  bottom: -2px;
+  bottom: -0.2rem;
 }
 .styled-link svg.underline path {
   transition: 0.2s ease-in-out;
   stroke: currentColor;
-  stroke-width: 2;
+  stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
   /* stroke-opacity: 0.5; */
+}
+
+.styled-link:link:hover {
+  text-decoration: none;
 }
 
 .styled-link:hover svg.underline {  
@@ -68,7 +75,7 @@ function handleStyledLink(link:HTMLAnchorElement){
     const padding = 2;
     const height = parseInt(svg.getAttribute('height') ?? '6')
     const y = height/2;
-    const stepTarget = parseInt(link.getAttribute('data-step') ?? '16');
+    const stepTarget = parseInt(link.getAttribute('data-step') ?? '12');
     const step = linkWidth / Math.floor(linkWidth/stepTarget);
     const restState = [`M0,${height/2}`]; 
     

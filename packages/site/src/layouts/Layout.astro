@@ -6,11 +6,12 @@ export interface Props {
 
 const { title, showAnimatedBackground=false } = Astro.props;
 
+import { PI_2 } from 'pixi.js';
 import AnimatedBackground from '../components/animated-background/index.astro';
 ---
 
 <!DOCTYPE html>
-<html class="dark:bg-gray-800" lang="en">
+<html class="bg-slate-800" lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description">
@@ -22,7 +23,7 @@ import AnimatedBackground from '../components/animated-background/index.astro';
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> 		
 	</head>
-	<body class="dark:bg-gray-800 dark:text-gray-300 flex flex-col">
+	<body class="bg-slate-800 text-gray-300 flex flex-col">
 		<div class="content-wrapper max-w-screen-lg	mx-auto flex flex-1">
 			<slot />
 		</div>
@@ -97,5 +98,20 @@ wf.load({
 	main {
 		margin: auto;
 		@apply p-8;
+	}
+	body a, body a:visited {
+		@apply text-sky-400;
+		text-decoration: underline;
+		text-decoration-style: dotted;
+		text-underline-position: under;
+		text-underline-offset: 2px;
+		transition: all 0.2s ease-in-out;
+	}
+	a svg {
+		text-decoration: none;
+	}
+	body a:hover {
+		@apply text-gray-300;
+		text-decoration-style: solid;
 	}
 </style>

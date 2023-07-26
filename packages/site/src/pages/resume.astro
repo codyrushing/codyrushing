@@ -1,368 +1,283 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import StyledLink from '../components/StyledLink.astro';
+import Github from '../components/icons/github.astro';
+import LinkedIn from '../components/icons/linkedin.astro';
+import Envelope from '../components/icons/envelope.astro';
+import FilePDF from '../components/icons/file-pdf.astro';
+import Home from '../components/icons/home.astro';
 ---
+<style>
+	header {
+		display: flex;
+		justify-content: space-between;
+	}
 
+	body > section,
+	header {
+		margin-bottom: 2rem;
+	}
+
+	body > section:last-child {
+		margin-bottom: 0;
+	}
+
+	.brief {
+		@apply leading-6;
+		@apply mb-3;
+	}
+
+	.brief h3 {
+		@apply inline;
+		@apply text-lg;
+	}
+
+	.brief h3, .brief > span {
+		white-space: nowrap;
+		@apply mr-3;
+	}
+
+	.brief .position {
+		@apply text-gray-400;
+	}
+
+	.brief .duration {
+		@apply text-xs;
+	}
+
+	.brief .duration span:last-child:before {
+		content: '-';
+		display: inline;
+		@apply px-1;
+		margin-right: 2px;
+	}
+
+	.role-details > ul {
+		@apply list-disc;
+		@apply pl-4;
+		@apply leading-5;
+	}
+
+	.role-details > ul > li:not(:first-child){
+		@apply mt-3;
+	}
+
+	.skills-list {
+		@apply flex; 
+		@apply gap-2; 
+		@apply flex-wrap; 
+		@apply items-center;
+	}
+
+	.skills-list > li {
+		@apply px-3; 
+		@apply py-1; 
+		@apply bg-sky-800; 
+		@apply rounded-md;
+		@apply font-bold;
+		@apply border-sky-800;
+		@apply border-b-2;
+		font-family: var(--font-heading);
+	}
+
+	a.icon-link {
+		text-decoration: none;
+	}
+
+	a.icon-link span {
+		text-decoration: underline;
+		text-decoration-style: dotted;
+		text-underline-position: under;
+		text-underline-offset: 2px;
+	}
+
+	a.icon-link:hover span {
+		text-decoration-style: solid;
+	}
+
+	nav a.icon-link span {
+		text-decoration: none;
+	}
+
+	@media print {
+		html,
+		body {
+			font-size: 12px;
+			background: white;
+			color: #222 !important;
+		}
+
+		.brief .position {
+			color: #333 !important;
+		}
+
+		nav.topnav {
+			display: none;
+		}
+
+		header {
+			@apply -mt-12;
+		}
+
+		a {
+			color: inherit !important;
+		}
+
+		.role-details > ul {
+			@apply ml-2;
+		}	
+
+		.skills-list {
+			position: flex;
+			flex-wrap: row;
+			@apply gap-x-6; 
+		}
+		.skills-list > li {
+			@apply px-0;
+			background: none;
+			border: none;
+		}
+	}	
+</style>
 <Layout title="Cody Rushing - Resume/CV">
-	<main>
-    <header>
-      <h1>Cody Rushing</h1>
-      <section class="contact">
-        <ul class="inline-list">
-          <li><a href="tel:15127367313">+1 512 736 7313</a></li>
-          <li><a href="mailto:codyrushing@gmail.com">codyrushing@gmail.com</a></li>
-        </ul>
-        <ul class="inline-list">
-          <li><a href="https://linkedin.com/in/crushing">linkedin.com/in/crushing</a></li>
-          <li><a href="https://github.com/codyrushing">github.com/codyrushing</a></li>
-        </ul>
+	<main class="flex flex-col gap-6 md:gap-10">
+
+		<nav class="topnav flex justify-between text-xs -mb-3">
+			<a class="icon-link" href="/" title="Home"><Home classes="h-4 w-4 -mt-1" /> <span>Home</span></a>
+			<a class="icon-link" target="_blank" href="/CodyRushingResumeCV.pdf"><FilePDF classes="h-4 w-4 -mt-1" /> <span>View as PDF</span></a>
+		</nav>
+
+
+    <header class="flex flex-col mb-0">
+      <h1 class="text-4xl whitespace-nowrap text-center">Cody Rushing</h1>
+			<h2 class="text-xl font-normal text-center">Full stack software engineer</h2>
+      <section class="contact flex flex-wrap gap-x-4 gap-y-1 my-2 justify-center items-center text-sm">
+        <div><a class="icon-link" href="mailto:codyrushing@gmail.com" class="inline"><Envelope classes="mr-1" /> <span>codyrushing@gmail.com</span></a></div>
+        <div><a class="icon-link" target="_blank" href="https://linkedin.com/in/crushing"><LinkedIn classes="mr-1" /> <span>linkedin.com/in/crushing</span></a></div>
+        <div><a class="icon-link" target="_blank" href="https://github.com/codyrushing"><Github classes="mr-1" /> <span>github.com/codyrushing</span></a></div>
       </section>
     </header>
 
-    <section class="work-history">
-      <h2>Relevant work history</h2>
-      <ul class="roles">
+    <section class="work-history flex flex-col">
+      <ul class="roles flex flex-col gap-6">
         <li>
           <div class="brief">
-            <span class="company">Curb</span>
-            <span class="location">(Austin, TX)</span>
+            <h3 class="company">Elevation <span class="text-sm">(formerly Curb)</span></h3>
             <span class="position">Software Engineer</span>
-            <div class="duration">
+            <span class="duration">
               <span>July 2016</span>
-              <span>Present</span>
-            </div>
+              <span>present</span>
+            </span>
           </div>
-          <div class="details">
+          <div class="role-details">
             <ul>
-              <li>Built and maintained the Curb REST data API to securely deliver both historical and real-time IoT device data to end users and partner organizations.  Built with Express and Websockets.</li>
-              <li>Designed and built an administration app for B2B partners to monitor thousands of devices and customers across their entire fleet.  Built with React and Express.</li>
-              <li>Built a suite of custom data viz components in D3.js and integrating them into a React app.  Demo at <a href="https://app.energycurb.com/demo">app.energycurb.com/demo</a>.</li>
-              <li>Assisted in rearchitecting a monolithic legacy application into a suite of microservices.</li>              
+							<li>Assisting in architecting the Curb cloud software system to support 10K+ IoT smart meter devices and 800+ daily active users.</li>
+							<li>Designing and implementing internal and public APIs to securely provide historical and real-time energy data.</li>
+							<li>Building UI dashboards for end users and administrators to monitor their fleets of devices and customers. <span class="demo">Demo available at <a target="_blank" href="https://app.energycurb.com/demo">app.energycurb.com/demo</a>.</span></li>
+							<li>Developing a demand response system to shift peak demand through automated smart thermostat controls, including a fleet-wide management web portal.</li>
+							<li>Working closely with the product team to develop functional product specs and translating those into technical design documents for the engineering team.</li>
             </ul>
           </div>
         </li>
+
         <li>
           <div class="brief">
-            <span class="company">GreenSync</span>
-            <span class="location">(Melbourne, Australia)</span>
-            <span class="position">Developer</span>
-            <div class="duration">
-              <span>October 2015</span>
+						<h3 class="company">GreenSync</h3>
+            <span class="position">Software Engineer</span>
+            <span class="duration text-sm">
+							<span>October 2015</span>
               <span>March 2016</span>
-            </div>
+            </span>
           </div>
-          <div class="details">
+          <div class="role-details">
             <ul>
-              <li>Implementing features and bug fixes for customer-facing AngularJS + Ruby on Rails application providing real-time electrical metering data.</li>
-              <li>Maintaining and extending a suite of browser-based interactive graphs built with D3.js.</li>
-              <li>Building an automated front-end build process with Gulp.js.</li>
+							<li>Maintaining customer-facing web application providing real-time electricity metering data, including interactive data visualization with D3.</li>
+							<li>Writing and maintaining a suite of automated browser tests.</li>
             </ul>
           </div>
         </li>
+
         <li>
           <div class="brief">
-            <span class="company">Atlassian</span>
-            <span class="location">(Austin, TX)</span>
+						<h3 class="company">Atlassian</h3>
             <span class="position">Web Developer</span>
-            <div class="duration">
-              <span>November 2014</span>
+            <span class="duration">
+							<span>November 2014</span>
               <span>August 2015</span>
-            </div>
+            </span>
           </div>
-          <div class="details">
-            <p>Developing front-end codebase for atlassian.com and associated web properties.</p>
+          <div class="role-details">
             <ul>
-              <li>Built a lightweight jQuery-based component library for use on atlassian.com.  Establishing a streamlined development workflow with Gulp.js.</li>
-              <li>Maintaining and extending atlassian.com/git, a single-page app built with React.</li>
+							<li>Developing front-end codebase for atlassian.com and associated web properties.</li>
+							<li>Implementing a lightweight jQuery-based component library, custom CMS extensions, and streamlined development and build workflows.</li>
             </ul>
           </div>
         </li>
+
         <li>
           <div class="brief">
-            <span class="company">Razorfish</span>
-            <span class="location">(Austin, TX)</span>
+						<h3 class="company">Razorfish</h3>
             <span class="position">Senior Presentation Layer Engineer</span>
-            <div class="duration">
+            <span class="duration">
               <span>April 2012</span>
               <span>October 2014</span>
-            </div>
+            </span>
           </div>
-          <div class="details">
-            <p>Building public-facing web applications for clients such as BlackBerry, Samsung, and others.</p>
+          <div class="role-details">
             <ul>
-              <li>Developing a jQuery-based client-side app paired with the largest Adobe CQ project to date. Building
-              custom CMS extensions, analytics, and interactive widgets.</li>
-              <li>Delivering a standalone fully-accessible library of custom UI components for a major US airline.</li>
-              <li>Adding a Bootstrap-based UI layer onto a large-scale enterprise e-commerce implementation.</li>
+							<li>Developing public-facing web applications and CMS-backed websites for clients such as Samsung, Southwest Airlines, BlackBerry, and others.</li>
             </ul>
           </div>
         </li>
+
         <li>
           <div class="brief">
-            <span class="company">Monkee-Boy Web Design</span>
-            <span class="location">(Austin, TX)</span>
+            <h3 class="company">Monkee-Boy Web Design</h3>
             <span class="position">Front-End Developer</span>
-            <div class="duration">
+            <span class="duration">
               <span>July 2008</span>
               <span>April 2012</span>
-            </div>
+            </span>
           </div>
-          <div class="details">
-            <p>Working alongside back-end team to develop mostly PHP-based web apps.</p>
+          <div class="role-details">
             <ul>
-              <li>Building and maintaining a mobile-first responsive web template.</li>
-              <li>Developing single-page mobile/tablet web apps.</li>
-              <li>Ensuring cross-browser and cross-device support.</li>
+							<li>Client projects consisting mostly of PHP and WordPress-backed websites.</li>
             </ul>
           </div>
         </li>
       </ul>
     </section>
 
-    <section class="skills">
-      <h2>Skills</h2>
-      <h3>Proficient with:</h3>
-      <ul class="inline-list">
-        <li>Node.js</li>
-        <li>React</li>
-        <li>D3</li>
-        <li>CSS</li>
-        <li>Express</li>
-        <li>API design</li>
-        <li>MongoDB</li>
-        <li>Auth0</li>
-        <li>Websockets</li>
-        <li>SVG</li>
-        <li>TDD</li>
-        <li>Redis</li>
-      </ul>
-      <h3>Comfortable with:</h3>
-      <ul class="inline-list">
-        <li>Python</li>
-        <li>Flask</li>
-        <li>AWS</li>
-        <li>TypeScript</li>
-        <li>RabbitMQ</li>
-        <li>Three.js</li>
+    <section class="skills row">
+			<h2 class="text-2xl">Skills and technologies</h2>
+      <ul class="skills-list mt-2">
+				<li>Node.js</li>
+				<li>TypeScript</li>
+				<li>React</li>
+				<li>AWS</li>
+				<li>D3</li>
+				<li>CSS</li>
+				<li>MongoDB</li>
+				<li>Next.js</li>
+				<li>OpenAPI</li>
+				<li>TDD</li>
+				<li>Three.js</li>
+				<li>Docker</li>
+				<li>Redis</li>
+				<li>Python</li>
+				<li>SQL</li>
         <li>WebGL</li>
       </ul>
     </section>
 
-    <section class="education">
-      <h2>Education</h2>
+    <section class="education row">
+      <h2 class="text-2xl">Education</h2>
       <h3>University of Texas at Austin</h3>
       <p>B.S in General Kinesiology (Biology minor) – May 2010</p>
     </section>
 
     <section class="references">
-      <h2>References</h2>
-      <ul>
-        <li>
-          <div class="heading">
-            <h3>Simon Russell</h3>
-            <span class="title">Head of Technology – GreenSync</span>
-          </div>
-          <ul class="contact">
-            <li><a href="tel:+61404496855">+61 404 496 855</a> – <a href="mailto:simon@greensync.com.au">simon@greensync.com.au</a></li>
-          </ul>
-        </li>
-        <li>
-          <div class="heading">
-            <h3>William Paoli</h3>
-            <span class="title">Web Development Team Lead – Atlassian</span>
-          </div>
-          <ul class="contact">
-            <li><a href="tel:+16507036590">+1 650 703 6590</a> – <a href="mailto:wpaoli@atlassian.com">wpaoli@atlassian.com</a></li>
-          </ul>
-        </li>
-      </ul>
+      <p>References available upon request.</p>
     </section>
-
 		
 	</main>
 </Layout>
-
-<style>
-      h1 {
-        font-size: 2.8rem;
-      }
-      h2 {
-        font-size: 1.8rem;
-      }
-      h3 {
-        font-size: 1.1rem;
-      }
-      h1,
-      h2,
-      h3 {
-        font-family: 'Merriweather', serif;
-        font-weight: 700;
-        margin-bottom: 0.5em;
-      }
-
-      h1:first-child,
-      h2:first-child,
-      h3:first-child {
-        margin-top: 0;
-      }
-
-      p {
-        margin: 0 0 0.5rem;
-      }
-
-      ul {
-        padding: 0 0 0.75rem 0;
-      }
-
-      ul:last-child {
-        padding-bottom: 0;
-      }
-
-      li {
-        margin-bottom: 1rem;
-      }
-
-      li:last-child {
-        margin-bottom: 0;
-      }
-
-      ul ul {
-        padding-left: 1.2rem;
-      }
-
-      ul ul li {
-        margin-bottom: 0.25rem;
-      }
-
-      header {
-        display: flex;
-        justify-content: space-between;
-      }
-
-      body > section,
-      header {
-        margin-bottom: 2rem;
-      }
-
-      body > section:last-child {
-        margin-bottom: 0;
-      }
-
-      .inline-list {
-        display: flex;
-        flex-wrap: wrap;
-        list-style: none;
-        margin: 0;
-        padding: 0.5rem 0;
-      }
-
-      .inline-list > li {
-        margin-bottom: 0.25rem;
-      }
-
-      .inline-list > li:before {
-        content: "\2022";
-        display: inline-block;
-        margin: 0 0.5rem;
-      }
-
-      .inline-list > li:first-child:before {
-        display: none;
-      }
-
-      .inline-list > li:first-child {
-        margin-left: 0;
-      }
-      header .inline-list {
-        justify-content: flex-end;
-        border-top: 1px solid #333;
-      }
-      header .inline-list:first-child {
-        border-top: none;
-      }
-
-      .roles {
-        list-style: none;
-      }
-
-      .brief {
-        display: flex;
-        padding-bottom: 0.5rem;
-      }
-
-      .brief span {
-        font-size: 1.1rem;
-        margin-left: 1rem;
-        line-height: 1.4;
-      }
-
-      .brief span:first-child {
-        margin-left: 0;
-      }
-
-      .brief .company {
-        font-family: 'Merriweather', serif;
-        font-weight: 700;
-      }
-
-      .brief .location {
-        font-style: italic;
-      }
-
-      .brief .position {
-
-      }
-
-      .brief .duration {
-        margin-left: auto;
-      }
-
-      .brief .duration span {
-        margin-left: 0;
-      }
-
-      .brief .duration span:last-child:before {
-        content: '-';
-        display: inline-block;
-        margin: 0 0.5rem;
-      }
-
-      .references > ul {
-        display: flex;
-      }
-
-      .references > ul > li {
-        flex: 1;
-      }
-
-      .references li {
-        list-style: none;
-      }
-
-      .references .heading {
-        display: flex;
-      }
-
-      .references .heading h3 {
-        margin-right: 1em;
-      }
-
-      .references .contact > li {
-        list-style: circle;
-      }
-
-      @media print {
-        html,
-        body {
-          font-size: 12px;
-        }
-
-        ul ul {
-          padding-left: 1.4em;
-        }
-
-        body {
-          margin: 0 auto;
-        }
-      }	
-</style>
