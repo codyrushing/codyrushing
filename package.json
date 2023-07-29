@@ -4,6 +4,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "build:site": "cd packages/site; yarn build;"
+  },
   "devDependencies": {
     "@types/node": "^20.3.1",
     "ts-node": "^10.9.1",
