@@ -597,7 +597,6 @@ __metadata:
     "@types/d3-scale": ^4.0.3
     "@types/d3-scale-chromatic": ^3.0.0
     "@types/d3-shape": ^3.1.1
-    "@types/vec2": ^1.6.2
     astro: ^2.6.0
     astro-compress: ^1.1.50
     d3-scale: ^4.0.2
@@ -605,10 +604,7 @@ __metadata:
     d3-shape: ^3.2.0
     pixi.js: ^7.2.4
     preact: ^10.16.0
-    simplex-noise: ^4.0.1
     tailwindcss: ^3.0.24
-    vec2: ^1.6.1
-    webfontloader: ^1.6.28
   languageName: unknown
   linkType: soft
 
@@ -1599,13 +1595,6 @@ __metadata:
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 25cb860ff10dde48b54622d58b23e66214211a61c84c0f15f88d38b61aa1b53d4d46e42b557924a93178c501c166aa37e28d7f6d994aba13d24685326272d5db
-  languageName: node
-  linkType: hard
-
-"@types/vec2@npm:^1.6.2":
-  version: 1.6.2
-  resolution: "@types/vec2@npm:1.6.2"
-  checksum: 014e7a6e51064667897ff2529245ea38bc6b7d6ab496e600a1433dc69a65e580602892cd80007dd286cfa542cc8d113b47bebbde2c4f8c8fd3196128a4db5d6d
   languageName: node
   linkType: hard
 
@@ -6555,13 +6544,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"simplex-noise@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "simplex-noise@npm:4.0.1"
-  checksum: b5458713337129016ae71182e20d2e2e0d01bb62c78cf180276dafe8a59bf1814a66aedd0dfc9bbb70cc549a9bc02f1c9773e4f222a2cff4692cd48e7a2b348b
-  languageName: node
-  linkType: hard
-
 "sisteransi@npm:^1.0.5":
   version: 1.0.5
   resolution: "sisteransi@npm:1.0.5"
@@ -7372,13 +7354,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vec2@npm:^1.6.1":
-  version: 1.6.1
-  resolution: "vec2@npm:1.6.1"
-  checksum: f0e0387f894ad64540ae102ccfbb423d88d30db709c7ced7f53e230758490d7c39a43952c7df9ea4ce899ce9f0226fc4759f1922d8c7a909aedb6cb83dad1821
-  languageName: node
-  linkType: hard
-
 "vfile-location@npm:^4.0.0":
   version: 4.1.0
   resolution: "vfile-location@npm:4.1.0"
@@ -7567,13 +7542,6 @@ __metadata:
   version: 2.0.1
   resolution: "web-namespaces@npm:2.0.1"
   checksum: b6d9f02f1a43d0ef0848a812d89c83801d5bbad57d8bb61f02eb6d7eb794c3736f6cc2e1191664bb26136594c8218ac609f4069722c6f56d9fc2d808fa9271c6
-  languageName: node
-  linkType: hard
-
-"webfontloader@npm:^1.6.28":
-  version: 1.6.28
-  resolution: "webfontloader@npm:1.6.28"
-  checksum: cbebbe593cb0d27dbb4d418f7f96bd9893024f1f2062e858af76209b6524e25d766964b6e2a724f3b694fadef661dd3a01065455a96df05337b3281ca09ab656
   languageName: node
   linkType: hard
 

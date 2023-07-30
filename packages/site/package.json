@@ -21,15 +21,11 @@
     "d3-shape": "^3.2.0",
     "pixi.js": "^7.2.4",
     "preact": "^10.16.0",
-    "simplex-noise": "^4.0.1",
-    "tailwindcss": "^3.0.24",
-    "vec2": "^1.6.1",
-    "webfontloader": "^1.6.28"
+    "tailwindcss": "^3.0.24"
   },
   "devDependencies": {
     "@types/d3-scale": "^4.0.3",
     "@types/d3-scale-chromatic": "^3.0.0",
-    "@types/d3-shape": "^3.1.1",
-    "@types/vec2": "^1.6.2"
+    "@types/d3-shape": "^3.1.1"
   }
 }
