@@ -3,13 +3,10 @@ export interface Props {
 	title: string;
 	showAnimatedBackground?: boolean;
 }
-
 const { title, showAnimatedBackground=false } = Astro.props;
-
 import { PI_2 } from 'pixi.js';
-import AnimatedBackground from '../components/animated-background/index.astro';
+import AnimatedBackground from '../components/animated-background/component.jsx';
 ---
-
 <!DOCTYPE html>
 <html class="bg-slate-800" lang="en">
 	<head>
@@ -24,11 +21,19 @@ import AnimatedBackground from '../components/animated-background/index.astro';
 		<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> 		
 	</head>
 	<body class="bg-slate-800 text-gray-300 flex flex-col">
-		<div class="content-wrapper max-w-screen-lg	mx-auto flex flex-1">
+		<div class="content-wrapper max-w-screen-lg lg:w-screen-lg	mx-auto flex flex-1">
 			<slot />
 		</div>
-		{showAnimatedBackground && <AnimatedBackground />}
-	</body>
+		{showAnimatedBackground && <AnimatedBackground client:load />}
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-YK6XQN5P3B"></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-YK6XQN5P3B');
+		</script>		
+	</body>	
 </html>
 <script>
 import wf from 'webfontloader';
@@ -37,15 +42,6 @@ wf.load({
 		families: ['Inter Tight:700', 'Lora:italic,400,700']	
 	}
 });
-</script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YK6XQN5P3B"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-YK6XQN5P3B');
 </script>
 <style is:global>
 	:root {
@@ -61,24 +57,13 @@ wf.load({
 
 	body {
 		overscroll-behavior-y: none;
-	}
-
-	p, span, li,
-	h1, h2, h3, h4, h5, h6 {
 		visibility: hidden;
 	}
-	html.wf-active p,
-	html.wf-active span,
-	html.wf-active li,
-	html.wf-active h1,
-	html.wf-active h2,
-	html.wf-active h3,
-	html.wf-active h3,
-	html.wf-active h4,
-	html.wf-active h5,
-	html.wf-active h6 {
+
+	html.wf-active body {
 		visibility: visible;
 	}
+
 	code {
 		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
 			Bitstream Vera Sans Mono, Courier New, monospace;

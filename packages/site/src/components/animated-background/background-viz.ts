@@ -18,6 +18,9 @@ export default function createBackgroundViz(canvas:HTMLCanvasElement){
   const startAngle0 = Math.random() * Math.PI * 2;
   const startAngle1 = Math.random() * Math.PI * 2;
 
+  const start = Date.now();
+  const opacityScale = d3Scale.scaleLinear().domain([0, 500]).range([0, 0.5]).clamp(true);
+
   const line = d3Shape.line();
   line.curve(d3Shape.curveCatmullRomOpen.alpha(0.5));
   const colorScale = d3ScaleChromatic.interpolateGnBu;
@@ -73,7 +76,7 @@ export default function createBackgroundViz(canvas:HTMLCanvasElement){
         }
 
         const color = colorScale(Math.sin(startAngle + t * 0.2));
-        graphics.lineStyle(1, color, 0.4);
+        graphics.lineStyle(1, color, opacityScale(Date.now() - start));
         line(lineData);
         // this magically works because the pixi graphics API
         // is modeled after the HTML Canvas API, which allows
@@ -83,8 +86,8 @@ export default function createBackgroundViz(canvas:HTMLCanvasElement){
       }
     }
 
-    buildRibbon(height * 0.08, startAngle0);
-    buildRibbon(height * 0.92, startAngle1);
+    buildRibbon(height * 0.1, startAngle0);
+    buildRibbon(height * 0.9, startAngle1);
 
   });
 }
