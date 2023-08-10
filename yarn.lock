@@ -598,7 +598,7 @@ __metadata:
     "@types/d3-scale-chromatic": ^3.0.0
     "@types/d3-shape": ^3.1.1
     astro: ^2.6.0
-    astro-compress: ^1.1.50
+    astro-compress: ^2.0.4
     d3-scale: ^4.0.2
     d3-scale-chromatic: ^3.0.0
     d3-shape: ^3.2.0
@@ -1821,19 +1821,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro-compress@npm:^1.1.50":
-  version: 1.1.50
-  resolution: "astro-compress@npm:1.1.50"
+"astro-compress@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "astro-compress@npm:2.0.4"
   dependencies:
     "@types/csso": 5.0.0
     "@types/html-minifier-terser": 7.0.0
     csso: 5.0.5
-    files-pipe: 0.0.8
+    files-pipe: 2.0.6
     html-minifier-terser: 7.2.0
     sharp: 0.32.4
     svgo: 3.0.2
     terser: 5.19.2
-  checksum: 2ce926825a213b694b70c3b473b04573226b8cb5294e5ee4fe9c74e9009b0c12ed6788cdc4f4abce0ab8799cde9f6875cda69a11d8f54c08236fa411f5c5a956
+  checksum: 4966b4b6e593c1966bc96d08c5337ea9c135afb8e53ef7ccae28563b95e1d1aa2c87965c281d173aa529a9a8a6bedc431614963af96dcaf83ac741d6c5a907f9
   languageName: node
   linkType: hard
 
@@ -3329,13 +3329,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"files-pipe@npm:0.0.8":
-  version: 0.0.8
-  resolution: "files-pipe@npm:0.0.8"
+"files-pipe@npm:2.0.6":
+  version: 2.0.6
+  resolution: "files-pipe@npm:2.0.6"
   dependencies:
     deepmerge-ts: 5.1.0
     fast-glob: 3.3.1
-  checksum: 0989e2f9859671639b587a62f2f3e39df7af371a531891d320830a885603c1e5573792e62ee1fa83b2a7f690b2b7b0a9f851b909962e8a5112ca5254832fe4d3
+  checksum: 23308dcc76c75c333d6e123aa3d977a2a7c2706d7f0479573de0f39589a8dee1ef014344b5c5a77f1b1d0d4ec6bdf18f5b0148d4abed0d84a78726131348429c
   languageName: node
   linkType: hard
 
