@@ -26,11 +26,18 @@ import Home from '../components/icons/home.astro';
 		@apply mb-3;
 		@apply flex;
 		@apply flex-col;
-		@apply sm:block;
+		@apply lg:block;
+	}
+
+	.brief .company,
+	.brief .position,
+	.brief .duration {
+		@apply block;
+		@apply basis-full;	
+		@apply lg:inline;
 	}
 
 	.brief h3 {
-		@apply inline;
 		@apply text-lg;
 	}
 
@@ -109,16 +116,23 @@ import Home from '../components/icons/home.astro';
 			color: #222 !important;
 		}
 
+		.brief {
+			@apply block;
+		}
+
+		.brief .company,
+		.brief .position,
+		.brief .duration {
+			@apply inline;
+		}
+
+
 		.brief .position {
 			color: #333 !important;
 		}
 
 		nav.topnav {
 			display: none;
-		}
-
-		header {
-			@apply -mt-12;
 		}
 
 		a {
@@ -142,7 +156,7 @@ import Home from '../components/icons/home.astro';
 	}	
 </style>
 <Layout title="Cody Rushing - Resume/CV">
-	<main class="flex flex-col gap-6 md:gap-10">
+	<main class="flex flex-col gap-6 lg:gap-10">
 
 		<nav class="topnav flex justify-between text-xs -mb-3">
 			<a class="icon-link" href="/" title="Home"><Home classes="h-4 w-4 -mt-1" /> <span>Home</span></a>
@@ -173,10 +187,11 @@ import Home from '../components/icons/home.astro';
           </div>
           <div class="role-details">
             <ul>
-							<li>Assisting in architecting the Curb cloud software system to support 10K+ IoT smart meter devices and 800+ daily active users.</li>
-							<li>Designing and implementing internal and public APIs to securely provide historical and real-time energy data.</li>
-							<li>Building UI dashboards for end users and administrators to monitor their fleets of devices and customers. <span class="demo">Demo available at <a target="_blank" href="https://app.energycurb.com/demo">app.energycurb.com/demo</a>.</span></li>
-							<li>Developing a demand response system to shift peak demand through automated smart thermostat controls, including a fleet-wide management web portal.</li>
+							<li>Assisting in rearchitecting the Curb cloud system to support 10K+ IoT smart meter devices and 800+ daily active users. Migrating from a legacy monolith to a suite of AWS microservices utilizing Auth0 for authentication.</li>
+							<li>Building UI dashboards for end users and administrators to monitor their fleets of IoT devices and customers utilizing React and D3. <span class="demo">Demo available at <a target="_blank" href="https://app.energycurb.com/demo">app.energycurb.com/demo</a>.</span></li>
+							<li>Designing and implementing internal and public APIs to securely provide historical and real-time energy data utilizing mostly Node.js (ExpressJS) and Python (Flask).</li>
+							<li>Developing a demand response system to shift peak demand through automated smart thermostat controls, including a fleet-wide management web portal utilizing Serverless, MongoDB, and Next.js.</li>
+							<li>Designing and implementing a timeseries data API for all IoT sensor data utilizing Node.js and AWS Timestream to perform custom binning, aggregations, and interpolation.</li>
 							<li>Working closely with the product team to develop functional product specs and translating those into technical design documents for the engineering team.</li>
             </ul>
           </div>
@@ -193,7 +208,7 @@ import Home from '../components/icons/home.astro';
           </div>
           <div class="role-details">
             <ul>
-							<li>Maintaining customer-facing web application providing real-time electricity metering data, including interactive data visualization with D3.</li>
+							<li>Maintaining a customer-facing web application providing real-time electricity metering data, including interactive data visualization with D3.</li>
 							<li>Writing and maintaining a suite of automated browser tests.</li>
             </ul>
           </div>
@@ -264,6 +279,7 @@ import Home from '../components/icons/home.astro';
 				<li>OpenAPI</li>
 				<li>Jest</li>
 				<li>Cypress</li>
+				<li>Serverless</li>
 				<li>Auth0</li>
 				<li>TDD</li>
 				<li>Three.js</li>
