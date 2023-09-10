@@ -143,6 +143,10 @@ import Home from '../components/icons/home.astro';
 			@apply ml-2;
 		}	
 
+		.hide-from-print {
+			display: none;
+		}
+
 		.skills-list {
 			position: flex;
 			flex-wrap: row;
@@ -253,7 +257,7 @@ import Home from '../components/icons/home.astro';
           </div>
         </li>
 
-        <!-- <li>
+        <li class="hide-from-print">
           <div class="brief">
             <h3 class="company">Monkee-Boy Web Design</h3>
             <span class="position">Front-End Developer</span>
@@ -268,7 +272,7 @@ import Home from '../components/icons/home.astro';
 							<li>Translating custom UI designs into mobile-first websites and web applications.</li>
             </ul>
           </div>
-        </li> -->
+        </li>
       </ul>
     </section>
 
