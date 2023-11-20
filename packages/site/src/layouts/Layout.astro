@@ -4,8 +4,7 @@ export interface Props {
 	showAnimatedBackground?: boolean;
 }
 const { title, showAnimatedBackground=false } = Astro.props;
-import { PI_2 } from 'pixi.js';
-import AnimatedBackground from '../components/animated-background/component.jsx';
+import AnimatedBackground from '../components/animated-background/component.astro';
 ---
 <!DOCTYPE html>
 <html class="bg-slate-800" lang="en">
@@ -19,12 +18,12 @@ import AnimatedBackground from '../components/animated-background/component.jsx'
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
-		</head>
+	</head>
 	<body class="bg-slate-800 text-gray-300 flex flex-col">
 		<div class="content-wrapper max-w-screen-lg	w-full mx-auto flex flex-1">
 			<slot />
 		</div>
-		{showAnimatedBackground && <AnimatedBackground client:load />}
+		{ showAnimatedBackground && <AnimatedBackground /> }
 		<!-- Google tag (gtag.js) -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-YK6XQN5P3B"></script>
 		<script is:inline>
@@ -33,6 +32,7 @@ import AnimatedBackground from '../components/animated-background/component.jsx'
 			gtag('js', new Date());
 			gtag('config', 'G-YK6XQN5P3B');
 		</script>		
+		<script src="../components/animated-background/background-viz.ts"></script>
 	</body>	
 </html>
 <style is:global>

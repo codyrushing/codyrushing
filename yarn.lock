@@ -486,7 +486,6 @@ __metadata:
     d3-scale-chromatic: "npm:^3.0.0"
     d3-shape: "npm:^3.2.0"
     pixi.js: "npm:^7.2.4"
-    preact: "npm:^10.16.0"
     tailwindcss: "npm:^3.0.24"
   languageName: unknown
   linkType: soft
@@ -6336,13 +6335,6 @@ __metadata:
   peerDependencies:
     preact: ">=10"
   checksum: 356519f7640d1c49e11b4837b41a83b307f3f237f93de153b9dde833a701e3ce5cf1d45cb18e37a3ec9c568555e2f5373c128d8b5f6ef79de7658f3c400d3e70
-  languageName: node
-  linkType: hard
-
-"preact@npm:^10.16.0":
-  version: 10.19.2
-  resolution: "preact@npm:10.19.2"
-  checksum: 1519050e79f0dec61aa85daa5dcba4a5294e89fb09ab53d5e1a215ef8526dd5ccdbe82a02842cc4875fa3ea076eee9697a7421c32ffcc6159007d27b13a60a8f
   languageName: node
   linkType: hard
 

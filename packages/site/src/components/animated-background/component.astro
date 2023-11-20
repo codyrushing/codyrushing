@@ -1,4 +1,9 @@
+---
 
+---
+<background-viz />
+
+<script>
 import * as PIXI from 'pixi.js' 
 import * as d3Shape from 'd3-shape';
 import * as d3Scale from 'd3-scale';
@@ -92,7 +97,15 @@ export default function createBackgroundViz(canvas:HTMLCanvasElement){
   });
 }
 
-const backgroundVizCanvas : HTMLCanvasElement | null = document.querySelector(`canvas.animated-bg`);
-if(backgroundVizCanvas){
-  createBackgroundViz(backgroundVizCanvas);
-}
+// custom element implementation
+class BackgroundViz extends HTMLElement {
+    constructor() {
+      super();
+      const canvas = document.createElement('canvas');
+      canvas.classList.add('fixed', 'inset-0', 'z-0');
+      this.appendChild(canvas);
+      createBackgroundViz(canvas);
+    }
+  }
+customElements.define('background-viz', BackgroundViz);
+</script>
