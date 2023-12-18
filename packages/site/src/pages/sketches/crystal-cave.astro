@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<style>
+    canvas {
+        background: red;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+    }
+</style>
+<Layout title="crystal cave">
+    <canvas class="crystal-cave"></canvas>
+</Layout>
+<script>
+import createCrystalCave from './lib/index.js';
+const canvasElements = document.querySelectorAll('canvas.crystal-cave');
+for(const canvasElement of canvasElements){
+    createCrystalCave(canvasElement as HTMLCanvasElement);
+}
+</script>

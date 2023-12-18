@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "composite": true,
     "emitDeclarationOnly": true,
+    "preserveSymlinks": true,
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -10,5 +12,13 @@
     "types": [
       "node"
     ]
-  }
+  },
+  "references": [
+    {
+       "path": "./packages/api"
+    },
+    {
+       "path": "./packages/site"
+    }
+  ]  
 }
