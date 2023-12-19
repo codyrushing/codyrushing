@@ -1,6 +1,6 @@
 ---
-export interface Props {}
-const { classes='', ...rest } = Astro.props;
+export interface Props extends astroHTML.JSX.SVGAttributes { classes: string }
+const { classes='', ...rest } : Props = Astro.props;
 ---
 <svg 
   xmlns="http://www.w3.org/2000/svg" 

@@ -67,7 +67,7 @@ const { classes=[], step=12, underlineHeight=6, ...rest } = Astro.props;
 <script>
 function handleStyledLink(link:HTMLAnchorElement){
   const linkWidth = link.offsetWidth;
-  const svg : SVGElement = link.querySelector('svg.underline');
+  const svg : SVGElement = link.querySelector('svg.underline')!;
   const path = svg.querySelector('path');
 
   if(svg && path){
@@ -113,7 +113,7 @@ function handleStyledLink(link:HTMLAnchorElement){
 
     link.addEventListener(
       'mouseenter',
-      function onMouseEnter(e){
+      function onMouseEnter(){
         path.setAttribute('d', activeState.join(' '));
       }
     );

@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Picture } from 'astro:assets';
-import StyledLink from '../components/StyledLink.astro';
+import HeadshotImage from '../../public/headshot-bw-white-bg.jpg';
 ---
 <Layout showAnimatedBackground={true} title="Cody Rushing - full stack software engineer">
 	<main>
@@ -41,7 +41,7 @@ import StyledLink from '../components/StyledLink.astro';
 						aspect-square flex w-24 self-center bg-white ring-4 ring-slate-500 rounded-full flex overflow-hidden
 						lg:w-full
 					">
-						<Picture height="100%" width="100%" src="/headshot-bw-white-bg.jpg" formats={['webp','avif','jpeg']} widths={[232, 116]} aspectRatio="1:1" alt="Cody Rushing" />
+						<Picture src={HeadshotImage} formats={['webp','avif','jpeg']} widths={[232, 116]} aspect-ratio="1:1" alt="Cody Rushing" />
 					</figure>
 					<div class="
 						tagline 

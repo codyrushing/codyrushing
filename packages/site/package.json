@@ -1,5 +1,5 @@
 {
-  "name": "site",
+  "name": "@codyrushing/site",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -19,8 +19,7 @@
     "emittery": "^1.0.1",
     "lodash.throttle": "^4.1.1",
     "pixi.js": "^7.3.2",
-    "tailwindcss": "^3.3.7",
-    "typescript": "^5.3.3"
+    "tailwindcss": "^3.3.7"
   },
   "devDependencies": {
     "@types/d3-scale": "^4.0.8",

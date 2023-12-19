@@ -1,10 +1,9 @@
 {
   "name": "codyrushing",
-  "packageManager": "yarn@3.6.0",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "build:site": "cd packages/site; yarn build;"
+    "build:site": "cd packages/site; npm run build;"
   }
 }
