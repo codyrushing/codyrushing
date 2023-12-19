@@ -5,5 +5,8 @@
   ],
   "scripts": {
     "build:site": "cd packages/site; npm run build;"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
