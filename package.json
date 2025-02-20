@@ -1,12 +1,12 @@
 {
   "name": "codyrushing",
-  "workspaces": [
-    "packages/*"
-  ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build:site": "cd packages/site; npm run build;"
   },
-  "engines": {
-    "node": ">=18"
-  }
+  "workspaces": [
+    "packages/*"
+  ]
 }
