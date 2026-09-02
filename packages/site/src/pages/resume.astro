@@ -33,7 +33,7 @@ import Home from '../components/icons/home.astro';
 	.brief .position,
 	.brief .duration {
 		@apply block;
-		@apply basis-full;	
+		@apply basis-full;
 		@apply lg:inline;
 	}
 
@@ -61,10 +61,15 @@ import Home from '../components/icons/home.astro';
 		margin-right: 2px;
 	}
 
-	.role-details > ul {
+	.role-details ul {
 		@apply list-disc;
 		@apply pl-4;
 		@apply leading-5;
+	}
+
+	.role-details ul ul {
+	  list-style: square;
+		@apply text-sm;
 	}
 
 	.role-details > ul > li:not(:first-child){
@@ -72,16 +77,16 @@ import Home from '../components/icons/home.astro';
 	}
 
 	.skills-list {
-		@apply flex; 
-		@apply gap-2; 
-		@apply flex-wrap; 
+		@apply flex;
+		@apply gap-2;
+		@apply flex-wrap;
 		@apply items-center;
 	}
 
 	.skills-list > li {
-		@apply px-3; 
-		@apply py-1; 
-		@apply bg-sky-800; 
+		@apply px-3;
+		@apply py-1;
+		@apply bg-sky-800;
 		@apply rounded-md;
 		@apply font-bold;
 		@apply border-sky-800;
@@ -139,9 +144,9 @@ import Home from '../components/icons/home.astro';
 			color: inherit !important;
 		}
 
-		.role-details > ul {
+		.role-details ul {
 			@apply ml-2;
-		}	
+		}
 
 		.hide-from-print {
 			display: none;
@@ -150,17 +155,19 @@ import Home from '../components/icons/home.astro';
 		.skills-list {
 			position: flex;
 			flex-wrap: row;
-			@apply gap-x-6; 
+			@apply gap-x-6;
 		}
 		.skills-list > li {
 			@apply px-0;
 			background: none;
 			border: none;
 		}
+
+
 		.references {
 			display: none;
 		}
-	}	
+	}
 </style>
 <Layout title="Cody Rushing - Resume/CV">
 	<main class="flex flex-col gap-6 lg:gap-10">
@@ -175,7 +182,7 @@ import Home from '../components/icons/home.astro';
       <h1 class="text-4xl whitespace-nowrap text-center">Cody Rushing</h1>
 			<h2 class="text-xl font-normal text-center">Full stack software engineer</h2>
       <section class="contact flex flex-wrap gap-x-4 gap-y-1 my-2 justify-center items-center text-sm">
-        <div><a class="icon-link" href="mailto:codyrushing@gmail.com" class="inline"><Envelope classes="mr-1" /> <span>codyrushing@gmail.com</span></a></div>
+        <div><a class="icon-link" href="mailto:codyrushing@pm.me" class="inline"><Envelope classes="mr-1" /> <span>codyrushing@pm.me</span></a></div>
         <div><a class="icon-link" target="_blank" href="https://linkedin.com/in/crushing"><LinkedIn classes="mr-1" /> <span>linkedin.com/in/crushing</span></a></div>
         <div><a class="icon-link" target="_blank" href="https://github.com/codyrushing"><Github classes="mr-1" /> <span>github.com/codyrushing</span></a></div>
       </section>
@@ -186,7 +193,7 @@ import Home from '../components/icons/home.astro';
         <li>
 			<div class="brief">
 			  <h3 class="company">AidKit</h3>
-			  <span class="position">Software Engineer</span>
+			  <span class="position">Full-Stack Software Engineer</span>
 			  <span class="duration">
 				<span>January 2024</span>
 				<span>present</span>
@@ -194,12 +201,20 @@ import Home from '../components/icons/home.astro';
 			</div>
 			<div class="role-details">
 			  <ul>
-					<li>Building the AidKit platform to deliver aid and benefits programs at scale.</li>
+					<li>
+					  Delivered a suite of AI-backed tools including:
+						<ul>
+						  <li>Automated message drafting to streamline support case management.</li>
+						  <li>Document classification pipeline with custom document validation and real-time updates.</li>
+							<li>Bespoke prompt management and conversation generation pipeline allowing partners to author, iterate, and test prompts at scale.</li>
+						</ul>
+					</li>
+					<li>Implemented a privacy-focused video calling solution with end-to-end data ownership with WebRTC and AWS Chime.</li>
 			  </ul>
 			</div>
 		</li>
-  
-  
+
+
 		<li>
           <div class="brief">
             <h3 class="company">Elevation <span class="text-sm">(formerly Curb)</span></h3>
@@ -211,14 +226,14 @@ import Home from '../components/icons/home.astro';
           </div>
           <div class="role-details">
             <ul>
-							<li>Assisting in rearchitecting the Curb cloud system to a suite of microservices supporting 10K+ IoT smart meter devices and 800+ daily active users.</li>
-							<li>Building UI dashboards for users to monitor their fleets of IoT devices and customers utilizing React and D3. <span class="demo">Demo available at <a target="_blank" href="https://app.energycurb.com/demo">app.energycurb.com/demo</a>.</span></li>
-							<li>Working closely with the product team to develop functional product specs and translating those into technical design documents for the engineering team.</li>
-							<li>Designing and implementing internal and public APIs to securely provide historical and real-time energy data using Node.js (Express) and Python (Flask).</li>
+							<li>Assisted in rearchitecting the Curb cloud system to a suite of microservices supporting 10K+ IoT smart meter devices and 800+ daily active users.</li>
+							<li>Built UI dashboards for users to monitor their fleets of IoT devices and customers utilizing React and D3.</li>
+							<li>Worked closely with the product team to develop functional product specs and translated those into technical design documents.</li>
+							<li>Designed and implemented internal and public APIs to securely provide historical and real-time energy data using Node.js (Express) and Python (Flask).</li>
 							<!-- <li>Writing automated API integration tests.</li> -->
 							<!-- <li>Developing a demand response system to shift peak demand through automated smart thermostat controls, including a fleet-wide management web portal utilizing Serverless, GraphQL, and Next.js.</li> -->
 							<!-- <li>Designing and implementing a timeseries data API for all IoT sensor data utilizing Node.js and AWS Timestream to perform custom binning, aggregations, and interpolation.</li> -->
-							<li>Writing infrastructure-as-code with AWS CDK to manage the deployment of ECS services, Lambdas, single-page apps, and custom third-party resources.</li>
+							<li>Wrote infrastructure-as-code with AWS CDK to manage the deployment of ECS services, Lambdas, single-page apps, and custom third-party resources.</li>
             </ul>
           </div>
         </li>
@@ -234,8 +249,8 @@ import Home from '../components/icons/home.astro';
           </div>
           <div class="role-details">
             <ul>
-							<li>Maintaining a customer-facing web application providing real-time electricity metering data, including interactive data visualization with D3.</li>
-							<li>Writing and maintaining a suite of automated browser tests.</li>
+							<li>Maintained a customer-facing web application providing real-time electricity metering data, including interactive data visualization with D3.</li>
+							<li>Wrote and maintained a suite of automated browser tests.</li>
             </ul>
           </div>
         </li>
@@ -251,8 +266,8 @@ import Home from '../components/icons/home.astro';
           </div>
           <div class="role-details">
             <ul>
-							<li>Developing front-end codebase for atlassian.com and associated web properties.</li>
-							<li>Implementing a lightweight jQuery-based component library, custom CMS extensions, and streamlined development and build workflows.</li>
+							<li>Developed front-end codebase for atlassian.com and associated web properties.</li>
+							<li>Implemented a lightweight jQuery-based component library, custom CMS extensions, and streamlined development and build workflows.</li>
             </ul>
           </div>
         </li>
@@ -268,7 +283,7 @@ import Home from '../components/icons/home.astro';
           </div>
           <div class="role-details">
             <ul>
-							<li>Developing public-facing custom web applications and CMS-backed websites for clients such as Samsung, Southwest Airlines, BlackBerry, and others.</li>
+							<li>Developed public-facing custom web applications and CMS-backed websites for clients such as Samsung, Southwest Airlines, BlackBerry, and others.</li>
             </ul>
           </div>
         </li>
@@ -285,7 +300,7 @@ import Home from '../components/icons/home.astro';
           <div class="role-details">
             <ul>
 							<li>Client projects consisting mostly of PHP and WordPress-backed websites.</li>
-							<li>Translating custom UI designs into mobile-first websites and web applications.</li>
+							<li>Translated custom UI designs into mobile-first websites and web applications.</li>
             </ul>
           </div>
         </li>
@@ -298,23 +313,14 @@ import Home from '../components/icons/home.astro';
 				<li>Node.js</li>
 				<li>TypeScript</li>
 				<li>React</li>
-				<li>AWS</li>
-				<li>MongoDB</li>
-				<li>PostgreSQL</li>
-				<li>CSS</li>
-				<li>Tailwind</li>
 				<li>Python</li>
+				<li>AWS</li>
+				<li>PostgreSQL</li>
+				<li>MongoDB</li>
 				<li>Websockets</li>
-				<li>Next.js</li>
 				<li>D3</li>
-				<li>OpenAPI</li>
-				<li>Jest</li>
-				<li>Cypress</li>
-				<li>Serverless</li>
-				<li>Auth0</li>
-				<li>GraphQL</li>
+				<li>OpenAI SDK</li>
 				<li>Three.js</li>
-				<li>Docker</li>
 				<li>Redis</li>
         <li>WebGL</li>
       </ul>
@@ -329,6 +335,6 @@ import Home from '../components/icons/home.astro';
     <section class="references">
       <p>References available upon request.</p>
     </section>
-		
+
 	</main>
 </Layout>
