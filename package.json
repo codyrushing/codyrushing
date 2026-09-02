@@ -4,7 +4,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build:site": "cd packages/site; npm run build;"
+    "build:site": "cd packages/site; bun run build;"
   },
   "workspaces": [
     "packages/*"
